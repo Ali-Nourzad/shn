@@ -1,12 +1,28 @@
 // ۱. تنظیمات Supabase (این مقادیر را از پنل خود کپی کنید)
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = 'https://zyziyyhzxsnwzrsubulu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentType = 'user';
 let currentMode = 'login';
 
-// تابع ثبت‌نام و ورود
+// توابع را به صورت عمومی تعریف می‌کنیم تا در onclick در دسترس باشند
+window.hideForm = function() {
+    document.getElementById('registration-section').style.display = 'none';
+};
+
+window.toggleMode = function() {
+    currentMode = currentMode === 'login' ? 'register' : 'login';
+    renderForm();
+};
+
+window.openModal = function(type, mode) {
+    currentType = type;
+    currentMode = mode;
+    document.getElementById('registration-section').style.display = 'flex';
+    renderForm();
+};
+
 async function handleAuth(event) {
     event.preventDefault();
     const email = event.target.email.value;
@@ -38,20 +54,4 @@ function renderForm() {
     `;
     
     switchBtn.innerText = currentMode === 'login' ? "حساب ندارید؟ ثبت‌نام" : "حساب دارید؟ ورود";
-}
-
-function openModal(type, mode) {
-    currentType = type;
-    currentMode = mode;
-    document.getElementById('registration-section').style.display = 'flex';
-    renderForm();
-}
-
-function toggleMode() {
-    currentMode = currentMode === 'login' ? 'register' : 'login';
-    renderForm();
-}
-
-function hideForm() {
-    document.getElementById('registration-section').style.display = 'none';
 }
