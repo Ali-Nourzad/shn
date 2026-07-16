@@ -4,18 +4,30 @@
     <meta charset="UTF-8">
     <title>س.ح.ن</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- افزودن کتابخانه سوپابیس -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <nav class="navbar">
         <div class="logo">س.ح.ن</div>
+        <button class="menu-button"><span></span><span></span><span></span></button>
     </nav>
 
+    <!-- در بخش کارت‌ها، دکمه‌ها را به این شکل اصلاح کنید -->
     <div class="selection-container">
+        <!-- کارت کارمند -->
+        <div class="employee-card">
+            <h2>کارمند</h2>
+            <p>دسترسی به پنل مدیریت</p>
+            <button class="select-btn" onclick="openModal('login', 'employee')">ورود</button>
+        </div>
+
+        <!-- کارت کاربر -->
         <div class="user-card">
             <h2>کاربر</h2>
-            <button class="select-btn" onclick="openModal('user', 'login')">ورود / ثبت‌نام</button>
+            <p>خرید و مشاهده خدمات</p>
+            <button class="select-btn" onclick="openModal('login', 'user')">ورود</button>
+            <!-- دکمه ثبت نام فقط برای کاربر است
+            <button class="switch-btn" onclick="openModal('register', 'user')">ثبت‌نام کاربر جدید</button> -->
         </div>
     </div>
 
