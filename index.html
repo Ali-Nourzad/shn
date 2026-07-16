@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>س.ح.ن</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- افزودن کتابخانه سوپابیس -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">س.ح.ن</div>
+    </nav>
+
+    <div class="selection-container">
+        <div class="user-card">
+            <h2>کاربر</h2>
+            <button class="select-btn" onclick="openModal('user', 'login')">ورود / ثبت‌نام</button>
+        </div>
+    </div>
+
+    <div id="registration-section" class="registration-section">
+        <div class="registration-form">
+            <button class="close-btn" onclick="hideForm()">&times;</button>
+            <h2 id="form-title">فرم</h2>
+            <form id="auth-form"></form>
+            <button id="switch-mode-btn" class="switch-btn" onclick="toggleMode()"></button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

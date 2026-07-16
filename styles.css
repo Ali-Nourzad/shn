@@ -1,0 +1,196 @@
+        /* ۱. تنظیمات کلی صفحه */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #FFFDD0;
+            font-family: Tahoma, Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ۲. نوار بالا (Navbar) */
+        .navbar {
+            background-color: rgba(255, 179, 0, 0.9);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            justify-content: space-between;
+        }
+
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .menu-button {
+            background-color: red;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .menu-button span {
+            width: 6px;
+            height: 6px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        /* ۳. کانتینر کارت‌ها */
+        .selection-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            height: calc(100vh - 60px);
+            flex-wrap: wrap;
+        }
+
+        .user-card, .employee-card {
+            background-color: white;
+            width: 280px;
+            padding: 40px 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .user-card:hover, .employee-card:hover {
+            transform: translateY(-15px);
+        }
+
+        .user-card h2, .employee-card h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .user-card p, .employee-card p {
+            font-size: 16px;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .select-btn {
+            background-color: orange;
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .select-btn:hover {
+            background-color: #e69500;
+        }
+
+        /* ۴. بخش پاپ‌آپ (Modal) */
+        .registration-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .registration-form {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            width: 380px;
+            max-width: 90%;
+            position: relative;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .registration-form h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* دکمه جابجایی بین ورود و ثبت‌نام */
+        .switch-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .switch-btn:hover {
+            background-color: #e0e0e0;
+        }
