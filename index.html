@@ -2,44 +2,771 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>س.ح.ن</title>
-    <link rel="stylesheet" href="styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f5f1e8;
+            --surface: rgba(255, 252, 245, 0.82);
+            --surface-solid: #fffdf8;
+            --text: #292722;
+            --muted: #777268;
+            --accent: #d77b32;
+            --accent-dark: #a9531c;
+            --dark: #292824;
+            --border: rgba(67, 58, 47, 0.12);
+            --shadow: 0 20px 50px rgba(54, 44, 31, 0.10);
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Vazirmatn", Tahoma, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 10% 10%, rgba(215, 123, 50, .12), transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(167, 130, 87, .12), transparent 28%),
+                var(--bg);
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: 82px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: rgba(255, 250, 239, 0.76);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .menu-button {
+            width: 56px;
+            height: 56px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            background: linear-gradient(145deg, #3f3a34, #211f1c);
+            box-shadow:
+                0 8px 20px rgba(45, 35, 25, 0.20),
+                inset 0 1px 1px rgba(255, 255, 255, 0.16);
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .menu-button:hover {
+            transform: translateY(-2px) scale(1.06);
+            background: linear-gradient(145deg, #514a42, #292520);
+        }
+
+        .menu-button:active {
+            transform: scale(.93);
+        }
+
+        .menu-button span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #fffdf8;
+        }
+
+        .selection-container {
+            width: min(1000px, 90%);
+            margin: 90px auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+        }
+
+        .selection-card {
+            position: relative;
+            padding: 42px 34px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            transition:
+                transform .3s ease,
+                box-shadow .3s ease,
+                border-color .3s ease;
+        }
+
+        .selection-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(54, 44, 31, .15);
+            border-color: rgba(215, 123, 50, .25);
+        }
+
+        .card-icon {
+            width: 76px;
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 22px;
+
+            border-radius: 24px;
+            background: rgba(215, 123, 50, .12);
+            font-size: 34px;
+        }
+
+        .selection-card h2 {
+            margin-bottom: 10px;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .selection-card p {
+            margin-bottom: 26px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .select-btn {
+            width: 150px;
+            padding: 13px 20px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 22px rgba(169, 83, 28, .20);
+            transition: .25s ease;
+        }
+
+        .select-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px rgba(169, 83, 28, .28);
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+
+            background: rgba(34, 30, 25, .48);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .auth-box {
+            position: relative;
+            width: min(440px, 100%);
+            padding: 35px;
+            background: var(--surface-solid);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .20);
+            animation: modalIn .25s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px) scale(.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 18px;
+            width: 38px;
+            height: 38px;
+            border: none;
+            border-radius: 50%;
+            background: #f0ece3;
+            color: var(--text);
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .auth-box h2 {
+            margin-bottom: 8px;
+            font-size: 25px;
+        }
+
+        .auth-subtitle {
+            margin-bottom: 25px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .mode-switch {
+            display: flex;
+            gap: 8px;
+            padding: 5px;
+            margin-bottom: 22px;
+            background: #f1ede5;
+            border-radius: 14px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: var(--muted);
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: var(--text);
+            font-weight: 700;
+            box-shadow: 0 3px 10px rgba(0,0,0,.06);
+        }
+
+        .input-group {
+            margin-bottom: 17px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            outline: none;
+            background: #faf8f3;
+            color: var(--text);
+            font-family: inherit;
+            transition: .2s ease;
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(215, 123, 50, .10);
+        }
+
+        .auth-submit {
+            width: 100%;
+            padding: 14px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 14px;
+            background: var(--dark);
+            color: white;
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .auth-submit:hover {
+            background: #403b35;
+            transform: translateY(-1px);
+        }
+
+        .auth-submit:disabled {
+            opacity: .6;
+            cursor: wait;
+            transform: none;
+        }
+
+        .message {
+            display: none;
+            margin-top: 16px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.error {
+            background: #fff0ed;
+            color: #a33a2d;
+        }
+
+        .message.success {
+            background: #edf8ef;
+            color: #26713a;
+        }
+
+        @media (max-width: 700px) {
+            .selection-container {
+                grid-template-columns: 1fr;
+                margin: 55px auto;
+            }
+
+            .selection-card {
+                min-height: 270px;
+            }
+
+            .navbar {
+                padding: 0 5%;
+            }
+        }
+    </style>
 </head>
+
 <body>
+
     <nav class="navbar">
         <div class="logo">س.ح.ن</div>
-        <button class="menu-button"><span></span><span></span><span></span></button>
+
+        <button class="menu-button" aria-label="منو">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
 
-    <!-- در بخش کارت‌ها، دکمه‌ها را به این شکل اصلاح کنید -->
-    <div class="selection-container">
-        <!-- کارت کارمند -->
-        <div class="employee-card">
+    <main class="selection-container">
+
+        <section class="selection-card">
+            <div class="card-icon">💼</div>
             <h2>کارمند</h2>
             <p>دسترسی به پنل مدیریت</p>
-            <button class="select-btn" onclick="openModal('login', 'employee')">ورود</button>
-        </div>
+            <button class="select-btn" onclick="openAuth('employee')">
+                ورود
+            </button>
+        </section>
 
-        <!-- کارت کاربر -->
-        <div class="user-card">
+        <section class="selection-card">
+            <div class="card-icon">👤</div>
             <h2>کاربر</h2>
-            <p>خرید و مشاهده خدمات</p>
-            <button class="select-btn" onclick="openModal('login', 'user')">ورود</button>
-            <!-- دکمه ثبت نام فقط برای کاربر است
-            <button class="switch-btn" onclick="openModal('register', 'user')">ثبت‌نام کاربر جدید</button> -->
+            <p>ورود به حساب کاربری</p>
+            <button class="select-btn" onclick="openAuth('user')">
+                ورود
+            </button>
+        </section>
+
+    </main>
+
+    <div id="authModal" class="modal">
+        <div class="auth-box">
+
+            <button class="close-btn" onclick="closeAuth()">×</button>
+
+            <h2 id="authTitle">ورود به حساب</h2>
+            <p class="auth-subtitle" id="authSubtitle">
+                ایمیل و رمز عبور خود را وارد کنید.
+            </p>
+
+            <div class="mode-switch">
+                <button
+                    id="loginModeBtn"
+                    class="mode-btn active"
+                    onclick="setMode('login')">
+                    حساب دارم
+                </button>
+
+                <button
+                    id="signupModeBtn"
+                    class="mode-btn"
+                    onclick="setMode('signup')">
+                    حساب ندارم
+                </button>
+            </div>
+
+            <form id="authForm">
+
+                <div class="input-group">
+                    <label for="email">ایمیل</label>
+                    <input
+                        id="email"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="example@email.com"
+                        required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">رمز عبور</label>
+                    <input
+                        id="password"
+                        type="password"
+                        autocomplete="current-password"
+                        placeholder="حداقل ۶ کاراکتر"
+                        minlength="6"
+                        required>
+                </div>
+
+                <button id="authSubmit" class="auth-submit" type="submit">
+                    ورود
+                </button>
+
+                <div id="message" class="message"></div>
+
+            </form>
+
         </div>
     </div>
 
-    <div id="registration-section" class="registration-section">
-        <div class="registration-form">
-            <button class="close-btn" onclick="hideForm()">&times;</button>
-            <h2 id="form-title">فرم</h2>
-            <form id="auth-form"></form>
-            <button id="switch-mode-btn" class="switch-btn" onclick="toggleMode()"></button>
-        </div>
-    </div>
+    <script>
+        /* =========================
+           SUPABASE
+        ========================== */
 
-    <script src="script.js"></script>
+        const SUPABASE_URL = "https://zyziyyhzxsnwzrsubulu.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
+
+        const { createClient } = supabase;
+
+        const supabaseClient = createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+        const HOME_PAGE = "user-dashboard.html";
+
+
+        /* =========================
+           AUTH STATE
+        ========================== */
+
+        let currentMode = "login";
+        let currentRole = "user";
+
+        const modal = document.getElementById("authModal");
+        const authForm = document.getElementById("authForm");
+
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+
+        const authTitle = document.getElementById("authTitle");
+        const authSubtitle = document.getElementById("authSubtitle");
+        const authSubmit = document.getElementById("authSubmit");
+
+        const loginModeBtn = document.getElementById("loginModeBtn");
+        const signupModeBtn = document.getElementById("signupModeBtn");
+
+        const message = document.getElementById("message");
+
+
+        /* =========================
+           OPEN / CLOSE
+        ========================== */
+
+        function openAuth(role) {
+
+            currentRole = role;
+
+            if (role === "employee") {
+                authTitle.textContent = "ورود کارمند";
+                authSubtitle.textContent =
+                    "برای ورود به پنل مدیریت، اطلاعات خود را وارد کنید.";
+            } else {
+                authTitle.textContent = "ورود کاربر";
+                authSubtitle.textContent =
+                    "ایمیل و رمز عبور خود را وارد کنید.";
+            }
+
+            setMode("login");
+            clearMessage();
+
+            emailInput.value = "";
+            passwordInput.value = "";
+
+            modal.classList.add("show");
+
+            setTimeout(() => {
+                emailInput.focus();
+            }, 100);
+        }
+
+
+        function closeAuth() {
+            modal.classList.remove("show");
+            clearMessage();
+        }
+
+
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                closeAuth();
+            }
+        });
+
+
+        /* =========================
+           LOGIN / SIGNUP MODE
+        ========================== */
+
+        function setMode(mode) {
+
+            currentMode = mode;
+
+            clearMessage();
+
+            if (mode === "login") {
+
+                loginModeBtn.classList.add("active");
+                signupModeBtn.classList.remove("active");
+
+                authSubmit.textContent = "ورود";
+                passwordInput.autocomplete = "current-password";
+
+            } else {
+
+                loginModeBtn.classList.remove("active");
+                signupModeBtn.classList.add("active");
+
+                authSubmit.textContent = "ساخت حساب";
+                passwordInput.autocomplete = "new-password";
+            }
+        }
+
+
+        /* =========================
+           MESSAGE
+        ========================== */
+
+        function showMessage(text, type) {
+
+            message.textContent = text;
+            message.className = "message show " + type;
+        }
+
+
+        function clearMessage() {
+
+            message.textContent = "";
+            message.className = "message";
+        }
+
+
+        /* =========================
+           FORM
+        ========================== */
+
+        authForm.addEventListener("submit", async function (event) {
+
+            event.preventDefault();
+
+            clearMessage();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!emailInput.validity.valid) {
+                showMessage("لطفاً یک ایمیل معتبر وارد کنید.", "error");
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage(
+                    "رمز عبور باید حداقل ۶ کاراکتر باشد.",
+                    "error"
+                );
+                return;
+            }
+
+            authSubmit.disabled = true;
+
+            if (currentMode === "login") {
+                await login(email, password);
+            } else {
+                await signup(email, password);
+            }
+
+            authSubmit.disabled = false;
+        });
+
+
+        /* =========================
+           LOGIN
+        ========================== */
+
+        async function login(email, password) {
+
+            const { data, error } =
+                await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+            if (error) {
+
+                const errorMessage =
+                    error.message.toLowerCase();
+
+                if (
+                    errorMessage.includes("invalid login") ||
+                    errorMessage.includes("invalid credentials")
+                ) {
+                    showMessage(
+                        "ایمیل یا رمز عبور اشتباه است.",
+                        "error"
+                    );
+                } else if (
+                    errorMessage.includes("email not confirmed")
+                ) {
+                    showMessage(
+                        "ایمیل شما هنوز تأیید نشده است.",
+                        "error"
+                    );
+                } else {
+                    showMessage(
+                        "ورود انجام نشد. دوباره تلاش کنید.",
+                        "error"
+                    );
+                }
+
+                return;
+            }
+
+            if (!data || !data.session) {
+
+                showMessage(
+                    "ورود انجام نشد.",
+                    "error"
+                );
+
+                return;
+            }
+
+            showMessage(
+                "ورود با موفقیت انجام شد.",
+                "success"
+            );
+
+            setTimeout(() => {
+                window.location.href = HOME_PAGE;
+            }, 500);
+        }
+
+
+        /* =========================
+           SIGNUP
+        ========================== */
+
+        async function signup(email, password) {
+
+            const { data, error } =
+                await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password
+                });
+
+            if (error) {
+
+                const errorMessage =
+                    error.message.toLowerCase();
+
+                if (
+                    errorMessage.includes("already registered") ||
+                    errorMessage.includes("already exists") ||
+                    errorMessage.includes("user already registered")
+                ) {
+
+                    showMessage(
+                        "این ایمیل قبلاً ثبت‌نام کرده است. وارد شوید.",
+                        "error"
+                    );
+
+                } else {
+
+                    showMessage(
+                        error.message,
+                        "error"
+                    );
+                }
+
+                return;
+            }
+
+            /*
+                اگر Email Confirmation در Supabase روشن باشد،
+                session ممکن است null باشد.
+            */
+
+            if (!data.session) {
+
+                showMessage(
+                    "حساب ساخته شد. برای ادامه، ایمیل خود را تأیید کنید و سپس وارد شوید.",
+                    "success"
+                );
+
+                return;
+            }
+
+            showMessage(
+                "حساب با موفقیت ساخته شد.",
+                "success"
+            );
+
+            setTimeout(() => {
+                window.location.href = HOME_PAGE;
+            }, 700);
+        }
+
+
+        /* =========================
+           ESC
+        ========================== */
+
+        document.addEventListener("keydown", function (event) {
+
+            if (event.key === "Escape") {
+                closeAuth();
+            }
+
+        });
+    </script>
+
 </body>
 </html>
