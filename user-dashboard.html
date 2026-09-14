@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -807,202 +806,265 @@
         © ۱۴۰۵ س.ح.ن — همه حقوق محفوظ است
     </footer>
 
-
     <script>
-
         /* =========================
            SUPABASE
         ========================== */
-
+    
         const SUPABASE_URL =
             "YOUR_SUPABASE_URL";
-
+    
         const SUPABASE_ANON_KEY =
             "YOUR_SUPABASE_ANON_KEY";
-
+    
         const { createClient } = supabase;
-
+    
         const supabaseClient = createClient(
             SUPABASE_URL,
             SUPABASE_ANON_KEY
         );
-
-
+    
+    
         /* =========================
            ELEMENTS
         ========================== */
-
+    
         const menuBtn =
             document.getElementById("menuBtn");
-
+    
         const menu =
             document.getElementById("menu");
-
+    
         const homePage =
             document.getElementById("homePage");
-
+    
         const libraryPage =
             document.getElementById("libraryPage");
-
+    
         const cafePage =
             document.getElementById("cafePage");
-
+    
         const funPage =
             document.getElementById("funPage");
-
+    
         const sectionExitButton =
             document.getElementById("sectionExitButton");
-
+    
         const sectionExitText =
             document.getElementById("sectionExitText");
-
+    
         const menuDivider =
             document.getElementById("menuDivider");
-
+    
         const logoutButton =
             document.getElementById("logoutButton");
-
-
+    
+    
         let currentSection = null;
-
-
+    
+    
         /* =========================
            CHECK LOGIN
         ========================== */
-
+    
         async function checkUser() {
-
-            const { data, error } =
-                await supabaseClient.auth.getSession();
-
+    
+            const {
+                data,
+                error
+            } = await supabaseClient.auth.getSession();
+    
             if (error || !data.session) {
+    
                 window.location.href = "index.html";
+                return;
             }
         }
-
+    
         checkUser();
-
-
+    
+    
         /* =========================
            MENU
         ========================== */
-
-        menuBtn.addEventListener("click", function(event) {
-
-            event.stopPropagation();
-
-            menu.classList.toggle("show");
-        });
-
-
-        menu.addEventListener("click", function(event) {
-
-            event.stopPropagation();
-        });
-
-
-        document.addEventListener("click", function() {
-
-            menu.classList.remove("show");
-        });
-
-
+    
+        menuBtn.addEventListener(
+            "click",
+            function(event) {
+    
+                event.stopPropagation();
+    
+                menu.classList.toggle("show");
+            }
+        );
+    
+    
+        menu.addEventListener(
+            "click",
+            function(event) {
+    
+                event.stopPropagation();
+            }
+        );
+    
+    
+        document.addEventListener(
+            "click",
+            function() {
+    
+                menu.classList.remove("show");
+            }
+        );
+    
+    
         /* =========================
            OPEN SECTION
         ========================== */
-
+    
         function openSection(section) {
-
+    
+            // مخفی کردن صفحه اصلی
             homePage.style.display = "none";
-
+    
+            // بستن همه بخش‌ها
             libraryPage.classList.remove("active");
             cafePage.classList.remove("active");
             funPage.classList.remove("active");
-
+    
             currentSection = section;
-
+    
+    
+            /* ---------- کتابخانه ---------- */
+    
             if (section === "library") {
-
+    
                 libraryPage.classList.add("active");
-
+    
                 sectionExitText.textContent =
                     "خروج از کتابخانه";
-
             }
-
-            if (section === "cafe") {
-
+    
+    
+            /* ---------- کافه ---------- */
+    
+            else if (section === "cafe") {
+    
                 cafePage.classList.add("active");
-
+    
                 sectionExitText.textContent =
                     "خروج از کافه";
-
             }
-
-            if (section === "fun") {
-
+    
+    
+            /* ---------- خنده و سوال ---------- */
+    
+            else if (section === "fun") {
+    
                 funPage.classList.add("active");
-
+    
                 sectionExitText.textContent =
                     "خروج از خنده و سوال";
-
             }
-
+    
+    
+            // نمایش گزینه خروج از بخش
             sectionExitButton.style.display = "flex";
+    
             menuDivider.style.display = "block";
-
+    
+            // بستن منو
+            menu.classList.remove("show");
+    
+            // رفتن به بالای صفحه
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"
             });
         }
-
-
+    
+    
         /* =========================
            EXIT CURRENT SECTION
         ========================== */
-
+    
         sectionExitButton.addEventListener(
             "click",
             function() {
-
+    
+                // بستن همه بخش‌ها
                 libraryPage.classList.remove("active");
                 cafePage.classList.remove("active");
                 funPage.classList.remove("active");
-
+    
+                // نمایش صفحه اصلی
                 homePage.style.display = "block";
-
+    
                 currentSection = null;
-
+    
+                // مخفی کردن گزینه خروج از بخش
                 sectionExitButton.style.display = "none";
+    
                 menuDivider.style.display = "none";
-
+    
                 menu.classList.remove("show");
-
+    
                 window.scrollTo({
                     top: 0,
                     behavior: "smooth"
                 });
             }
         );
-
-
+    
+    
         /* =========================
            LOGOUT
         ========================== */
-
+    
         logoutButton.addEventListener(
             "click",
             async function() {
-
-                await supabaseClient.auth.signOut();
-
-                window.location.href = "index.html";
+    
+                logoutButton.disabled = true;
+    
+                const {
+                    error
+                } = await supabaseClient.auth.signOut();
+    
+                if (error) {
+    
+                    logoutButton.disabled = false;
+    
+                    console.error(
+                        "خطا در خروج:",
+                        error
+                    );
+    
+                    return;
+                }
+    
+                window.location.href =
+                    "index.html";
             }
         );
-
+    
+    
+        /* =========================
+           AUTH STATE
+        ========================== */
+    
+        supabaseClient.auth.onAuthStateChange(
+            function(event, session) {
+    
+                if (
+                    !session &&
+                    event !== "INITIAL_SESSION"
+                ) {
+                    window.location.href =
+                        "index.html";
+                }
+            }
+        );
     </script>
 
 </body>
 </html>
-```
