@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -21,6 +22,7 @@
         :root {
             --bg: #f5f1e8;
             --surface: rgba(255, 252, 245, 0.82);
+            --surface-solid: #fffdf8;
             --text: #292722;
             --muted: #777268;
             --accent: #d77b32;
@@ -93,6 +95,10 @@
             background: linear-gradient(145deg, #514a42, #292520);
         }
 
+        .menu-button:active {
+            transform: scale(.93);
+        }
+
         .menu-button span {
             width: 7px;
             height: 7px;
@@ -106,11 +112,13 @@
             left: 6%;
             z-index: 200;
 
-            width: 230px;
+            width: 245px;
             padding: 10px;
 
-            background: rgba(255,253,248,.94);
+            background: rgba(255,253,248,.95);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+
             border: 1px solid var(--border);
             border-radius: 20px;
 
@@ -139,9 +147,10 @@
 
             border: none;
             border-radius: 13px;
-            background: transparent;
 
+            background: transparent;
             color: var(--text);
+
             font-family: inherit;
             font-size: 14px;
             text-align: right;
@@ -152,6 +161,16 @@
 
         .menu-item:hover {
             background: #f3eee5;
+        }
+
+        .menu-divider {
+            height: 1px;
+            margin: 7px 4px;
+            background: var(--border);
+        }
+
+        .section-exit {
+            color: var(--accent-dark);
         }
 
         .hero {
@@ -216,6 +235,7 @@
 
             box-shadow: var(--shadow);
             backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
 
             cursor: pointer;
             transition: .3s ease;
@@ -251,6 +271,170 @@
             font-size: 13px;
         }
 
+        /* =========================
+           بخش‌های داخلی
+        ========================== */
+
+        .content-page {
+            display: none;
+
+            width: min(1000px, 90%);
+            margin: 70px auto 90px;
+        }
+
+        .content-page.active {
+            display: block;
+            animation: pageIn .3s ease;
+        }
+
+        @keyframes pageIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-header {
+            margin-bottom: 35px;
+            text-align: center;
+        }
+
+        .page-header .page-icon {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+
+        .page-header h1 {
+            font-size: clamp(30px, 5vw, 45px);
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .empty-box {
+            padding: 55px 25px;
+
+            text-align: center;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 26px;
+
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+        }
+
+        .empty-icon {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .empty-box h2 {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .empty-box p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* =========================
+           کافه
+        ========================== */
+
+        .cafe-menu {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .menu-category {
+            padding: 28px;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 26px;
+
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+        }
+
+        .menu-category h2 {
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+
+            border-bottom: 1px solid var(--border);
+
+            font-size: 21px;
+        }
+
+        .drink-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .drink-item {
+            padding: 14px 16px;
+
+            display: flex;
+            align-items: center;
+
+            border-radius: 14px;
+            background: rgba(215,123,50,.07);
+
+            font-size: 15px;
+            font-weight: 600;
+
+            transition: .2s ease;
+        }
+
+        .drink-item:hover {
+            background: rgba(215,123,50,.13);
+            transform: translateX(-3px);
+        }
+
+        /* =========================
+           خنده و سوال
+        ========================== */
+
+        .fun-box {
+            padding: 50px 25px;
+
+            text-align: center;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 26px;
+
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+        }
+
+        .fun-box .big-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .fun-box h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .fun-box p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
         footer {
             padding: 25px;
             text-align: center;
@@ -258,28 +442,13 @@
             font-size: 12px;
         }
 
-        .page {
-            display: block;
-        }
-
-        .fun-page {
-            display: none;
-            width: min(1000px, 90%);
-            margin: 80px auto;
-            text-align: center;
-        }
-
-        .fun-page h1 {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-
-        .fun-page p {
-            color: var(--muted);
-        }
-
         @media (max-width: 800px) {
+
             .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .cafe-menu {
                 grid-template-columns: 1fr;
             }
 
@@ -289,6 +458,8 @@
 
             .menu {
                 left: 5%;
+                right: 5%;
+                width: auto;
             }
         }
     </style>
@@ -296,15 +467,33 @@
 
 <body>
 
-    <nav class="navbar">
-        <div class="logo">س.ح.ن</div>
+    <!-- =========================
+         NAVBAR
+    ========================== -->
 
-        <button class="menu-button" id="menuBtn" aria-label="منو">
+    <nav class="navbar">
+
+        <div class="logo">
+            س.ح.ن
+        </div>
+
+        <button
+            class="menu-button"
+            id="menuBtn"
+            aria-label="منو">
+
             <span></span>
             <span></span>
             <span></span>
+
         </button>
+
     </nav>
+
+
+    <!-- =========================
+         MENU
+    ========================== -->
 
     <div class="menu" id="menu">
 
@@ -318,18 +507,48 @@
             <span>پیام به پشتیبانی</span>
         </button>
 
-        <button class="menu-item" id="exitButton">
+        <!-- این گزینه فقط داخل بخش‌ها نمایش داده می‌شود -->
+        <button
+            class="menu-item section-exit"
+            id="sectionExitButton"
+            style="display: none;">
+
             ↩
-            <span id="exitText">خروج از پنل</span>
+            <span id="sectionExitText">
+                خروج از بخش
+            </span>
+
+        </button>
+
+        <div
+            class="menu-divider"
+            id="menuDivider"
+            style="display: none;">
+        </div>
+
+        <button
+            class="menu-item"
+            id="logoutButton">
+
+            ↩
+            <span>خروج از پنل</span>
+
         </button>
 
     </div>
 
 
-    <main id="homePage" class="page">
+    <!-- =========================
+         HOME
+    ========================== -->
+
+    <main id="homePage">
 
         <section class="hero">
-            <div class="badge">✦ به دنیای س.ح.ن خوش آمدید</div>
+
+            <div class="badge">
+                ✦ به دنیای س.ح.ن خوش آمدید
+            </div>
 
             <h1>
                 به <span>س.ح.ن</span> خوش آمدید
@@ -338,35 +557,72 @@
             <p>
                 یکی از بخش‌های موردنظر خود را انتخاب کنید.
             </p>
+
         </section>
 
 
         <section class="cards">
 
-            <article class="card">
-                <div class="card-icon">📚</div>
-                <h2>کتابخانه</h2>
+            <!-- کتابخانه -->
+
+            <article
+                class="card"
+                onclick="openSection('library')">
+
+                <div class="card-icon">
+                    📚
+                </div>
+
+                <h2>
+                    کتابخانه
+                </h2>
+
                 <p>
                     مجموعه‌ای برای مطالعه و یادگیری
                 </p>
+
             </article>
 
 
-            <article class="card">
-                <div class="card-icon">🎮</div>
-                <h2>گیم</h2>
+            <!-- کافه -->
+
+            <article
+                class="card"
+                onclick="openSection('cafe')">
+
+                <div class="card-icon">
+                    ☕
+                </div>
+
+                <h2>
+                    کافه
+                </h2>
+
                 <p>
-                    وارد دنیای بازی و سرگرمی شوید
+                    منوی نوشیدنی‌های س.ح.ن
                 </p>
+
             </article>
 
 
-            <article class="card" id="funBtn">
-                <div class="card-icon">😄</div>
-                <h2>خنده و سوال</h2>
+            <!-- خنده و سوال -->
+
+            <article
+                class="card"
+                onclick="openSection('fun')">
+
+                <div class="card-icon">
+                    😄
+                </div>
+
+                <h2>
+                    خنده و سوال
+                </h2>
+
                 <p>
                     کمی سرگرمی و سوال‌های جالب
                 </p>
+
             </article>
 
         </section>
@@ -374,13 +630,175 @@
     </main>
 
 
-    <section id="funPage" class="fun-page">
+    <!-- =========================
+         LIBRARY
+    ========================== -->
 
-        <h1>😄 خنده و سوال</h1>
+    <section
+        id="libraryPage"
+        class="content-page">
 
-        <p>
-            این بخش برای سوال‌ها و سرگرمی‌های س.ح.ن است.
-        </p>
+        <div class="page-header">
+
+            <div class="page-icon">
+                📚
+            </div>
+
+            <h1>
+                کتابخانه
+            </h1>
+
+            <p>
+                بخش کتابخانه س.ح.ن
+            </p>
+
+        </div>
+
+
+        <div class="empty-box">
+
+            <div class="empty-icon">
+                📭
+            </div>
+
+            <h2>
+                فعلاً محتوایی پیدا نشد
+            </h2>
+
+            <p>
+                به‌زودی محتوای این بخش اضافه خواهد شد.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CAFE
+    ========================== -->
+
+    <section
+        id="cafePage"
+        class="content-page">
+
+        <div class="page-header">
+
+            <div class="page-icon">
+                ☕
+            </div>
+
+            <h1>
+                کافه
+            </h1>
+
+            <p>
+                منوی نوشیدنی‌های س.ح.ن
+            </p>
+
+        </div>
+
+
+        <div class="cafe-menu">
+
+            <!-- نوشیدنی تلخ -->
+
+            <div class="menu-category">
+
+                <h2>
+                    نوشیدنی تلخ
+                </h2>
+
+                <div class="drink-list">
+
+                    <div class="drink-item">
+                        آیس نوت
+                    </div>
+
+                    <div class="drink-item">
+                        تالیجا
+                    </div>
+
+                    <div class="drink-item">
+                        جوشینو
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- نوشیدنی شیرین -->
+
+            <div class="menu-category">
+
+                <h2>
+                    نوشیدنی شیرین
+                </h2>
+
+                <div class="drink-list">
+
+                    <div class="drink-item">
+                        نویتو
+                    </div>
+
+                    <div class="drink-item">
+                        فریکان
+                    </div>
+
+                    <div class="drink-item">
+                        شیکانو
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FUN
+    ========================== -->
+
+    <section
+        id="funPage"
+        class="content-page">
+
+        <div class="page-header">
+
+            <div class="page-icon">
+                😄
+            </div>
+
+            <h1>
+                خنده و سوال
+            </h1>
+
+            <p>
+                بخش سرگرمی و سوال‌های س.ح.ن
+            </p>
+
+        </div>
+
+
+        <div class="fun-box">
+
+            <div class="big-icon">
+                😄
+            </div>
+
+            <h2>
+                به‌زودی!
+            </h2>
+
+            <p>
+                سوال‌ها و سرگرمی‌های این بخش به‌زودی اضافه می‌شوند.
+            </p>
+
+        </div>
 
     </section>
 
@@ -396,8 +814,11 @@
            SUPABASE
         ========================== */
 
-        const SUPABASE_URL = "https://zyziyyhzxsnwzrsubulu.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
+        const SUPABASE_URL =
+            "YOUR_SUPABASE_URL";
+
+        const SUPABASE_ANON_KEY =
+            "YOUR_SUPABASE_ANON_KEY";
 
         const { createClient } = supabase;
 
@@ -417,23 +838,32 @@
         const menu =
             document.getElementById("menu");
 
-        const funBtn =
-            document.getElementById("funBtn");
-
-        const exitButton =
-            document.getElementById("exitButton");
-
-        const exitText =
-            document.getElementById("exitText");
-
         const homePage =
             document.getElementById("homePage");
+
+        const libraryPage =
+            document.getElementById("libraryPage");
+
+        const cafePage =
+            document.getElementById("cafePage");
 
         const funPage =
             document.getElementById("funPage");
 
+        const sectionExitButton =
+            document.getElementById("sectionExitButton");
 
-        let inFunPage = false;
+        const sectionExitText =
+            document.getElementById("sectionExitText");
+
+        const menuDivider =
+            document.getElementById("menuDivider");
+
+        const logoutButton =
+            document.getElementById("logoutButton");
+
+
+        let currentSection = null;
 
 
         /* =========================
@@ -446,9 +876,7 @@
                 await supabaseClient.auth.getSession();
 
             if (error || !data.session) {
-
                 window.location.href = "index.html";
-                return;
             }
         }
 
@@ -459,7 +887,7 @@
            MENU
         ========================== */
 
-        menuBtn.addEventListener("click", function (event) {
+        menuBtn.addEventListener("click", function(event) {
 
             event.stopPropagation();
 
@@ -467,54 +895,87 @@
         });
 
 
-        menu.addEventListener("click", function (event) {
+        menu.addEventListener("click", function(event) {
+
             event.stopPropagation();
         });
 
 
-        document.addEventListener("click", function () {
+        document.addEventListener("click", function() {
+
             menu.classList.remove("show");
         });
 
 
         /* =========================
-           FUN PAGE
+           OPEN SECTION
         ========================== */
 
-        funBtn.addEventListener("click", function () {
+        function openSection(section) {
 
             homePage.style.display = "none";
-            funPage.style.display = "block";
 
-            inFunPage = true;
+            libraryPage.classList.remove("active");
+            cafePage.classList.remove("active");
+            funPage.classList.remove("active");
 
-            exitText.textContent =
-                "خروج از خنده و سوال";
+            currentSection = section;
 
-            menu.classList.remove("show");
+            if (section === "library") {
+
+                libraryPage.classList.add("active");
+
+                sectionExitText.textContent =
+                    "خروج از کتابخانه";
+
+            }
+
+            if (section === "cafe") {
+
+                cafePage.classList.add("active");
+
+                sectionExitText.textContent =
+                    "خروج از کافه";
+
+            }
+
+            if (section === "fun") {
+
+                funPage.classList.add("active");
+
+                sectionExitText.textContent =
+                    "خروج از خنده و سوال";
+
+            }
+
+            sectionExitButton.style.display = "flex";
+            menuDivider.style.display = "block";
 
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"
             });
-        });
+        }
 
 
         /* =========================
-           EXIT
+           EXIT CURRENT SECTION
         ========================== */
 
-        exitButton.addEventListener("click", async function () {
+        sectionExitButton.addEventListener(
+            "click",
+            function() {
 
-            if (inFunPage) {
+                libraryPage.classList.remove("active");
+                cafePage.classList.remove("active");
+                funPage.classList.remove("active");
 
-                funPage.style.display = "none";
                 homePage.style.display = "block";
 
-                inFunPage = false;
+                currentSection = null;
 
-                exitText.textContent =
-                    "خروج از پنل";
+                sectionExitButton.style.display = "none";
+                menuDivider.style.display = "none";
 
                 menu.classList.remove("show");
 
@@ -522,17 +983,26 @@
                     top: 0,
                     behavior: "smooth"
                 });
-
-                return;
             }
+        );
 
 
-            await supabaseClient.auth.signOut();
+        /* =========================
+           LOGOUT
+        ========================== */
 
-            window.location.href = "index.html";
-        });
+        logoutButton.addEventListener(
+            "click",
+            async function() {
+
+                await supabaseClient.auth.signOut();
+
+                window.location.href = "index.html";
+            }
+        );
 
     </script>
 
 </body>
 </html>
+```
