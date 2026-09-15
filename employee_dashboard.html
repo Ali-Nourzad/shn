@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -26,7 +27,6 @@
             --red-dark: #b92727;
 
             --green: #2e8b57;
-            --green-dark: #247046;
 
             --border: rgba(67,58,47,.12);
             --shadow: 0 20px 50px rgba(54,44,31,.10);
@@ -38,10 +38,6 @@
             padding: 0;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
             min-height: 100vh;
 
@@ -49,16 +45,8 @@
             color: var(--text);
 
             background:
-                radial-gradient(
-                    circle at 10% 10%,
-                    rgba(215,123,50,.12),
-                    transparent 25%
-                ),
-                radial-gradient(
-                    circle at 90% 80%,
-                    rgba(167,130,87,.12),
-                    transparent 28%
-                ),
+                radial-gradient(circle at 10% 10%, rgba(215,123,50,.12), transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(167,130,87,.12), transparent 28%),
                 var(--bg);
         }
 
@@ -67,7 +55,9 @@
             font-family: inherit;
         }
 
-        /* NAVBAR */
+        /* ======================
+           NAVBAR
+        ====================== */
 
         .navbar {
             position: sticky;
@@ -107,6 +97,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
             gap: 5px;
 
             background:
@@ -139,11 +130,14 @@
         .menu-btn span {
             width: 7px;
             height: 7px;
+
             border-radius: 50%;
             background: #fffdf8;
         }
 
-        /* MENU */
+        /* ======================
+           MENU
+        ====================== */
 
         .menu {
             position: fixed;
@@ -189,6 +183,7 @@
 
             display: flex;
             align-items: center;
+
             gap: 12px;
 
             padding: 0 14px;
@@ -209,7 +204,9 @@
 
         .menu-item:hover {
             background: #f3eee5;
-            transform: translateX(-3px);
+
+            transform:
+                translateX(-3px);
         }
 
         .menu-icon {
@@ -225,7 +222,9 @@
             background: #eee7da;
         }
 
-        /* PAGE */
+        /* ======================
+           PAGE
+        ====================== */
 
         .page {
             width: min(1100px,90%);
@@ -247,9 +246,11 @@
 
             border-radius: 999px;
 
-            background: rgba(215,123,50,.10);
+            background:
+                rgba(215,123,50,.10);
 
-            border: 1px solid rgba(215,123,50,.18);
+            border: 1px solid
+                rgba(215,123,50,.18);
 
             color: #a9531c;
 
@@ -258,7 +259,9 @@
         }
 
         .hero h1 {
-            font-size: clamp(32px,5vw,52px);
+            font-size:
+                clamp(32px,5vw,52px);
+
             margin-bottom: 12px;
         }
 
@@ -267,11 +270,14 @@
             line-height: 2;
         }
 
-        /* HOME */
+        /* ======================
+           HOME CARDS
+        ====================== */
 
         .home-grid {
-            max-width: 700px;
-            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 20px;
         }
 
         .main-card {
@@ -322,14 +328,18 @@
             font-size: 14px;
         }
 
-        /* MANAGER */
+        /* ======================
+           MANAGER
+        ====================== */
 
         #managerPage,
+        #peoplePage,
         #trashPage {
             display: none;
         }
 
         #managerPage.show,
+        #peoplePage.show,
         #trashPage.show {
             display: block;
         }
@@ -385,20 +395,22 @@
             color: white;
         }
 
-        .trash-btn {
-            background: #eee8dd;
-            color: var(--text);
-        }
-
+        .trash-btn,
         .back-btn {
             background: #eee8dd;
             color: var(--text);
         }
 
         .user-page-btn {
-            background: rgba(25,118,210,.10);
+            background:
+                rgba(25,118,210,.10);
+
             color: var(--blue-dark);
         }
+
+        /* ======================
+           MANAGED CARDS
+        ====================== */
 
         .cards-grid {
             display: grid;
@@ -408,8 +420,6 @@
 
             gap: 20px;
         }
-
-        /* MANAGED CARD */
 
         .managed-card {
             position: relative;
@@ -440,6 +450,7 @@
             right: 12px;
 
             display: grid;
+
             grid-template-columns: 1fr 1fr;
 
             gap: 8px;
@@ -465,10 +476,6 @@
             font-weight: 700;
 
             transition: .2s ease;
-        }
-
-        .card-action:hover {
-            transform: translateY(-2px);
         }
 
         .edit-action {
@@ -531,13 +538,17 @@
 
             background: var(--surface);
 
-            border: 1px dashed rgba(67,58,47,.18);
+            border: 1px dashed
+                rgba(67,58,47,.18);
+
             border-radius: 25px;
 
             color: var(--muted);
         }
 
-        /* TRASH */
+        /* ======================
+           TRASH
+        ====================== */
 
         .trash-list {
             display: grid;
@@ -553,7 +564,8 @@
 
             background: rgba(255,255,255,.55);
 
-            border: 1px solid rgba(217,54,54,.14);
+            border: 1px solid
+                rgba(217,54,54,.14);
 
             border-radius: 22px;
 
@@ -591,15 +603,211 @@
             font-weight: 700;
 
             cursor: pointer;
+        }
+
+        /* ======================
+           PEOPLE
+        ====================== */
+
+        #peoplePage {
+            position: relative;
+            min-height: 500px;
+        }
+
+        .people-layout {
+            display: flex;
+            min-height: 520px;
+
+            border: 1px solid var(--border);
+            border-radius: 28px;
+
+            overflow: hidden;
+
+            background: rgba(255,255,255,.22);
+
+            box-shadow: var(--shadow);
+        }
+
+        .people-sidebar {
+            width: 72px;
+            flex-shrink: 0;
+
+            position: relative;
+
+            background: rgba(255,253,248,.72);
+
+            border-left: 1px solid var(--border);
+
+            transition:
+                width .25s ease;
+        }
+
+        .people-sidebar.closed {
+            width: 0;
+        }
+
+        .sidebar-toggle {
+            position: absolute;
+
+            top: 18px;
+            left: 15px;
+
+            width: 42px;
+            height: 42px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: var(--dark);
+            color: white;
+
+            cursor: pointer;
+
+            z-index: 10;
+        }
+
+        .people-content {
+            flex: 1;
+
+            padding: 35px;
+        }
+
+        .people-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 22px;
+        }
+
+        .people-top h2 {
+            font-size: 30px;
+            margin-bottom: 6px;
+        }
+
+        .people-top p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .people-count {
+            padding: 13px 18px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(255,255,255,.65);
+
+            border: 1px solid var(--border);
+
+            white-space: nowrap;
+
+            font-size: 14px;
+        }
+
+        .people-count strong {
+            font-size: 20px;
+            margin-right: 4px;
+        }
+
+        .add-account-btn {
+            min-height: 48px;
+
+            padding: 0 19px;
+
+            margin-bottom: 20px;
+
+            border: none;
+            border-radius: 14px;
+
+            background: var(--dark);
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 13px;
+            font-weight: 800;
 
             transition: .2s ease;
         }
 
-        .restore-card-btn:hover {
-            background: var(--green-dark);
+        .add-account-btn:hover {
+            transform: translateY(-2px);
         }
 
-        /* MODAL */
+        .people-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .person-row {
+            min-height: 72px;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0,1fr)
+                auto;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 0 18px;
+
+            background:
+                rgba(255,253,248,.86);
+
+            border: 1px solid var(--border);
+
+            border-radius: 17px;
+        }
+
+        .person-info strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .person-info span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .delete-person {
+            border: none;
+            border-radius: 10px;
+
+            padding: 9px 13px;
+
+            background: var(--red);
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: 700;
+        }
+
+        .delete-person:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+        .no-people {
+            padding: 50px 20px;
+
+            text-align: center;
+
+            border: 1px dashed var(--border);
+            border-radius: 20px;
+
+            color: var(--muted);
+        }
+
+        /* ======================
+           MODAL
+        ====================== */
 
         .modal {
             position: fixed;
@@ -607,6 +815,7 @@
             z-index: 4000;
 
             display: none;
+
             align-items: center;
             justify-content: center;
 
@@ -679,6 +888,7 @@
             background: #eee8dd;
 
             cursor: pointer;
+
             font-size: 18px;
         }
 
@@ -713,16 +923,19 @@
         }
 
         .field input:focus {
-            border-color: rgba(25,118,210,.45);
+            border-color:
+                rgba(25,118,210,.45);
 
             box-shadow:
-                0 0 0 4px rgba(25,118,210,.08);
+                0 0 0 4px
+                rgba(25,118,210,.08);
         }
 
         .modal-actions {
             display: grid;
 
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns:
+                1fr 1fr;
 
             gap: 10px;
 
@@ -750,7 +963,26 @@
             color: var(--text);
         }
 
-        /* CONFIRM */
+        .account-message {
+            display: none;
+
+            margin-top: 15px;
+            padding: 12px;
+
+            border-radius: 12px;
+
+            background: #f4eee5;
+            color: var(--text);
+
+            text-align: center;
+
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* ======================
+           CONFIRM
+        ====================== */
 
         .confirm-changes {
             position: fixed;
@@ -777,7 +1009,8 @@
             color: white;
 
             box-shadow:
-                0 12px 30px rgba(46,139,87,.28);
+                0 12px 30px
+                rgba(46,139,87,.28);
 
             font-size: 14px;
             font-weight: 800;
@@ -807,17 +1040,27 @@
             transform: none;
         }
 
-        /* RESPONSIVE */
+        /* ======================
+           RESPONSIVE
+        ====================== */
 
         @media (max-width: 900px) {
 
             .cards-grid,
             .trash-list {
-                grid-template-columns:
-                    repeat(2,minmax(0,1fr));
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .home-grid {
+                grid-template-columns: 1fr;
             }
 
             .manager-head {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .people-top {
                 flex-direction: column;
                 align-items: stretch;
             }
@@ -841,6 +1084,22 @@
             .page {
                 width: 92%;
                 padding-top: 50px;
+            }
+
+            .people-layout {
+                min-height: 500px;
+            }
+
+            .people-content {
+                padding: 25px 18px;
+            }
+
+            .people-sidebar {
+                width: 58px;
+            }
+
+            .sidebar-toggle {
+                left: 8px;
             }
 
             .confirm-changes {
@@ -893,7 +1152,9 @@
 
     <main class="page">
 
-        <!-- HOME -->
+        <!-- ======================
+             HOME
+        ====================== -->
 
         <section id="employeeHome">
 
@@ -934,11 +1195,32 @@
 
                 </article>
 
+                <article
+                    class="main-card"
+                    id="peopleCard"
+                >
+
+                    <div class="icon">
+                        👥
+                    </div>
+
+                    <h2>
+                        دیدن افراد
+                    </h2>
+
+                    <p>
+                        مشاهده و مدیریت اکانت‌های کاربران
+                    </p>
+
+                </article>
+
             </div>
 
         </section>
 
-        <!-- MANAGER -->
+        <!-- ======================
+             USER MANAGER
+        ====================== -->
 
         <section id="managerPage">
 
@@ -990,7 +1272,80 @@
 
         </section>
 
-        <!-- TRASH -->
+        <!-- ======================
+             PEOPLE
+        ====================== -->
+
+        <section id="peoplePage">
+
+            <div class="people-layout">
+
+                <aside
+                    class="people-sidebar"
+                    id="peopleSidebar"
+                >
+
+                    <button
+                        class="sidebar-toggle"
+                        id="peopleSidebarToggle"
+                        aria-label="باز و بسته کردن"
+                    >
+                        ☰
+                    </button>
+
+                </aside>
+
+                <div class="people-content">
+
+                    <div class="people-top">
+
+                        <div>
+
+                            <h2>
+                                دیدن افراد
+                            </h2>
+
+                            <p>
+                                اکانت‌های کاربران
+                            </p>
+
+                        </div>
+
+                        <div class="people-count">
+
+                            تعداد نفرات:
+
+                            <strong
+                                id="peopleCount"
+                            >
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <button
+                        class="add-account-btn"
+                        id="addAccountButton"
+                    >
+                        ＋ اضافه کردن اکانت
+                    </button>
+
+                    <div
+                        class="people-list"
+                        id="peopleList"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ======================
+             TRASH
+        ====================== -->
 
         <section id="trashPage">
 
@@ -1030,7 +1385,9 @@
 
     </main>
 
-    <!-- ADD / EDIT MODAL -->
+    <!-- ======================
+         CARD MODAL
+    ====================== -->
 
     <div
         class="modal"
@@ -1134,6 +1491,146 @@
 
     </div>
 
+    <!-- ======================
+         ACCOUNT MODAL
+    ====================== -->
+
+    <div
+        class="modal"
+        id="accountModal"
+    >
+
+        <div class="modal-box">
+
+            <div class="modal-head">
+
+                <h2>
+                    اضافه کردن اکانت
+                </h2>
+
+                <button
+                    class="close-btn"
+                    id="closeAccountModal"
+                >
+                    ×
+                </button>
+
+            </div>
+
+            <div class="field">
+
+                <label for="accountFirstName">
+                    نام
+                </label>
+
+                <input
+                    id="accountFirstName"
+                    type="text"
+                    autocomplete="given-name"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="accountLastName">
+                    نام خانوادگی
+                </label>
+
+                <input
+                    id="accountLastName"
+                    type="text"
+                    autocomplete="family-name"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="accountPhone">
+                    شماره تلفن
+                </label>
+
+                <input
+                    id="accountPhone"
+                    type="tel"
+                    autocomplete="tel"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="accountEmail">
+                    جیمیل
+                </label>
+
+                <input
+                    id="accountEmail"
+                    type="email"
+                    autocomplete="email"
+                    dir="ltr"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="accountPassword">
+                    رمز عبور
+                </label>
+
+                <input
+                    id="accountPassword"
+                    type="password"
+                    minlength="6"
+                    autocomplete="new-password"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="accountPasswordRepeat">
+                    تکرار رمز عبور
+                </label>
+
+                <input
+                    id="accountPasswordRepeat"
+                    type="password"
+                    minlength="6"
+                    autocomplete="new-password"
+                >
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    class="modal-btn save-btn"
+                    id="createAccountButton"
+                >
+                    تأیید
+                </button>
+
+                <button
+                    class="modal-btn cancel-btn"
+                    id="cancelAccountButton"
+                >
+                    لغو
+                </button>
+
+            </div>
+
+            <div
+                class="account-message"
+                id="accountMessage"
+            ></div>
+
+        </div>
+
+    </div>
+
     <!-- CONFIRM CHANGES -->
 
     <button
@@ -1166,6 +1663,14 @@
             );
 
         /* =========================
+           SUPABASE FUNCTION
+        ========================= */
+
+        const FUNCTION_URL =
+            SUPABASE_URL +
+            "/functions/v1/manage-users";
+
+        /* =========================
            ELEMENTS
         ========================= */
 
@@ -1176,69 +1681,203 @@
             document.getElementById("menu");
 
         const logoutButton =
-            document.getElementById("logoutButton");
+            document.getElementById(
+                "logoutButton"
+            );
 
         const employeeHome =
-            document.getElementById("employeeHome");
+            document.getElementById(
+                "employeeHome"
+            );
 
         const manageUserCard =
-            document.getElementById("manageUserCard");
+            document.getElementById(
+                "manageUserCard"
+            );
+
+        const peopleCard =
+            document.getElementById(
+                "peopleCard"
+            );
 
         const managerPage =
-            document.getElementById("managerPage");
+            document.getElementById(
+                "managerPage"
+            );
+
+        const peoplePage =
+            document.getElementById(
+                "peoplePage"
+            );
 
         const trashPage =
-            document.getElementById("trashPage");
+            document.getElementById(
+                "trashPage"
+            );
 
         const managedCards =
-            document.getElementById("managedCards");
+            document.getElementById(
+                "managedCards"
+            );
 
         const trashList =
-            document.getElementById("trashList");
+            document.getElementById(
+                "trashList"
+            );
 
         const addCardButton =
-            document.getElementById("addCardButton");
+            document.getElementById(
+                "addCardButton"
+            );
 
         const openTrashButton =
-            document.getElementById("openTrashButton");
+            document.getElementById(
+                "openTrashButton"
+            );
 
         const backToManagerButton =
-            document.getElementById("backToManagerButton");
+            document.getElementById(
+                "backToManagerButton"
+            );
 
         const openUserPageButton =
-            document.getElementById("openUserPageButton");
+            document.getElementById(
+                "openUserPageButton"
+            );
 
         const cardModal =
-            document.getElementById("cardModal");
+            document.getElementById(
+                "cardModal"
+            );
 
         const closeModalButton =
-            document.getElementById("closeModalButton");
+            document.getElementById(
+                "closeModalButton"
+            );
 
         const cancelCardButton =
-            document.getElementById("cancelCardButton");
+            document.getElementById(
+                "cancelCardButton"
+            );
 
         const saveCardButton =
-            document.getElementById("saveCardButton");
+            document.getElementById(
+                "saveCardButton"
+            );
 
         const modalTitle =
-            document.getElementById("modalTitle");
+            document.getElementById(
+                "modalTitle"
+            );
 
         const cardTitle =
-            document.getElementById("cardTitle");
+            document.getElementById(
+                "cardTitle"
+            );
 
         const cardDescription =
-            document.getElementById("cardDescription");
+            document.getElementById(
+                "cardDescription"
+            );
 
         const cardCode =
-            document.getElementById("cardCode");
+            document.getElementById(
+                "cardCode"
+            );
 
         const cardIcon =
-            document.getElementById("cardIcon");
+            document.getElementById(
+                "cardIcon"
+            );
 
         const confirmChangesButton =
             document.getElementById(
                 "confirmChangesButton"
             );
+
+        /* PEOPLE */
+
+        const peopleSidebar =
+            document.getElementById(
+                "peopleSidebar"
+            );
+
+        const peopleSidebarToggle =
+            document.getElementById(
+                "peopleSidebarToggle"
+            );
+
+        const peopleList =
+            document.getElementById(
+                "peopleList"
+            );
+
+        const peopleCount =
+            document.getElementById(
+                "peopleCount"
+            );
+
+        const addAccountButton =
+            document.getElementById(
+                "addAccountButton"
+            );
+
+        const accountModal =
+            document.getElementById(
+                "accountModal"
+            );
+
+        const closeAccountModal =
+            document.getElementById(
+                "closeAccountModal"
+            );
+
+        const cancelAccountButton =
+            document.getElementById(
+                "cancelAccountButton"
+            );
+
+        const createAccountButton =
+            document.getElementById(
+                "createAccountButton"
+            );
+
+        const accountMessage =
+            document.getElementById(
+                "accountMessage"
+            );
+
+        const accountFirstName =
+            document.getElementById(
+                "accountFirstName"
+            );
+
+        const accountLastName =
+            document.getElementById(
+                "accountLastName"
+            );
+
+        const accountPhone =
+            document.getElementById(
+                "accountPhone"
+            );
+
+        const accountEmail =
+            document.getElementById(
+                "accountEmail"
+            );
+
+        const accountPassword =
+            document.getElementById(
+                "accountPassword"
+            );
+
+        const accountPasswordRepeat =
+            document.getElementById(
+                "accountPasswordRepeat"
+            );
+
+        /* STATE */
 
         let activeCards = [];
         let deletedCards = [];
@@ -1248,7 +1887,7 @@
         let hasPendingChanges = false;
 
         /* =========================
-           CHECK EMPLOYEE
+           EMPLOYEE CHECK
         ========================= */
 
         async function checkEmployee() {
@@ -1300,7 +1939,7 @@
         }
 
         /* =========================
-           LOAD
+           CARDS
         ========================= */
 
         async function loadCards() {
@@ -1322,179 +1961,61 @@
             if (error) {
 
                 console.error(
-                    "خطا در دریافت کارت‌ها:",
                     error
                 );
 
                 alert(
-                    "دریافت کارت‌ها از سرور انجام نشد."
+                    "دریافت کارت‌ها انجام نشد."
                 );
 
                 return;
             }
 
             activeCards =
-                (data || [])
-                    .filter(
-                        function(card) {
-                            return !card.is_deleted;
-                        }
-                    );
+                (data || []).filter(
+                    function(card) {
+                        return !card.is_deleted;
+                    }
+                );
 
             deletedCards =
-                (data || [])
-                    .filter(
-                        function(card) {
-                            return card.is_deleted;
-                        }
-                    );
+                (data || []).filter(
+                    function(card) {
+                        return card.is_deleted;
+                    }
+                );
 
-            hasPendingChanges = false;
+            renderCards();
+            renderTrash();
+
+            hasPendingChanges =
+                false;
 
             confirmChangesButton.classList.remove(
                 "show"
             );
-
-            renderCards();
-            renderTrash();
         }
-
-        /* =========================
-           CHANGED
-        ========================= */
 
         function markChanged() {
 
-            hasPendingChanges = true;
+            hasPendingChanges =
+                true;
 
             confirmChangesButton.classList.add(
                 "show"
             );
         }
 
-        /* =========================
-           MENU
-        ========================= */
-
-        menuBtn.addEventListener(
-            "click",
-            function(event) {
-
-                event.stopPropagation();
-
-                menu.classList.toggle(
-                    "show"
-                );
-            }
-        );
-
-        menu.addEventListener(
-            "click",
-            function(event) {
-
-                event.stopPropagation();
-            }
-        );
-
-        document.addEventListener(
-            "click",
-            function() {
-
-                menu.classList.remove(
-                    "show"
-                );
-            }
-        );
-
-        /* =========================
-           OPEN MANAGER
-        ========================= */
-
-        manageUserCard.addEventListener(
-            "click",
-            function() {
-
-                employeeHome.style.display =
-                    "none";
-
-                trashPage.classList.remove(
-                    "show"
-                );
-
-                managerPage.classList.add(
-                    "show"
-                );
-
-                renderCards();
-
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            }
-        );
-
-        /* =========================
-           TRASH
-        ========================= */
-
-        openTrashButton.addEventListener(
-            "click",
-            function() {
-
-                managerPage.classList.remove(
-                    "show"
-                );
-
-                trashPage.classList.add(
-                    "show"
-                );
-
-                renderTrash();
-            }
-        );
-
-        backToManagerButton.addEventListener(
-            "click",
-            function() {
-
-                trashPage.classList.remove(
-                    "show"
-                );
-
-                managerPage.classList.add(
-                    "show"
-                );
-
-                renderCards();
-            }
-        );
-
-        /* =========================
-           USER PAGE
-        ========================= */
-
-        openUserPageButton.addEventListener(
-            "click",
-            function() {
-
-                window.open(
-                    "user-dashboard.html",
-                    "_blank"
-                );
-            }
-        );
-
-        /* =========================
-           RENDER CARDS
-        ========================= */
+        /* RENDER */
 
         function renderCards() {
 
-            managedCards.innerHTML = "";
+            managedCards.innerHTML =
+                "";
 
             if (
-                activeCards.length === 0
+                activeCards.length ===
+                0
             ) {
 
                 managedCards.innerHTML = `
@@ -1570,9 +2091,7 @@
 
                         button.addEventListener(
                             "click",
-                            function(event) {
-
-                                event.stopPropagation();
+                            function() {
 
                                 const action =
                                     button.dataset.action;
@@ -1587,10 +2106,7 @@
 
                                     editCard(id);
 
-                                } else if (
-                                    action ===
-                                    "delete"
-                                ) {
+                                } else {
 
                                     deleteCard(id);
                                 }
@@ -1600,16 +2116,14 @@
                 );
         }
 
-        /* =========================
-           RENDER TRASH
-        ========================= */
-
         function renderTrash() {
 
-            trashList.innerHTML = "";
+            trashList.innerHTML =
+                "";
 
             if (
-                deletedCards.length === 0
+                deletedCards.length ===
+                0
             ) {
 
                 trashList.innerHTML = `
@@ -1679,37 +2193,6 @@
                 );
         }
 
-        /* =========================
-           ADD
-        ========================= */
-
-        addCardButton.addEventListener(
-            "click",
-            function() {
-
-                editingId = null;
-
-                modalTitle.textContent =
-                    "افزودن کارت";
-
-                saveCardButton.textContent =
-                    "ساخت کارت";
-
-                cardTitle.value = "";
-                cardDescription.value = "";
-                cardCode.value = "";
-                cardIcon.value = "";
-
-                cardModal.classList.add(
-                    "show"
-                );
-            }
-        );
-
-        /* =========================
-           EDIT
-        ========================= */
-
         function editCard(id) {
 
             const card =
@@ -1748,101 +2231,6 @@
             );
         }
 
-        /* =========================
-           SAVE LOCAL STATE
-        ========================= */
-
-        saveCardButton.addEventListener(
-            "click",
-            function() {
-
-                const title =
-                    cardTitle.value.trim();
-
-                const description =
-                    cardDescription.value.trim();
-
-                const code =
-                    cardCode.value.trim();
-
-                const icon =
-                    cardIcon.value.trim();
-
-                if (!title) {
-                    cardTitle.focus();
-                    return;
-                }
-
-                if (!description) {
-                    cardDescription.focus();
-                    return;
-                }
-
-                if (!code) {
-                    cardCode.focus();
-                    return;
-                }
-
-                if (!icon) {
-                    cardIcon.focus();
-                    return;
-                }
-
-                if (editingId) {
-
-                    const index =
-                        activeCards.findIndex(
-                            function(item) {
-                                return (
-                                    item.id ===
-                                    editingId
-                                );
-                            }
-                        );
-
-                    if (index !== -1) {
-
-                        activeCards[index] = {
-                            ...activeCards[index],
-
-                            title,
-                            description,
-                            code,
-                            icon
-                        };
-                    }
-
-                } else {
-
-                    activeCards.push({
-
-                        id:
-                            createId(),
-
-                        title,
-                        description,
-                        code,
-                        icon,
-
-                        is_deleted: false,
-
-                        sort_order:
-                            getNextSortOrder()
-                    });
-                }
-
-                markChanged();
-
-                closeModal();
-
-                renderCards();
-            }
-        );
-
-        /* =========================
-           DELETE
-        ========================= */
-
         function deleteCard(id) {
 
             const index =
@@ -1873,10 +2261,6 @@
 
             renderCards();
         }
-
-        /* =========================
-           RESTORE
-        ========================= */
 
         function restoreCard(id) {
 
@@ -1912,9 +2296,135 @@
             renderTrash();
         }
 
-        /* =========================
-           CONFIRM
-        ========================= */
+        /* SAVE CARD */
+
+        addCardButton.addEventListener(
+            "click",
+            function() {
+
+                editingId = null;
+
+                modalTitle.textContent =
+                    "افزودن کارت";
+
+                saveCardButton.textContent =
+                    "ساخت کارت";
+
+                cardTitle.value = "";
+                cardDescription.value = "";
+                cardCode.value = "";
+                cardIcon.value = "";
+
+                cardModal.classList.add(
+                    "show"
+                );
+            }
+        );
+
+        saveCardButton.addEventListener(
+            "click",
+            function() {
+
+                const title =
+                    cardTitle.value.trim();
+
+                const description =
+                    cardDescription.value.trim();
+
+                const code =
+                    cardCode.value.trim();
+
+                const icon =
+                    cardIcon.value.trim();
+
+                if (
+                    !title ||
+                    !description ||
+                    !code ||
+                    !icon
+                ) {
+
+                    return;
+                }
+
+                if (editingId) {
+
+                    const index =
+                        activeCards.findIndex(
+                            function(item) {
+                                return (
+                                    item.id ===
+                                    editingId
+                                );
+                            }
+                        );
+
+                    if (index !== -1) {
+
+                        activeCards[index] = {
+                            ...activeCards[index],
+                            title,
+                            description,
+                            code,
+                            icon
+                        };
+                    }
+
+                } else {
+
+                    activeCards.push({
+                        id: createId(),
+                        title,
+                        description,
+                        code,
+                        icon,
+                        is_deleted: false,
+                        sort_order:
+                            getNextSortOrder()
+                    });
+                }
+
+                markChanged();
+
+                closeCardModal();
+
+                renderCards();
+            }
+        );
+
+        function closeCardModal() {
+
+            cardModal.classList.remove(
+                "show"
+            );
+
+            editingId = null;
+        }
+
+        closeModalButton.addEventListener(
+            "click",
+            closeCardModal
+        );
+
+        cancelCardButton.addEventListener(
+            "click",
+            closeCardModal
+        );
+
+        cardModal.addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    event.target ===
+                    cardModal
+                ) {
+                    closeCardModal();
+                }
+            }
+        );
+
+        /* CONFIRM CHANGES */
 
         confirmChangesButton.addEventListener(
             "click",
@@ -1939,32 +2449,21 @@
 
                     const payload =
                         allCards.map(
-                            function(card, index) {
+                            function(card,index) {
 
                                 return {
-                                    id:
-                                        card.id,
-
-                                    title:
-                                        card.title,
-
+                                    id: card.id,
+                                    title: card.title,
                                     description:
                                         card.description,
-
-                                    code:
-                                        card.code,
-
-                                    icon:
-                                        card.icon,
-
+                                    code: card.code,
+                                    icon: card.icon,
                                     is_deleted:
                                         Boolean(
                                             card.is_deleted
                                         ),
-
                                     sort_order:
                                         index,
-
                                     updated_at:
                                         new Date()
                                             .toISOString()
@@ -1976,7 +2475,9 @@
                         error
                     } =
                         await supabaseClient
-                            .from("site_cards")
+                            .from(
+                                "site_cards"
+                            )
                             .upsert(
                                 payload,
                                 {
@@ -2004,6 +2505,10 @@
                         "show"
                     );
 
+                    peoplePage.classList.remove(
+                        "show"
+                    );
+
                     employeeHome.style.display =
                         "block";
 
@@ -2015,12 +2520,11 @@
                 } catch (error) {
 
                     console.error(
-                        "خطا در ذخیره:",
                         error
                     );
 
                     alert(
-                        "ذخیره تغییرات انجام نشد. دوباره تلاش کنید."
+                        "ذخیره تغییرات انجام نشد."
                     );
 
                 } finally {
@@ -2035,40 +2539,439 @@
         );
 
         /* =========================
-           MODAL CLOSE
+           PEOPLE
         ========================= */
 
-        function closeModal() {
+        peopleCard.addEventListener(
+            "click",
+            async function() {
 
-            cardModal.classList.remove(
-                "show"
-            );
+                employeeHome.style.display =
+                    "none";
 
-            editingId = null;
+                managerPage.classList.remove(
+                    "show"
+                );
+
+                trashPage.classList.remove(
+                    "show"
+                );
+
+                peoplePage.classList.add(
+                    "show"
+                );
+
+                await loadPeople();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        );
+
+        peopleSidebarToggle.addEventListener(
+            "click",
+            function() {
+
+                peopleSidebar.classList.toggle(
+                    "closed"
+                );
+            }
+        );
+
+        async function callManageUsers(
+            payload
+        ) {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .auth
+                    .getSession();
+
+            if (
+                error ||
+                !data.session
+            ) {
+
+                throw new Error(
+                    "نشست شما منقضی شده است."
+                );
+            }
+
+            const response =
+                await fetch(
+                    FUNCTION_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+
+                            "apikey":
+                                SUPABASE_ANON_KEY,
+
+                            "Authorization":
+                                "Bearer " +
+                                data.session.access_token
+                        },
+
+                        body:
+                            JSON.stringify(
+                                payload
+                            )
+                    }
+                );
+
+            const result =
+                await response.json();
+
+            if (
+                !response.ok
+            ) {
+
+                throw new Error(
+                    result.error ||
+                    "عملیات انجام نشد."
+                );
+            }
+
+            return result;
         }
 
-        closeModalButton.addEventListener(
+        async function loadPeople() {
+
+            peopleList.innerHTML = `
+                <div class="no-people">
+                    در حال دریافت اطلاعات...
+                </div>
+            `;
+
+            try {
+
+                const result =
+                    await callManageUsers({
+                        action: "list"
+                    });
+
+                const users =
+                    result.users || [];
+
+                peopleCount.textContent =
+                    users.length;
+
+                peopleList.innerHTML =
+                    "";
+
+                if (
+                    users.length === 0
+                ) {
+
+                    peopleList.innerHTML = `
+                        <div class="no-people">
+                            فعلاً هیچ اکانتی ساخته نشده است.
+                        </div>
+                    `;
+
+                    return;
+                }
+
+                users.forEach(
+                    function(user) {
+
+                        const row =
+                            document.createElement(
+                                "div"
+                            );
+
+                        row.className =
+                            "person-row";
+
+                        row.innerHTML = `
+                            <div class="person-info">
+
+                                <strong>
+                                    ${escapeHTML(
+                                        (
+                                            user.first_name ||
+                                            ""
+                                        ) +
+                                        " " +
+                                        (
+                                            user.last_name ||
+                                            ""
+                                        )
+                                    )}
+                                </strong>
+
+                                <span>
+                                    ${escapeHTML(
+                                        user.email ||
+                                        ""
+                                    )}
+                                    ·
+                                    ${escapeHTML(
+                                        user.phone ||
+                                        ""
+                                    )}
+                                </span>
+
+                            </div>
+
+                            <button
+                                class="delete-person"
+                                data-id="${escapeHTML(user.id)}"
+                            >
+                                حذف
+                            </button>
+                        `;
+
+                        peopleList.appendChild(
+                            row
+                        );
+                    }
+                );
+
+                peopleList
+                    .querySelectorAll(
+                        ".delete-person"
+                    )
+                    .forEach(
+                        function(button) {
+
+                            button.addEventListener(
+                                "click",
+                                async function() {
+
+                                    const confirmed =
+                                        confirm(
+                                            "این اکانت حذف شود؟"
+                                        );
+
+                                    if (
+                                        !confirmed
+                                    ) {
+                                        return;
+                                    }
+
+                                    button.disabled =
+                                        true;
+
+                                    try {
+
+                                        await callManageUsers({
+                                            action:
+                                                "delete",
+                                            id:
+                                                button.dataset.id
+                                        });
+
+                                        await loadPeople();
+
+                                    } catch (error) {
+
+                                        alert(
+                                            error.message
+                                        );
+
+                                        button.disabled =
+                                            false;
+                                    }
+                                }
+                            );
+                        }
+                    );
+
+            } catch (error) {
+
+                peopleList.innerHTML = `
+                    <div class="no-people">
+                        ${escapeHTML(
+                            error.message
+                        )}
+                    </div>
+                `;
+            }
+        }
+
+        /* ADD ACCOUNT */
+
+        addAccountButton.addEventListener(
             "click",
-            closeModal
+            function() {
+
+                accountMessage.textContent =
+                    "";
+
+                accountMessage.style.display =
+                    "none";
+
+                accountFirstName.value = "";
+                accountLastName.value = "";
+                accountPhone.value = "";
+                accountEmail.value = "";
+                accountPassword.value = "";
+                accountPasswordRepeat.value = "";
+
+                accountModal.classList.add(
+                    "show"
+                );
+            }
         );
 
-        cancelCardButton.addEventListener(
+        function closeAccountForm() {
+
+            accountModal.classList.remove(
+                "show"
+            );
+        }
+
+        closeAccountModal.addEventListener(
             "click",
-            closeModal
+            closeAccountForm
         );
 
-        cardModal.addEventListener(
+        cancelAccountButton.addEventListener(
+            "click",
+            closeAccountForm
+        );
+
+        accountModal.addEventListener(
             "click",
             function(event) {
 
                 if (
                     event.target ===
-                    cardModal
+                    accountModal
                 ) {
-                    closeModal();
+                    closeAccountForm();
                 }
             }
         );
+
+        /* CREATE ACCOUNT */
+
+        createAccountButton.addEventListener(
+            "click",
+            async function() {
+
+                const firstName =
+                    accountFirstName.value.trim();
+
+                const lastName =
+                    accountLastName.value.trim();
+
+                const phone =
+                    accountPhone.value.trim();
+
+                const email =
+                    accountEmail.value.trim();
+
+                const password =
+                    accountPassword.value;
+
+                const passwordRepeat =
+                    accountPasswordRepeat.value;
+
+                if (
+                    !firstName ||
+                    !lastName ||
+                    !phone ||
+                    !email ||
+                    !password ||
+                    !passwordRepeat
+                ) {
+
+                    showAccountMessage(
+                        "لطفاً همه اطلاعات را وارد کنید."
+                    );
+
+                    return;
+                }
+
+                if (
+                    password.length < 6
+                ) {
+
+                    showAccountMessage(
+                        "رمز عبور باید حداقل ۶ کاراکتر باشد."
+                    );
+
+                    return;
+                }
+
+                if (
+                    password !==
+                    passwordRepeat
+                ) {
+
+                    showAccountMessage(
+                        "دو رمز عبور یکسان نیستند."
+                    );
+
+                    return;
+                }
+
+                createAccountButton.disabled =
+                    true;
+
+                createAccountButton.textContent =
+                    "در حال ساخت...";
+
+                try {
+
+                    await callManageUsers({
+                        action:
+                            "create",
+
+                        first_name:
+                            firstName,
+
+                        last_name:
+                            lastName,
+
+                        phone,
+
+                        email,
+
+                        password
+                    });
+
+                    closeAccountForm();
+
+                    await loadPeople();
+
+                } catch (error) {
+
+                    showAccountMessage(
+                        error.message
+                    );
+
+                } finally {
+
+                    createAccountButton.disabled =
+                        false;
+
+                    createAccountButton.textContent =
+                        "تأیید";
+                }
+            }
+        );
+
+        function showAccountMessage(
+            text
+        ) {
+
+            accountMessage.textContent =
+                text;
+
+            accountMessage.style.display =
+                "block";
+        }
 
         /* =========================
            LOGOUT
@@ -2099,27 +3002,31 @@
                 "_" +
                 Math.random()
                     .toString(36)
-                    .slice(2, 9)
+                    .slice(2,9)
             );
         }
 
         function getNextSortOrder() {
 
-            const allCards = [
+            const all = [
                 ...activeCards,
                 ...deletedCards
             ];
 
-            if (allCards.length === 0) {
+            if (
+                all.length ===
+                0
+            ) {
                 return 0;
             }
 
             return (
                 Math.max(
-                    ...allCards.map(
+                    ...all.map(
                         function(card) {
                             return Number(
-                                card.sort_order || 0
+                                card.sort_order ||
+                                0
                             );
                         }
                     )
@@ -2127,9 +3034,13 @@
             );
         }
 
-        function escapeHTML(value) {
+        function escapeHTML(
+            value
+        ) {
 
-            return String(value)
+            return String(
+                value
+            )
                 .replaceAll(
                     "&",
                     "&amp;"
@@ -2174,3 +3085,4 @@
 
 </body>
 </html>
+```
