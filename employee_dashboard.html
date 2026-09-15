@@ -2291,12 +2291,14 @@ async function loadEmployees() {
                                 کد کارمند
                             </div>
 
-                            <div class="employee-subtitle">
-                                ایجاد شده در
-                                ${formatDate(
-                                    employee.created_at
-                                )}
-                            </div>
+                                <div class="employee-subtitle">
+                                    کد:
+                                    <span
+                                        dir="ltr"
+                                        style="font-weight:bold; color:var(--text);">
+                                        ${escapeHtml(employee.code || "-")}
+                                    </span>
+                                </div>
 
                         </div>
 
