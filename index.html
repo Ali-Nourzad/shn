@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -17,12 +18,10 @@
             --surface-solid: #fffdf8;
             --text: #292722;
             --muted: #777268;
+            --accent-dark: #a9531c;
             --dark: #292824;
             --border: rgba(67, 58, 47, 0.12);
             --shadow: 0 20px 50px rgba(54, 44, 31, 0.10);
-
-            --blue: #1976d2;
-            --red: #d93636;
         }
 
         * {
@@ -41,16 +40,8 @@
             color: var(--text);
 
             background:
-                radial-gradient(
-                    circle at 10% 10%,
-                    rgba(215, 123, 50, .12),
-                    transparent 25%
-                ),
-                radial-gradient(
-                    circle at 90% 80%,
-                    rgba(167, 130, 87, .12),
-                    transparent 28%
-                ),
+                radial-gradient(circle at 10% 10%, rgba(215, 123, 50, .12), transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(167, 130, 87, .12), transparent 28%),
                 var(--bg);
         }
 
@@ -63,9 +54,7 @@
             font-family: inherit;
         }
 
-        /* =========================
-           NAVBAR
-        ========================= */
+        /* NAVBAR */
 
         .navbar {
             position: sticky;
@@ -81,10 +70,9 @@
 
             background: rgba(255, 252, 245, 0.82);
 
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(67, 58, 47, 0.12);
 
-            box-shadow:
-                0 8px 25px rgba(54, 44, 31, 0.08);
+            box-shadow: 0 8px 25px rgba(54, 44, 31, 0.08);
 
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
@@ -93,6 +81,7 @@
         .brand {
             font-size: 25px;
             font-weight: 800;
+            letter-spacing: -1px;
         }
 
         .menu-btn {
@@ -107,31 +96,24 @@
             justify-content: center;
             gap: 5px;
 
-            background:
-                linear-gradient(
-                    145deg,
-                    #3f3a34,
-                    #211f1c
-                );
+            background: linear-gradient(145deg, #3f3a34, #211f1c);
 
             box-shadow:
                 0 8px 20px rgba(45, 35, 25, 0.20),
                 inset 0 1px 1px rgba(255, 255, 255, 0.16);
 
             cursor: pointer;
-
             transition: .25s ease;
         }
 
         .menu-btn:hover {
             transform: translateY(-2px) scale(1.06);
 
-            background:
-                linear-gradient(
-                    145deg,
-                    #514a42,
-                    #292520
-                );
+            background: linear-gradient(145deg, #514a42, #292520);
+
+            box-shadow:
+                0 12px 28px rgba(45, 35, 25, 0.28),
+                inset 0 1px 1px rgba(255, 255, 255, 0.20);
         }
 
         .menu-btn:active {
@@ -141,14 +123,12 @@
         .menu-btn span {
             width: 7px;
             height: 7px;
-
             border-radius: 50%;
             background: #fffdf8;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
         }
 
-        /* =========================
-           MENU
-        ========================= */
+        /* MENU */
 
         .menu {
             position: fixed;
@@ -160,7 +140,6 @@
             padding: 10px;
 
             background: rgba(255, 253, 248, .95);
-
             border: 1px solid var(--border);
             border-radius: 20px;
 
@@ -171,7 +150,6 @@
 
             opacity: 0;
             visibility: hidden;
-
             transform: translateY(-10px) scale(.96);
 
             transition: .25s ease;
@@ -227,9 +205,7 @@
             font-size: 16px;
         }
 
-        /* =========================
-           MAIN
-        ========================= */
+        /* MAIN */
 
         main {
             width: min(1100px, 90%);
@@ -251,10 +227,9 @@
             border-radius: 999px;
 
             background: rgba(215, 123, 50, .10);
-
             border: 1px solid rgba(215, 123, 50, .18);
 
-            color: #a9531c;
+            color: var(--accent-dark);
 
             font-size: 13px;
             font-weight: 700;
@@ -354,9 +329,7 @@
             transform: translateY(-2px);
         }
 
-        /* =========================
-           MODAL
-        ========================= */
+        /* MODAL */
 
         .modal {
             position: fixed;
@@ -399,16 +372,12 @@
         @keyframes modalIn {
             from {
                 opacity: 0;
-                transform:
-                    translateY(20px)
-                    scale(.97);
+                transform: translateY(20px) scale(.97);
             }
 
             to {
                 opacity: 1;
-                transform:
-                    translateY(0)
-                    scale(1);
+                transform: translateY(0) scale(1);
             }
         }
 
@@ -437,9 +406,7 @@
             font-size: 18px;
         }
 
-        /* =========================
-           TABS
-        ========================= */
+        /* TABS */
 
         .tabs {
             display: grid;
@@ -476,9 +443,7 @@
                 0 4px 12px rgba(0, 0, 0, .06);
         }
 
-        /* =========================
-           FORM
-        ========================= */
+        /* FORM */
 
         .field {
             margin-bottom: 16px;
@@ -599,9 +564,7 @@
             text-align: center;
         }
 
-        /* =========================
-           SUPPORT
-        ========================= */
+        /* SUPPORT */
 
         .support-page {
             position: fixed;
@@ -614,16 +577,8 @@
             padding: 100px 20px 50px;
 
             background:
-                radial-gradient(
-                    circle at 10% 10%,
-                    rgba(215,123,50,.12),
-                    transparent 25%
-                ),
-                radial-gradient(
-                    circle at 90% 80%,
-                    rgba(167,130,87,.12),
-                    transparent 28%
-                ),
+                radial-gradient(circle at 10% 10%, rgba(215,123,50,.12), transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(167,130,87,.12), transparent 28%),
                 var(--bg);
         }
 
@@ -632,7 +587,7 @@
         }
 
         .support-box {
-            width: min(650px, 100%);
+            width: min(650px,100%);
             margin: auto;
 
             padding: 35px;
@@ -709,7 +664,6 @@
 
         .phone small {
             direction: rtl;
-
             color: var(--muted);
 
             font-size: 12px;
@@ -731,10 +685,6 @@
 
             cursor: pointer;
         }
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
 
         @media (max-width: 700px) {
 
@@ -763,8 +713,6 @@
 
 <body>
 
-    <!-- NAVBAR -->
-
     <nav class="navbar">
 
         <div class="brand">
@@ -782,8 +730,6 @@
         </button>
 
     </nav>
-
-    <!-- MENU -->
 
     <div
         class="menu"
@@ -808,8 +754,6 @@
 
     </div>
 
-    <!-- MAIN -->
-
     <main>
 
         <section class="hero">
@@ -830,8 +774,6 @@
 
         <section class="role-grid">
 
-            <!-- EMPLOYEE -->
-
             <article class="role-card">
 
                 <div class="role-icon">
@@ -851,8 +793,6 @@
                 </button>
 
             </article>
-
-            <!-- USER -->
 
             <article class="role-card">
 
@@ -878,7 +818,7 @@
 
     </main>
 
-    <!-- USER AUTH MODAL -->
+    <!-- USER AUTH -->
 
     <div
         class="modal"
@@ -984,7 +924,7 @@
 
     </div>
 
-    <!-- EMPLOYEE MODAL -->
+    <!-- EMPLOYEE AUTH -->
 
     <div
         class="modal"
@@ -1056,7 +996,7 @@
 
     </div>
 
-    <!-- SUPPORT PAGE -->
+    <!-- SUPPORT -->
 
     <section
         class="support-page"
@@ -1113,10 +1053,6 @@
 
     <script>
 
-        /* =========================
-           SUPABASE
-        ========================= */
-
         const SUPABASE_URL =
             "https://zyziyyhzxsnwzrsubulu.supabase.co";
 
@@ -1133,9 +1069,7 @@
                 SUPABASE_ANON_KEY
             );
 
-        /* =========================
-           ELEMENTS
-        ========================= */
+        /* ELEMENTS */
 
         const menuBtn =
             document.getElementById("menuBtn");
@@ -1144,88 +1078,138 @@
             document.getElementById("menu");
 
         const employeeLoginButton =
-            document.getElementById("employeeLoginButton");
+            document.getElementById(
+                "employeeLoginButton"
+            );
 
         const userLoginButton =
-            document.getElementById("userLoginButton");
+            document.getElementById(
+                "userLoginButton"
+            );
 
         const employeeModal =
-            document.getElementById("employeeModal");
+            document.getElementById(
+                "employeeModal"
+            );
 
         const userAuthModal =
-            document.getElementById("userAuthModal");
+            document.getElementById(
+                "userAuthModal"
+            );
 
         const closeEmployeeModal =
-            document.getElementById("closeEmployeeModal");
+            document.getElementById(
+                "closeEmployeeModal"
+            );
 
         const closeUserAuth =
-            document.getElementById("closeUserAuth");
+            document.getElementById(
+                "closeUserAuth"
+            );
 
         const employeeForm =
-            document.getElementById("employeeForm");
+            document.getElementById(
+                "employeeForm"
+            );
 
         const userAuthForm =
-            document.getElementById("userAuthForm");
+            document.getElementById(
+                "userAuthForm"
+            );
 
         const employeeCode =
-            document.getElementById("employeeCode");
+            document.getElementById(
+                "employeeCode"
+            );
 
         const employeeEyeBtn =
-            document.getElementById("employeeEyeBtn");
+            document.getElementById(
+                "employeeEyeBtn"
+            );
 
         const userPassword =
-            document.getElementById("userPassword");
+            document.getElementById(
+                "userPassword"
+            );
 
         const userEyeBtn =
-            document.getElementById("userEyeBtn");
+            document.getElementById(
+                "userEyeBtn"
+            );
 
         const employeeSubmitBtn =
-            document.getElementById("employeeSubmitBtn");
+            document.getElementById(
+                "employeeSubmitBtn"
+            );
 
         const employeeMessage =
-            document.getElementById("employeeMessage");
+            document.getElementById(
+                "employeeMessage"
+            );
 
         const userSubmitBtn =
-            document.getElementById("userSubmitBtn");
+            document.getElementById(
+                "userSubmitBtn"
+            );
 
         const userAuthMessage =
-            document.getElementById("userAuthMessage");
+            document.getElementById(
+                "userAuthMessage"
+            );
 
         const loginTab =
-            document.getElementById("loginTab");
+            document.getElementById(
+                "loginTab"
+            );
 
         const signupTab =
-            document.getElementById("signupTab");
+            document.getElementById(
+                "signupTab"
+            );
 
         const userAuthTitle =
-            document.getElementById("userAuthTitle");
+            document.getElementById(
+                "userAuthTitle"
+            );
 
         const callSupportBtn =
-            document.getElementById("callSupportBtn");
+            document.getElementById(
+                "callSupportBtn"
+            );
 
         const messageSupportBtn =
-            document.getElementById("messageSupportBtn");
+            document.getElementById(
+                "messageSupportBtn"
+            );
 
         const supportPage =
-            document.getElementById("supportPage");
+            document.getElementById(
+                "supportPage"
+            );
 
         const supportIcon =
-            document.getElementById("supportIcon");
+            document.getElementById(
+                "supportIcon"
+            );
 
         const supportTitle =
-            document.getElementById("supportTitle");
+            document.getElementById(
+                "supportTitle"
+            );
 
         const supportDescription =
-            document.getElementById("supportDescription");
+            document.getElementById(
+                "supportDescription"
+            );
 
         const backSupportBtn =
-            document.getElementById("backSupportBtn");
+            document.getElementById(
+                "backSupportBtn"
+            );
 
         let userAuthMode = "login";
 
-        /* =========================
-           MENU
-        ========================= */
+        /* MENU */
 
         menuBtn.addEventListener(
             "click",
@@ -1233,7 +1217,9 @@
 
                 event.stopPropagation();
 
-                menu.classList.toggle("show");
+                menu.classList.toggle(
+                    "show"
+                );
             }
         );
 
@@ -1249,24 +1235,29 @@
             "click",
             function() {
 
-                menu.classList.remove("show");
+                menu.classList.remove(
+                    "show"
+                );
             }
         );
 
-        /* =========================
-           SUPPORT
-        ========================= */
+        /* SUPPORT */
 
         function openSupport(type) {
 
-            menu.classList.remove("show");
+            menu.classList.remove(
+                "show"
+            );
 
             const labels =
                 document.querySelectorAll(
                     ".phone small"
                 );
 
-            if (type === "call") {
+            if (
+                type ===
+                "call"
+            ) {
 
                 supportIcon.textContent =
                     "☎";
@@ -1279,7 +1270,8 @@
 
                 labels.forEach(
                     function(item) {
-                        item.textContent = "تماس";
+                        item.textContent =
+                            "تماس";
                     }
                 );
 
@@ -1296,12 +1288,15 @@
 
                 labels.forEach(
                     function(item) {
-                        item.textContent = "پیام";
+                        item.textContent =
+                            "پیام";
                     }
                 );
             }
 
-            supportPage.classList.add("show");
+            supportPage.classList.add(
+                "show"
+            );
         }
 
         callSupportBtn.addEventListener(
@@ -1321,13 +1316,14 @@
         backSupportBtn.addEventListener(
             "click",
             function() {
-                supportPage.classList.remove("show");
+
+                supportPage.classList.remove(
+                    "show"
+                );
             }
         );
 
-        /* =========================
-           USER AUTH
-        ========================= */
+        /* USER LOGIN */
 
         userLoginButton.addEventListener(
             "click",
@@ -1341,11 +1337,19 @@
                 userSubmitBtn.textContent =
                     "ورود";
 
-                loginTab.classList.add("active");
-                signupTab.classList.remove("active");
+                loginTab.classList.add(
+                    "active"
+                );
 
-                userAuthMessage.textContent = "";
-                userAuthMessage.style.display = "none";
+                signupTab.classList.remove(
+                    "active"
+                );
+
+                userAuthMessage.textContent =
+                    "";
+
+                userAuthMessage.style.display =
+                    "none";
 
                 userAuthForm.reset();
 
@@ -1394,9 +1398,7 @@
             );
         }
 
-        /* =========================
-           USER PASSWORD EYE
-        ========================= */
+        /* USER EYE */
 
         userEyeBtn.addEventListener(
             "click",
@@ -1424,9 +1426,7 @@
             }
         );
 
-        /* =========================
-           USER TABS
-        ========================= */
+        /* USER TABS */
 
         loginTab.addEventListener(
             "click",
@@ -1440,8 +1440,13 @@
                 userSubmitBtn.textContent =
                     "ورود";
 
-                loginTab.classList.add("active");
-                signupTab.classList.remove("active");
+                loginTab.classList.add(
+                    "active"
+                );
+
+                signupTab.classList.remove(
+                    "active"
+                );
 
                 userAuthMessage.style.display =
                     "none";
@@ -1460,8 +1465,13 @@
                 userSubmitBtn.textContent =
                     "ثبت‌نام";
 
-                signupTab.classList.add("active");
-                loginTab.classList.remove("active");
+                signupTab.classList.add(
+                    "active"
+                );
+
+                loginTab.classList.remove(
+                    "active"
+                );
 
                 userAuthMessage.style.display =
                     "none";
@@ -1477,9 +1487,7 @@
                 "block";
         }
 
-        /* =========================
-           USER AUTH SUBMIT
-        ========================= */
+        /* USER AUTH */
 
         userAuthForm.addEventListener(
             "submit",
@@ -1545,10 +1553,25 @@
                             throw error;
                         }
 
-                        if (!data.session) {
-
+                        if (
+                            !data.session
+                        ) {
                             throw new Error(
                                 "ورود انجام نشد."
+                            );
+                        }
+
+                        if (
+                            data.user &&
+                            data.user.is_anonymous === true
+                        ) {
+
+                            await supabaseClient
+                                .auth
+                                .signOut();
+
+                            throw new Error(
+                                "این حساب قابل استفاده نیست."
                             );
                         }
 
@@ -1597,14 +1620,16 @@
                     }
 
                     /*
-                     * Confirm email باید در
-                     * Supabase خاموش باشد.
+                     * برای ورود مستقیم پس از ثبت‌نام،
+                     * Confirm email باید در Supabase خاموش باشد.
                      */
 
-                    if (!data.session) {
+                    if (
+                        !data.session
+                    ) {
 
                         throw new Error(
-                            "حساب ساخته نشد. گزینه Confirm email را در Supabase خاموش کنید."
+                            "ثبت‌نام انجام شد، اما ورود مستقیم انجام نشد. گزینه Confirm email را در Supabase خاموش کنید."
                         );
                     }
 
@@ -1631,15 +1656,14 @@
             }
         );
 
-        /* =========================
-           EMPLOYEE LOGIN
-        ========================= */
+        /* EMPLOYEE LOGIN */
 
         employeeLoginButton.addEventListener(
             "click",
             function() {
 
-                employeeCode.value = "";
+                employeeCode.value =
+                    "";
 
                 employeeMessage.textContent =
                     "";
@@ -1699,9 +1723,7 @@
             );
         }
 
-        /* =========================
-           EMPLOYEE EYE
-        ========================= */
+        /* EMPLOYEE EYE */
 
         employeeEyeBtn.addEventListener(
             "click",
@@ -1729,9 +1751,7 @@
             }
         );
 
-        /* =========================
-           EMPLOYEE AUTH
-        ========================= */
+        /* EMPLOYEE AUTH */
 
         employeeForm.addEventListener(
             "submit",
@@ -1755,7 +1775,7 @@
                 try {
 
                     /*
-                     * ساخت نشست ناشناس
+                     * نشست ناشناس
                      */
 
                     const {
@@ -1777,7 +1797,7 @@
                     }
 
                     /*
-                     * بررسی کد در Supabase
+                     * بررسی کد در دیتابیس
                      */
 
                     const {
@@ -1842,3 +1862,4 @@
 
 </body>
 </html>
+```
