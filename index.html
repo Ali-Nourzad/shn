@@ -1,8 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>س.ح.ن</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -55,19 +57,19 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-        
+
             height: 82px;
             padding: 0 6%;
-        
+
             display: flex;
             align-items: center;
             justify-content: space-between;
-        
+
             background: rgba(255, 252, 245, 0.82);
-        
+
             border-bottom: 1px solid rgba(67, 58, 47, 0.12);
             box-shadow: 0 8px 25px rgba(54, 44, 31, 0.08);
-        
+
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
         }
@@ -79,12 +81,10 @@
         }
 
         .menu-btn {
-            position: relative;
-
             width: 56px;
             height: 56px;
 
-            border: 1px solid rgba(255, 255, 255, 0.35);
+            border: 1px solid rgba(67, 58, 47, 0.12);
             border-radius: 30%;
 
             display: flex;
@@ -99,21 +99,12 @@
                 inset 0 1px 1px rgba(255, 255, 255, 0.16);
 
             cursor: pointer;
-
-            transition:
-                transform .25s ease,
-                box-shadow .25s ease,
-                background .25s ease;
+            transition: .25s ease;
         }
 
         .menu-btn:hover {
             transform: translateY(-2px) scale(1.06);
-
             background: linear-gradient(145deg, #514a42, #292520);
-
-            box-shadow:
-                0 12px 28px rgba(45, 35, 25, 0.28),
-                inset 0 1px 1px rgba(255, 255, 255, 0.20);
         }
 
         .menu-btn:active {
@@ -125,14 +116,6 @@
             height: 7px;
             border-radius: 50%;
             background: #fffdf8;
-
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-
-            transition: .25s ease;
-        }
-
-        .menu-btn:hover span {
-            transform: scale(1.12);
         }
 
         /* MENU */
@@ -145,7 +128,7 @@
             width: 255px;
             padding: 10px;
 
-            background: rgba(255, 253, 248, .94);
+            background: rgba(255, 253, 248, .95);
             border: 1px solid var(--border);
             border-radius: 20px;
 
@@ -262,8 +245,6 @@
         }
 
         .role-card {
-            position: relative;
-
             min-height: 245px;
             padding: 34px;
 
@@ -286,7 +267,7 @@
 
         .role-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 28px 60px rgba(54,44,31,.15);
+            box-shadow: 0 28px 60px rgba(54, 44, 31, .15);
         }
 
         .role-icon {
@@ -353,7 +334,8 @@
 
             background: var(--surface-solid);
             border-radius: 28px;
-            box-shadow: 0 30px 80px rgba(0,0,0,.2);
+
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .2);
 
             animation: modalIn .25s ease;
         }
@@ -395,6 +377,8 @@
             font-size: 18px;
         }
 
+        /* TABS */
+
         .tabs {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -422,8 +406,10 @@
         .tab.active {
             background: white;
             color: var(--text);
-            box-shadow: 0 4px 12px rgba(0,0,0,.06);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .06);
         }
+
+        /* FORM */
 
         .field {
             margin-bottom: 16px;
@@ -437,6 +423,10 @@
             font-weight: 700;
         }
 
+        .password-wrap {
+            position: relative;
+        }
+
         .field input {
             width: 100%;
             height: 50px;
@@ -445,7 +435,7 @@
             border-radius: 13px;
 
             outline: none;
-            padding: 0 14px;
+            padding: 0 50px 0 14px;
 
             background: #faf8f3;
             color: var(--text);
@@ -456,8 +446,37 @@
         }
 
         .field input:focus {
-            border-color: rgba(215,123,50,.6);
-            box-shadow: 0 0 0 4px rgba(215,123,50,.09);
+            border-color: rgba(215, 123, 50, .6);
+            box-shadow: 0 0 0 4px rgba(215, 123, 50, .09);
+        }
+
+        .eye-btn {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+
+            width: 36px;
+            height: 36px;
+
+            transform: translateY(-50%);
+
+            border: none;
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: transparent;
+
+            color: var(--muted);
+            font-size: 18px;
+
+            cursor: pointer;
+        }
+
+        .eye-btn:hover {
+            background: #eee8dd;
         }
 
         .submit-btn {
@@ -504,7 +523,7 @@
             text-align: center;
         }
 
-        /* SUPPORT PAGE */
+        /* SUPPORT */
 
         .support-page {
             position: fixed;
@@ -590,7 +609,7 @@
 
         .phone:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(54,44,31,.08);
+            box-shadow: 0 10px 25px rgba(54, 44, 31, .08);
         }
 
         .phone small {
@@ -613,13 +632,6 @@
 
             font-weight: 700;
             cursor: pointer;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: var(--muted);
-            font-size: 12px;
         }
 
         @media (max-width: 700px) {
@@ -649,25 +661,41 @@
 <body>
 
     <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="brand">س.ح.ن</div>
 
-        <button class="menu-btn" id="menuBtn" aria-label="منو">
+    <nav class="navbar">
+
+        <div class="brand">
+            س.ح.ن
+        </div>
+
+        <button
+            class="menu-btn"
+            id="menuBtn"
+            aria-label="منو"
+        >
             <span></span>
             <span></span>
             <span></span>
         </button>
+
     </nav>
 
     <!-- MENU -->
+
     <div class="menu" id="menu">
 
-        <button class="menu-item" id="callSupportBtn">
+        <button
+            class="menu-item"
+            id="callSupportBtn"
+        >
             <span class="menu-icon">☎</span>
             <span>تماس با پشتیبانی</span>
         </button>
 
-        <button class="menu-item" id="messageSupportBtn">
+        <button
+            class="menu-item"
+            id="messageSupportBtn"
+        >
             <span class="menu-icon">✉</span>
             <span>پیام به پشتیبانی</span>
         </button>
@@ -675,111 +703,175 @@
     </div>
 
     <!-- MAIN -->
-    <main id="mainContent">
+
+    <main>
 
         <section class="hero">
-            <span class="badge">✦ به دنیای س.ح.ن خوش آمدید</span>
 
-            <h1>س.ح.ن</h1>
+            <span class="badge">
+                ✦ به دنیای س.ح.ن خوش آمدید
+            </span>
+
+            <h1>
+                س.ح.ن
+            </h1>
 
             <p>
                 برای ورود، نوع حساب خود را انتخاب کنید.
             </p>
+
         </section>
 
         <section class="role-grid">
 
-            <article class="role-card">
-                <div class="role-icon">💼</div>
+            <!-- EMPLOYEE -->
 
-                <h2>کارمند</h2>
+            <article class="role-card">
+
+                <div class="role-icon">
+                    💼
+                </div>
+
+                <h2>
+                    کارمند
+                </h2>
 
                 <p>
                     ورود به پنل کارمندان
                 </p>
 
-                <button onclick="openAuth('employee')">
+                <button id="employeeLoginButton">
                     ورود
                 </button>
+
             </article>
 
-            <article class="role-card">
-                <div class="role-icon">👤</div>
+            <!-- USER -->
 
-                <h2>کاربر</h2>
+            <article class="role-card">
+
+                <div class="role-icon">
+                    👤
+                </div>
+
+                <h2>
+                    کاربر
+                </h2>
 
                 <p>
                     ورود به پنل کاربری
                 </p>
 
-                <button onclick="openAuth('user')">
+                <button id="userLoginButton">
                     ورود
                 </button>
+
             </article>
 
         </section>
 
     </main>
 
-    <footer>
-        © ۱۴۰۵ س.ح.ن — همه حقوق محفوظ است
-    </footer>
+    <!-- USER AUTH -->
 
-    <!-- AUTH MODAL -->
-    <div class="modal" id="authModal">
+    <div
+        class="modal"
+        id="userAuthModal"
+    >
 
         <div class="modal-box">
 
             <div class="modal-top">
-                <h2 id="authTitle">ورود</h2>
 
-                <button class="close-btn" id="closeAuth">
+                <h2 id="userAuthTitle">
+                    ورود
+                </h2>
+
+                <button
+                    class="close-btn"
+                    id="closeUserAuth"
+                >
                     ×
                 </button>
+
             </div>
 
             <div class="tabs">
 
-                <button class="tab active" id="loginTab">
+                <button
+                    class="tab active"
+                    id="loginTab"
+                >
                     حساب دارم
                 </button>
 
-                <button class="tab" id="signupTab">
+                <button
+                    class="tab"
+                    id="signupTab"
+                >
                     حساب ندارم
                 </button>
 
             </div>
 
-            <form id="authForm">
+            <form id="userAuthForm">
 
                 <div class="field">
-                    <label for="email">ایمیل</label>
+
+                    <label for="userEmail">
+                        ایمیل
+                    </label>
 
                     <input
-                        id="email"
+                        id="userEmail"
                         type="email"
                         autocomplete="email"
                         required
                     >
+
                 </div>
 
                 <div class="field">
-                    <label for="password">رمز عبور</label>
 
-                    <input
-                        id="password"
-                        type="password"
-                        autocomplete="current-password"
-                        minlength="6"
-                        required
-                    >
+                    <label for="userPassword">
+                        رمز عبور
+                    </label>
+
+                    <div class="password-wrap">
+
+                        <input
+                            id="userPassword"
+                            type="password"
+                            autocomplete="current-password"
+                            minlength="6"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="eye-btn"
+                            id="userEyeBtn"
+                            aria-label="نمایش رمز عبور"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
                 </div>
 
-                <button class="submit-btn" id="submitBtn" type="submit">
+                <button
+                    class="submit-btn"
+                    id="userSubmitBtn"
+                    type="submit"
+                >
                     ورود
                 </button>
 
-                <div class="message" id="authMessage"></div>
+                <div
+                    class="message"
+                    id="userAuthMessage"
+                ></div>
 
             </form>
 
@@ -787,12 +879,92 @@
 
     </div>
 
-    <!-- SUPPORT PAGE -->
-    <section class="support-page" id="supportPage">
+    <!-- EMPLOYEE AUTH -->
+
+    <div
+        class="modal"
+        id="employeeModal"
+    >
+
+        <div class="modal-box">
+
+            <div class="modal-top">
+
+                <h2>
+                    ورود کارمند
+                </h2>
+
+                <button
+                    class="close-btn"
+                    id="closeEmployeeModal"
+                >
+                    ×
+                </button>
+
+            </div>
+
+            <form id="employeeForm">
+
+                <div class="field">
+
+                    <label for="employeeCode">
+                        کد عبور
+                    </label>
+
+                    <div class="password-wrap">
+
+                        <input
+                            id="employeeCode"
+                            type="password"
+                            autocomplete="off"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="eye-btn"
+                            id="employeeEyeBtn"
+                            aria-label="نمایش کد عبور"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <button
+                    class="submit-btn"
+                    id="employeeSubmitBtn"
+                    type="submit"
+                >
+                    ورود
+                </button>
+
+                <div
+                    class="message"
+                    id="employeeMessage"
+                ></div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- SUPPORT -->
+
+    <section
+        class="support-page"
+        id="supportPage"
+    >
 
         <div class="support-box">
 
-            <div class="support-icon" id="supportIcon">
+            <div
+                class="support-icon"
+                id="supportIcon"
+            >
                 ☎
             </div>
 
@@ -806,19 +978,28 @@
 
             <div class="phone-list">
 
-                <a class="phone" href="tel:09122162177">
+                <a
+                    class="phone"
+                    href="tel:09122162177"
+                >
                     <span>09122162177</span>
                     <small>تماس</small>
                 </a>
 
-                <a class="phone" href="tel:09122940829">
+                <a
+                    class="phone"
+                    href="tel:09122940829"
+                >
                     <span>09122940829</span>
                     <small>تماس</small>
                 </a>
 
             </div>
 
-            <button class="back-support" id="backSupportBtn">
+            <button
+                class="back-support"
+                id="backSupportBtn"
+            >
                 بازگشت
             </button>
 
@@ -827,6 +1008,8 @@
     </section>
 
     <script>
+        /* SUPABASE */
+
         const SUPABASE_URL =
             "https://zyziyyhzxsnwzrsubulu.supabase.co";
 
@@ -835,10 +1018,17 @@
 
         const { createClient } = supabase;
 
-        const supabaseClient = createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY
-        );
+        const supabaseClient =
+            createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+        /* EMPLOYEE CODES */
+
+        const EMPLOYEE_CODES = [
+            "Reza_Nourzad.S.H.N"
+        ];
 
         /* ELEMENTS */
 
@@ -848,11 +1038,53 @@
         const menu =
             document.getElementById("menu");
 
-        const authModal =
-            document.getElementById("authModal");
+        const employeeLoginButton =
+            document.getElementById("employeeLoginButton");
 
-        const closeAuth =
-            document.getElementById("closeAuth");
+        const userLoginButton =
+            document.getElementById("userLoginButton");
+
+        const employeeModal =
+            document.getElementById("employeeModal");
+
+        const userAuthModal =
+            document.getElementById("userAuthModal");
+
+        const closeEmployeeModal =
+            document.getElementById("closeEmployeeModal");
+
+        const closeUserAuth =
+            document.getElementById("closeUserAuth");
+
+        const employeeForm =
+            document.getElementById("employeeForm");
+
+        const userAuthForm =
+            document.getElementById("userAuthForm");
+
+        const employeeCode =
+            document.getElementById("employeeCode");
+
+        const employeeEyeBtn =
+            document.getElementById("employeeEyeBtn");
+
+        const userPassword =
+            document.getElementById("userPassword");
+
+        const userEyeBtn =
+            document.getElementById("userEyeBtn");
+
+        const employeeSubmitBtn =
+            document.getElementById("employeeSubmitBtn");
+
+        const employeeMessage =
+            document.getElementById("employeeMessage");
+
+        const userSubmitBtn =
+            document.getElementById("userSubmitBtn");
+
+        const userAuthMessage =
+            document.getElementById("userAuthMessage");
 
         const loginTab =
             document.getElementById("loginTab");
@@ -860,17 +1092,14 @@
         const signupTab =
             document.getElementById("signupTab");
 
-        const authTitle =
-            document.getElementById("authTitle");
+        const userAuthTitle =
+            document.getElementById("userAuthTitle");
 
-        const submitBtn =
-            document.getElementById("submitBtn");
+        const callSupportBtn =
+            document.getElementById("callSupportBtn");
 
-        const authForm =
-            document.getElementById("authForm");
-
-        const authMessage =
-            document.getElementById("authMessage");
+        const messageSupportBtn =
+            document.getElementById("messageSupportBtn");
 
         const supportPage =
             document.getElementById("supportPage");
@@ -884,32 +1113,38 @@
         const supportDescription =
             document.getElementById("supportDescription");
 
-        const callSupportBtn =
-            document.getElementById("callSupportBtn");
-
-        const messageSupportBtn =
-            document.getElementById("messageSupportBtn");
-
         const backSupportBtn =
             document.getElementById("backSupportBtn");
 
-        let authMode = "login";
-        let selectedRole = "user";
+        let userAuthMode = "login";
 
         /* MENU */
 
-        menuBtn.addEventListener("click", function(event) {
-            event.stopPropagation();
-            menu.classList.toggle("show");
-        });
+        menuBtn.addEventListener(
+            "click",
+            function(event) {
 
-        menu.addEventListener("click", function(event) {
-            event.stopPropagation();
-        });
+                event.stopPropagation();
 
-        document.addEventListener("click", function() {
-            menu.classList.remove("show");
-        });
+                menu.classList.toggle("show");
+            }
+        );
+
+        menu.addEventListener(
+            "click",
+            function(event) {
+
+                event.stopPropagation();
+            }
+        );
+
+        document.addEventListener(
+            "click",
+            function() {
+
+                menu.classList.remove("show");
+            }
+        );
 
         /* SUPPORT */
 
@@ -927,7 +1162,8 @@
                 supportDescription.textContent =
                     "برای ارتباط با پشتیبانی می‌توانید با یکی از شماره‌های زیر تماس بگیرید.";
 
-                document.querySelectorAll(".phone small")
+                document
+                    .querySelectorAll(".phone small")
                     .forEach(function(item) {
                         item.textContent = "تماس";
                     });
@@ -942,226 +1178,364 @@
                 supportDescription.textContent =
                     "برای ارسال پیام، یکی از شماره‌های زیر را انتخاب کنید.";
 
-                document.querySelectorAll(".phone small")
+                document
+                    .querySelectorAll(".phone small")
                     .forEach(function(item) {
                         item.textContent = "پیام";
                     });
             }
 
             supportPage.classList.add("show");
-            window.scrollTo(0, 0);
         }
 
-        callSupportBtn.addEventListener("click", function() {
-            openSupport("call");
-        });
-
-        messageSupportBtn.addEventListener("click", function() {
-            openSupport("message");
-        });
-
-        backSupportBtn.addEventListener("click", function() {
-            supportPage.classList.remove("show");
-        });
-
-        /* AUTH */
-
-        function openAuth(role) {
-
-            selectedRole = role;
-            authMode = "login";
-
-            authTitle.textContent = "ورود";
-            submitBtn.textContent = "ورود";
-
-            loginTab.classList.add("active");
-            signupTab.classList.remove("active");
-
-            authMessage.style.display = "none";
-            authMessage.textContent = "";
-
-            authForm.reset();
-
-            authModal.classList.add("show");
-        }
-
-        window.openAuth = openAuth;
-
-        closeAuth.addEventListener("click", function() {
-            authModal.classList.remove("show");
-        });
-
-        authModal.addEventListener("click", function(event) {
-
-            if (event.target === authModal) {
-                authModal.classList.remove("show");
+        callSupportBtn.addEventListener(
+            "click",
+            function() {
+                openSupport("call");
             }
+        );
 
-        });
-
-        loginTab.addEventListener("click", function() {
-
-            authMode = "login";
-
-            authTitle.textContent = "ورود";
-            submitBtn.textContent = "ورود";
-
-            loginTab.classList.add("active");
-            signupTab.classList.remove("active");
-
-            authMessage.style.display = "none";
-        });
-
-        signupTab.addEventListener("click", function() {
-
-            authMode = "signup";
-
-            authTitle.textContent = "ساخت حساب";
-            submitBtn.textContent = "ثبت‌نام";
-
-            signupTab.classList.add("active");
-            loginTab.classList.remove("active");
-
-            authMessage.style.display = "none";
-        });
-
-        function showAuthMessage(text) {
-
-            authMessage.textContent = text;
-            authMessage.style.display = "block";
-        }
-
-        authForm.addEventListener("submit", async function(event) {
-
-            event.preventDefault();
-
-            const emailInput =
-                document.getElementById("email");
-
-            const passwordInput =
-                document.getElementById("password");
-
-            const email =
-                emailInput.value.trim();
-
-            const password =
-                passwordInput.value;
-
-            if (!emailInput.validity.valid) {
-                showAuthMessage("لطفاً یک ایمیل معتبر وارد کنید.");
-                return;
+        messageSupportBtn.addEventListener(
+            "click",
+            function() {
+                openSupport("message");
             }
+        );
 
-            if (password.length < 6) {
-                showAuthMessage(
-                    "رمز عبور باید حداقل ۶ کاراکتر باشد."
-                );
-                return;
+        backSupportBtn.addEventListener(
+            "click",
+            function() {
+                supportPage.classList.remove("show");
             }
+        );
 
-            submitBtn.disabled = true;
+        /* EMPLOYEE LOGIN */
 
-            try {
+        employeeLoginButton.addEventListener(
+            "click",
+            function() {
 
-                if (authMode === "login") {
+                employeeCode.value = "";
 
-                    const {
-                        data,
-                        error
-                    } = await supabaseClient.auth.signInWithPassword({
-                        email,
-                        password
-                    });
+                employeeMessage.textContent = "";
+                employeeMessage.style.display = "none";
 
-                    if (error) {
+                employeeCode.type = "password";
+                employeeEyeBtn.textContent = "👁";
 
-                        const msg =
-                            error.message.toLowerCase();
+                employeeModal.classList.add("show");
 
-                        if (
-                            msg.includes("email not confirmed") ||
-                            msg.includes("email_not_confirmed")
-                        ) {
-                            throw new Error(
-                                "ایمیل شما هنوز تأیید نشده است."
-                            );
-                        }
+                setTimeout(function() {
+                    employeeCode.focus();
+                }, 100);
+            }
+        );
 
-                        throw new Error(
-                            "ایمیل یا رمز عبور اشتباه است."
-                        );
-                    }
+        closeEmployeeModal.addEventListener(
+            "click",
+            function() {
+                employeeModal.classList.remove("show");
+            }
+        );
 
-                    if (!data.session) {
-                        throw new Error(
-                            "ورود انجام نشد."
-                        );
-                    }
+        /* EMPLOYEE EYE */
 
-                    window.location.href =
-                        "user-dashboard.html";
+        employeeEyeBtn.addEventListener(
+            "click",
+            function() {
+
+                if (employeeCode.type === "password") {
+
+                    employeeCode.type = "text";
+                    employeeEyeBtn.textContent = "🙈";
 
                 } else {
 
-                    const {
-                        data,
-                        error
-                    } = await supabaseClient.auth.signUp({
-                        email,
-                        password
-                    });
+                    employeeCode.type = "password";
+                    employeeEyeBtn.textContent = "👁";
+                }
+            }
+        );
 
-                    if (error) {
+        /* EMPLOYEE CODE */
 
-                        const msg =
-                            error.message.toLowerCase();
+        employeeForm.addEventListener(
+            "submit",
+            function(event) {
 
-                        if (
-                            msg.includes("already registered") ||
-                            msg.includes("already been registered") ||
-                            msg.includes("user already registered")
-                        ) {
+                event.preventDefault();
+
+                const enteredCode =
+                    employeeCode.value;
+
+                employeeSubmitBtn.disabled = true;
+
+                if (
+                    !EMPLOYEE_CODES.includes(
+                        enteredCode
+                    )
+                ) {
+
+                    employeeMessage.textContent =
+                        "کد عبور اشتباه است.";
+
+                    employeeMessage.style.display =
+                        "block";
+
+                    employeeSubmitBtn.disabled =
+                        false;
+
+                    return;
+                }
+
+                employeeMessage.style.display =
+                    "none";
+
+                window.location.href =
+                    "employee_dashboard.html";
+            }
+        );
+
+        /* USER LOGIN */
+
+        userLoginButton.addEventListener(
+            "click",
+            function() {
+
+                userAuthMode = "login";
+
+                userAuthTitle.textContent =
+                    "ورود";
+
+                userSubmitBtn.textContent =
+                    "ورود";
+
+                loginTab.classList.add("active");
+                signupTab.classList.remove("active");
+
+                userAuthMessage.textContent = "";
+                userAuthMessage.style.display = "none";
+
+                userAuthForm.reset();
+
+                userPassword.type = "password";
+                userEyeBtn.textContent = "👁";
+
+                userAuthModal.classList.add("show");
+            }
+        );
+
+        closeUserAuth.addEventListener(
+            "click",
+            function() {
+                userAuthModal.classList.remove("show");
+            }
+        );
+
+        userAuthModal.addEventListener(
+            "click",
+            function(event) {
+
+                if (event.target === userAuthModal) {
+                    userAuthModal.classList.remove("show");
+                }
+            }
+        );
+
+        /* USER EYE */
+
+        userEyeBtn.addEventListener(
+            "click",
+            function() {
+
+                if (userPassword.type === "password") {
+
+                    userPassword.type = "text";
+                    userEyeBtn.textContent = "🙈";
+
+                } else {
+
+                    userPassword.type = "password";
+                    userEyeBtn.textContent = "👁";
+                }
+            }
+        );
+
+        /* USER TABS */
+
+        loginTab.addEventListener(
+            "click",
+            function() {
+
+                userAuthMode = "login";
+
+                userAuthTitle.textContent =
+                    "ورود";
+
+                userSubmitBtn.textContent =
+                    "ورود";
+
+                loginTab.classList.add("active");
+                signupTab.classList.remove("active");
+
+                userAuthMessage.style.display =
+                    "none";
+            }
+        );
+
+        signupTab.addEventListener(
+            "click",
+            function() {
+
+                userAuthMode = "signup";
+
+                userAuthTitle.textContent =
+                    "ساخت حساب";
+
+                userSubmitBtn.textContent =
+                    "ثبت‌نام";
+
+                signupTab.classList.add("active");
+                loginTab.classList.remove("active");
+
+                userAuthMessage.style.display =
+                    "none";
+            }
+        );
+
+        function showUserMessage(text) {
+
+            userAuthMessage.textContent =
+                text;
+
+            userAuthMessage.style.display =
+                "block";
+        }
+
+        /* USER AUTH */
+
+        userAuthForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+                const emailInput =
+                    document.getElementById("userEmail");
+
+                const email =
+                    emailInput.value.trim();
+
+                const password =
+                    userPassword.value;
+
+                if (!emailInput.validity.valid) {
+
+                    showUserMessage(
+                        "لطفاً یک ایمیل معتبر وارد کنید."
+                    );
+
+                    return;
+                }
+
+                if (password.length < 6) {
+
+                    showUserMessage(
+                        "رمز عبور باید حداقل ۶ کاراکتر باشد."
+                    );
+
+                    return;
+                }
+
+                userSubmitBtn.disabled = true;
+
+                try {
+
+                    if (userAuthMode === "login") {
+
+                        const {
+                            data,
+                            error
+                        } =
+                            await supabaseClient.auth.signInWithPassword({
+                                email,
+                                password
+                            });
+
+                        if (error) {
                             throw new Error(
-                                "این ایمیل قبلاً ثبت‌نام کرده است. وارد شوید."
+                                "ایمیل یا رمز عبور اشتباه است."
                             );
                         }
 
-                        throw error;
-                    }
-
-                    if (data.session) {
-
-                        showAuthMessage(
-                            "حساب با موفقیت ساخته شد."
-                        );
+                        if (!data.session) {
+                            throw new Error(
+                                "ورود انجام نشد."
+                            );
+                        }
 
                         window.location.href =
                             "user-dashboard.html";
 
                     } else {
 
-                        showAuthMessage(
-                            "حساب ساخته شد. برای ادامه، ایمیل خود را تأیید کنید و سپس وارد شوید."
-                        );
+                        const {
+                            data,
+                            error
+                        } =
+                            await supabaseClient.auth.signUp({
+                                email,
+                                password
+                            });
+
+                        if (error) {
+
+                            const msg =
+                                error.message.toLowerCase();
+
+                            if (
+                                msg.includes("already registered") ||
+                                msg.includes("already been registered") ||
+                                msg.includes("user already registered")
+                            ) {
+                                throw new Error(
+                                    "این ایمیل قبلاً ثبت‌نام کرده است. وارد شوید."
+                                );
+                            }
+
+                            throw error;
+                        }
+
+                        if (!data.session) {
+
+                            showUserMessage(
+                                "ثبت‌نام انجام شد، اما تأیید ایمیل در Supabase هنوز فعال است."
+                            );
+
+                            return;
+                        }
+
+                        window.location.href =
+                            "user-dashboard.html";
                     }
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    showUserMessage(
+                        error.message ||
+                        "خطایی رخ داد. دوباره تلاش کنید."
+                    );
+
+                } finally {
+
+                    userSubmitBtn.disabled = false;
                 }
-
-            } catch (error) {
-
-                console.error(error);
-
-                showAuthMessage(
-                    error.message ||
-                    "خطایی رخ داد. دوباره تلاش کنید."
-                );
-
-            } finally {
-
-                submitBtn.disabled = false;
             }
-
-        });
+        );
     </script>
 
 </body>
 </html>
+```
