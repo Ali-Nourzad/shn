@@ -17,10 +17,12 @@
             --surface-solid: #fffdf8;
             --text: #292722;
             --muted: #777268;
-            --accent-dark: #a9531c;
             --dark: #292824;
             --border: rgba(67, 58, 47, 0.12);
             --shadow: 0 20px 50px rgba(54, 44, 31, 0.10);
+
+            --blue: #1976d2;
+            --red: #d93636;
         }
 
         * {
@@ -52,6 +54,10 @@
                 var(--bg);
         }
 
+        body.modal-open {
+            overflow: hidden;
+        }
+
         button,
         input {
             font-family: inherit;
@@ -75,7 +81,7 @@
 
             background: rgba(255, 252, 245, 0.82);
 
-            border-bottom: 1px solid rgba(67, 58, 47, 0.12);
+            border-bottom: 1px solid var(--border);
 
             box-shadow:
                 0 8px 25px rgba(54, 44, 31, 0.08);
@@ -87,7 +93,6 @@
         .brand {
             font-size: 25px;
             font-weight: 800;
-            letter-spacing: -1px;
         }
 
         .menu-btn {
@@ -115,10 +120,7 @@
 
             cursor: pointer;
 
-            transition:
-                transform .25s ease,
-                box-shadow .25s ease,
-                background .25s ease;
+            transition: .25s ease;
         }
 
         .menu-btn:hover {
@@ -130,10 +132,6 @@
                     #514a42,
                     #292520
                 );
-
-            box-shadow:
-                0 12px 28px rgba(45, 35, 25, 0.28),
-                inset 0 1px 1px rgba(255, 255, 255, 0.20);
         }
 
         .menu-btn:active {
@@ -145,17 +143,7 @@
             height: 7px;
 
             border-radius: 50%;
-
             background: #fffdf8;
-
-            box-shadow:
-                0 1px 3px rgba(0, 0, 0, 0.25);
-
-            transition: .25s ease;
-        }
-
-        .menu-btn:hover span {
-            transform: scale(1.12);
         }
 
         /* =========================
@@ -166,6 +154,7 @@
             position: fixed;
             top: 94px;
             left: 6%;
+            z-index: 2500;
 
             width: 255px;
             padding: 10px;
@@ -183,9 +172,7 @@
             opacity: 0;
             visibility: hidden;
 
-            transform:
-                translateY(-10px)
-                scale(.96);
+            transform: translateY(-10px) scale(.96);
 
             transition: .25s ease;
         }
@@ -193,21 +180,12 @@
         .menu.show {
             opacity: 1;
             visibility: visible;
-
-            transform:
-                translateY(0)
-                scale(1);
+            transform: translateY(0) scale(1);
         }
 
         .menu-item {
             width: 100%;
             min-height: 50px;
-
-            border: none;
-            border-radius: 13px;
-
-            background: transparent;
-            color: var(--text);
 
             display: flex;
             align-items: center;
@@ -215,10 +193,16 @@
 
             padding: 0 14px;
 
-            font-size: 14px;
-            font-weight: 600;
+            border: 0;
+            border-radius: 13px;
+
+            background: transparent;
+            color: var(--text);
 
             cursor: pointer;
+
+            font-size: 14px;
+            font-weight: 600;
 
             transition: .2s ease;
         }
@@ -267,9 +251,10 @@
             border-radius: 999px;
 
             background: rgba(215, 123, 50, .10);
+
             border: 1px solid rgba(215, 123, 50, .18);
 
-            color: var(--accent-dark);
+            color: #a9531c;
 
             font-size: 13px;
             font-weight: 700;
@@ -279,7 +264,6 @@
             font-size: clamp(34px, 6vw, 62px);
             line-height: 1.2;
             margin-bottom: 18px;
-
             letter-spacing: -2px;
         }
 
@@ -362,7 +346,6 @@
             font-weight: 700;
 
             cursor: pointer;
-
             transition: .2s ease;
         }
 
@@ -378,7 +361,7 @@
         .modal {
             position: fixed;
             inset: 0;
-            z-index: 2000;
+            z-index: 3500;
 
             display: none;
             align-items: center;
@@ -398,6 +381,9 @@
 
         .modal-box {
             width: min(440px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+
             padding: 30px;
 
             background: var(--surface-solid);
@@ -448,7 +434,6 @@
             background: #eee8dd;
 
             cursor: pointer;
-
             font-size: 18px;
         }
 
@@ -492,7 +477,7 @@
         }
 
         /* =========================
-           INPUT
+           FORM
         ========================= */
 
         .field {
@@ -532,10 +517,10 @@
         }
 
         .field input:focus {
-            border-color: rgba(215, 123, 50, .6);
+            border-color: rgba(215,123,50,.6);
 
             box-shadow:
-                0 0 0 4px rgba(215, 123, 50, .09);
+                0 0 0 4px rgba(215,123,50,.09);
         }
 
         .eye-btn {
@@ -557,7 +542,6 @@
             justify-content: center;
 
             background: transparent;
-
             color: var(--muted);
 
             font-size: 18px;
@@ -616,13 +600,13 @@
         }
 
         /* =========================
-           SUPPORT PAGE
+           SUPPORT
         ========================= */
 
         .support-page {
             position: fixed;
             inset: 0;
-            z-index: 1500;
+            z-index: 3000;
 
             display: none;
             overflow-y: auto;
@@ -632,12 +616,12 @@
             background:
                 radial-gradient(
                     circle at 10% 10%,
-                    rgba(215, 123, 50, .12),
+                    rgba(215,123,50,.12),
                     transparent 25%
                 ),
                 radial-gradient(
                     circle at 90% 80%,
-                    rgba(167, 130, 87, .12),
+                    rgba(167,130,87,.12),
                     transparent 28%
                 ),
                 var(--bg);
@@ -720,7 +704,7 @@
             transform: translateY(-2px);
 
             box-shadow:
-                0 10px 25px rgba(54, 44, 31, .08);
+                0 10px 25px rgba(54,44,31,.08);
         }
 
         .phone small {
@@ -894,9 +878,7 @@
 
     </main>
 
-    <!-- =========================
-         USER AUTH MODAL
-    ========================= -->
+    <!-- USER AUTH MODAL -->
 
     <div
         class="modal"
@@ -975,7 +957,6 @@
                             type="button"
                             class="eye-btn"
                             id="userEyeBtn"
-                            aria-label="نمایش رمز عبور"
                         >
                             👁
                         </button>
@@ -1003,9 +984,7 @@
 
     </div>
 
-    <!-- =========================
-         EMPLOYEE AUTH MODAL
-    ========================= -->
+    <!-- EMPLOYEE MODAL -->
 
     <div
         class="modal"
@@ -1050,7 +1029,6 @@
                             type="button"
                             class="eye-btn"
                             id="employeeEyeBtn"
-                            aria-label="نمایش کد عبور"
                         >
                             👁
                         </button>
@@ -1078,9 +1056,7 @@
 
     </div>
 
-    <!-- =========================
-         SUPPORT PAGE
-    ========================= -->
+    <!-- SUPPORT PAGE -->
 
     <section
         class="support-page"
@@ -1156,14 +1132,6 @@
                 SUPABASE_URL,
                 SUPABASE_ANON_KEY
             );
-
-        /* =========================
-           EMPLOYEE CODES
-        ========================= */
-
-        const EMPLOYEE_CODES = [
-            "Reza_Nourzad.S.H.N"
-        ];
 
         /* =========================
            ELEMENTS
@@ -1293,8 +1261,10 @@
 
             menu.classList.remove("show");
 
-            const phoneLabels =
-                document.querySelectorAll(".phone small");
+            const labels =
+                document.querySelectorAll(
+                    ".phone small"
+                );
 
             if (type === "call") {
 
@@ -1307,7 +1277,7 @@
                 supportDescription.textContent =
                     "برای ارتباط با پشتیبانی می‌توانید با یکی از شماره‌های زیر تماس بگیرید.";
 
-                phoneLabels.forEach(
+                labels.forEach(
                     function(item) {
                         item.textContent = "تماس";
                     }
@@ -1324,7 +1294,7 @@
                 supportDescription.textContent =
                     "برای ارسال پیام، یکی از شماره‌های زیر را انتخاب کنید.";
 
-                phoneLabels.forEach(
+                labels.forEach(
                     function(item) {
                         item.textContent = "پیام";
                     }
@@ -1351,140 +1321,19 @@
         backSupportBtn.addEventListener(
             "click",
             function() {
-
                 supportPage.classList.remove("show");
             }
         );
 
         /* =========================
-           EMPLOYEE LOGIN
-        ========================= */
-
-        employeeLoginButton.addEventListener(
-            "click",
-            function() {
-
-                employeeCode.value = "";
-
-                employeeMessage.textContent = "";
-
-                employeeMessage.style.display =
-                    "none";
-
-                employeeCode.type =
-                    "password";
-
-                employeeEyeBtn.textContent =
-                    "👁";
-
-                employeeModal.classList.add("show");
-
-                setTimeout(
-                    function() {
-
-                        employeeCode.focus();
-
-                    },
-                    100
-                );
-            }
-        );
-
-        closeEmployeeModal.addEventListener(
-            "click",
-            function() {
-
-                employeeModal.classList.remove("show");
-            }
-        );
-
-        employeeModal.addEventListener(
-            "click",
-            function(event) {
-
-                if (event.target === employeeModal) {
-
-                    employeeModal.classList.remove("show");
-                }
-            }
-        );
-
-        /* EMPLOYEE EYE */
-
-        employeeEyeBtn.addEventListener(
-            "click",
-            function() {
-
-                if (
-                    employeeCode.type ===
-                    "password"
-                ) {
-
-                    employeeCode.type =
-                        "text";
-
-                    employeeEyeBtn.textContent =
-                        "🙈";
-
-                } else {
-
-                    employeeCode.type =
-                        "password";
-
-                    employeeEyeBtn.textContent =
-                        "👁";
-                }
-            }
-        );
-
-        /* EMPLOYEE CODE */
-
-        employeeForm.addEventListener(
-            "submit",
-            function(event) {
-
-                event.preventDefault();
-
-                const enteredCode =
-                    employeeCode.value;
-
-                employeeSubmitBtn.disabled =
-                    true;
-
-                const isValid =
-                    EMPLOYEE_CODES.includes(
-                        enteredCode
-                    );
-
-                if (!isValid) {
-
-                    employeeMessage.textContent =
-                        "کد عبور اشتباه است.";
-
-                    employeeMessage.style.display =
-                        "block";
-
-                    employeeSubmitBtn.disabled =
-                        false;
-
-                    return;
-                }
-
-                window.location.href =
-                    "employee_dashboard.html";
-            }
-        );
-
-        /* =========================
-           USER LOGIN
+           USER AUTH
         ========================= */
 
         userLoginButton.addEventListener(
             "click",
             function() {
 
-                userAuthMode =
-                    "login";
+                userAuthMode = "login";
 
                 userAuthTitle.textContent =
                     "ورود";
@@ -1492,19 +1341,11 @@
                 userSubmitBtn.textContent =
                     "ورود";
 
-                loginTab.classList.add(
-                    "active"
-                );
+                loginTab.classList.add("active");
+                signupTab.classList.remove("active");
 
-                signupTab.classList.remove(
-                    "active"
-                );
-
-                userAuthMessage.textContent =
-                    "";
-
-                userAuthMessage.style.display =
-                    "none";
+                userAuthMessage.textContent = "";
+                userAuthMessage.style.display = "none";
 
                 userAuthForm.reset();
 
@@ -1517,17 +1358,16 @@
                 userAuthModal.classList.add(
                     "show"
                 );
+
+                document.body.classList.add(
+                    "modal-open"
+                );
             }
         );
 
         closeUserAuth.addEventListener(
             "click",
-            function() {
-
-                userAuthModal.classList.remove(
-                    "show"
-                );
-            }
+            closeUserModal
         );
 
         userAuthModal.addEventListener(
@@ -1538,15 +1378,25 @@
                     event.target ===
                     userAuthModal
                 ) {
-
-                    userAuthModal.classList.remove(
-                        "show"
-                    );
+                    closeUserModal();
                 }
             }
         );
 
-        /* USER EYE */
+        function closeUserModal() {
+
+            userAuthModal.classList.remove(
+                "show"
+            );
+
+            document.body.classList.remove(
+                "modal-open"
+            );
+        }
+
+        /* =========================
+           USER PASSWORD EYE
+        ========================= */
 
         userEyeBtn.addEventListener(
             "click",
@@ -1574,14 +1424,15 @@
             }
         );
 
-        /* USER TABS */
+        /* =========================
+           USER TABS
+        ========================= */
 
         loginTab.addEventListener(
             "click",
             function() {
 
-                userAuthMode =
-                    "login";
+                userAuthMode = "login";
 
                 userAuthTitle.textContent =
                     "ورود";
@@ -1589,13 +1440,8 @@
                 userSubmitBtn.textContent =
                     "ورود";
 
-                loginTab.classList.add(
-                    "active"
-                );
-
-                signupTab.classList.remove(
-                    "active"
-                );
+                loginTab.classList.add("active");
+                signupTab.classList.remove("active");
 
                 userAuthMessage.style.display =
                     "none";
@@ -1606,8 +1452,7 @@
             "click",
             function() {
 
-                userAuthMode =
-                    "signup";
+                userAuthMode = "signup";
 
                 userAuthTitle.textContent =
                     "ساخت حساب";
@@ -1615,13 +1460,8 @@
                 userSubmitBtn.textContent =
                     "ثبت‌نام";
 
-                signupTab.classList.add(
-                    "active"
-                );
-
-                loginTab.classList.remove(
-                    "active"
-                );
+                signupTab.classList.add("active");
+                loginTab.classList.remove("active");
 
                 userAuthMessage.style.display =
                     "none";
@@ -1638,7 +1478,7 @@
         }
 
         /* =========================
-           USER AUTH
+           USER AUTH SUBMIT
         ========================= */
 
         userAuthForm.addEventListener(
@@ -1669,7 +1509,9 @@
                     return;
                 }
 
-                if (password.length < 6) {
+                if (
+                    password.length < 6
+                ) {
 
                     showUserMessage(
                         "رمز عبور باید حداقل ۶ کاراکتر باشد."
@@ -1682,8 +1524,6 @@
                     true;
 
                 try {
-
-                    /* LOGIN */
 
                     if (
                         userAuthMode ===
@@ -1702,26 +1542,7 @@
                                 });
 
                         if (error) {
-
-                            const message =
-                                String(
-                                    error.message
-                                ).toLowerCase();
-
-                            if (
-                                message.includes(
-                                    "email not confirmed"
-                                )
-                            ) {
-
-                                throw new Error(
-                                    "این حساب هنوز تأیید نشده است."
-                                );
-                            }
-
-                            throw new Error(
-                                "ایمیل یا رمز عبور اشتباه است."
-                            );
+                            throw error;
                         }
 
                         if (!data.session) {
@@ -1737,8 +1558,6 @@
                         return;
                     }
 
-                    /* SIGN UP */
-
                     const {
                         data,
                         error
@@ -1752,19 +1571,19 @@
 
                     if (error) {
 
-                        const message =
+                        const msg =
                             String(
                                 error.message
                             ).toLowerCase();
 
                         if (
-                            message.includes(
+                            msg.includes(
                                 "already registered"
                             ) ||
-                            message.includes(
+                            msg.includes(
                                 "already been registered"
                             ) ||
-                            message.includes(
+                            msg.includes(
                                 "user already registered"
                             )
                         ) {
@@ -1778,17 +1597,15 @@
                     }
 
                     /*
-                      وقتی Confirm email در Supabase خاموش باشد،
-                      اینجا باید session وجود داشته باشد.
-                    */
+                     * Confirm email باید در
+                     * Supabase خاموش باشد.
+                     */
 
                     if (!data.session) {
 
-                        showUserMessage(
-                            "حساب ساخته شد، اما تأیید ایمیل در Supabase فعال است. گزینه Confirm email را خاموش کنید."
+                        throw new Error(
+                            "حساب ساخته نشد. گزینه Confirm email را در Supabase خاموش کنید."
                         );
-
-                        return;
                     }
 
                     window.location.href =
@@ -1797,6 +1614,7 @@
                 } catch (error) {
 
                     console.error(
+                        "خطای کاربر:",
                         error
                     );
 
@@ -1808,6 +1626,213 @@
                 } finally {
 
                     userSubmitBtn.disabled =
+                        false;
+                }
+            }
+        );
+
+        /* =========================
+           EMPLOYEE LOGIN
+        ========================= */
+
+        employeeLoginButton.addEventListener(
+            "click",
+            function() {
+
+                employeeCode.value = "";
+
+                employeeMessage.textContent =
+                    "";
+
+                employeeMessage.style.display =
+                    "none";
+
+                employeeCode.type =
+                    "password";
+
+                employeeEyeBtn.textContent =
+                    "👁";
+
+                employeeModal.classList.add(
+                    "show"
+                );
+
+                document.body.classList.add(
+                    "modal-open"
+                );
+
+                setTimeout(
+                    function() {
+                        employeeCode.focus();
+                    },
+                    100
+                );
+            }
+        );
+
+        closeEmployeeModal.addEventListener(
+            "click",
+            closeEmployee
+        );
+
+        employeeModal.addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    event.target ===
+                    employeeModal
+                ) {
+                    closeEmployee();
+                }
+            }
+        );
+
+        function closeEmployee() {
+
+            employeeModal.classList.remove(
+                "show"
+            );
+
+            document.body.classList.remove(
+                "modal-open"
+            );
+        }
+
+        /* =========================
+           EMPLOYEE EYE
+        ========================= */
+
+        employeeEyeBtn.addEventListener(
+            "click",
+            function() {
+
+                if (
+                    employeeCode.type ===
+                    "password"
+                ) {
+
+                    employeeCode.type =
+                        "text";
+
+                    employeeEyeBtn.textContent =
+                        "🙈";
+
+                } else {
+
+                    employeeCode.type =
+                        "password";
+
+                    employeeEyeBtn.textContent =
+                        "👁";
+                }
+            }
+        );
+
+        /* =========================
+           EMPLOYEE AUTH
+        ========================= */
+
+        employeeForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+                const code =
+                    employeeCode.value;
+
+                if (!code) {
+                    return;
+                }
+
+                employeeSubmitBtn.disabled =
+                    true;
+
+                employeeMessage.style.display =
+                    "none";
+
+                try {
+
+                    /*
+                     * ساخت نشست ناشناس
+                     */
+
+                    const {
+                        data,
+                        error
+                    } =
+                        await supabaseClient
+                            .auth
+                            .signInAnonymously();
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    if (!data.session) {
+                        throw new Error(
+                            "ورود کارمند انجام نشد."
+                        );
+                    }
+
+                    /*
+                     * بررسی کد در Supabase
+                     */
+
+                    const {
+                        data: authorized,
+                        error: authError
+                    } =
+                        await supabaseClient
+                            .rpc(
+                                "authorize_employee",
+                                {
+                                    p_code: code
+                                }
+                            );
+
+                    if (authError) {
+                        throw authError;
+                    }
+
+                    if (
+                        authorized !== true
+                    ) {
+
+                        await supabaseClient
+                            .auth
+                            .signOut();
+
+                        employeeMessage.textContent =
+                            "کد عبور اشتباه است.";
+
+                        employeeMessage.style.display =
+                            "block";
+
+                        employeeSubmitBtn.disabled =
+                            false;
+
+                        return;
+                    }
+
+                    window.location.href =
+                        "employee_dashboard.html";
+
+                } catch (error) {
+
+                    console.error(
+                        "خطای ورود کارمند:",
+                        error
+                    );
+
+                    employeeMessage.textContent =
+                        "خطایی در ورود رخ داد. دوباره تلاش کنید.";
+
+                    employeeMessage.style.display =
+                        "block";
+
+                    employeeSubmitBtn.disabled =
                         false;
                 }
             }
