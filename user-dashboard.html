@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -92,7 +93,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-
             gap: 5px;
 
             background:
@@ -107,6 +107,19 @@
                 inset 0 1px 1px rgba(255,255,255,.16);
 
             cursor: pointer;
+
+            transition: .25s ease;
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-2px) scale(1.06);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #514a42,
+                    #292520
+                );
         }
 
         .menu-btn span {
@@ -123,7 +136,7 @@
             position: fixed;
             top: 94px;
             left: 6%;
-            z-index: 2000;
+            z-index: 2500;
 
             width: 270px;
             padding: 10px;
@@ -140,7 +153,10 @@
 
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px) scale(.96);
+
+            transform:
+                translateY(-10px)
+                scale(.96);
 
             transition: .25s ease;
         }
@@ -148,7 +164,10 @@
         .menu.show {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0) scale(1);
+
+            transform:
+                translateY(0)
+                scale(1);
         }
 
         .menu-item {
@@ -226,6 +245,7 @@
             border-radius: 999px;
 
             background: rgba(215,123,50,.10);
+
             border: 1px solid rgba(215,123,50,.18);
 
             color: var(--accent-dark);
@@ -244,7 +264,7 @@
             line-height: 2;
         }
 
-        /* CARDS */
+        /* DASHBOARD */
 
         .dashboard-grid {
             display: grid;
@@ -257,7 +277,6 @@
 
         .dashboard-card {
             min-height: 220px;
-
             padding: 30px;
 
             border: 1px solid var(--border);
@@ -305,6 +324,22 @@
             font-size: 13px;
         }
 
+        .dashboard-empty {
+            grid-column: 1 / -1;
+
+            padding: 55px 25px;
+
+            text-align: center;
+
+            background: var(--surface);
+
+            border: 1px dashed rgba(67,58,47,.18);
+
+            border-radius: 25px;
+
+            color: var(--muted);
+        }
+
         /* SECTIONS */
 
         .section-page {
@@ -322,7 +357,9 @@
 
         .section-head .big-icon {
             display: block;
+
             font-size: 55px;
+
             margin-bottom: 12px;
         }
 
@@ -362,7 +399,9 @@
 
         .empty-box p {
             color: var(--muted);
+
             line-height: 2;
+
             font-size: 14px;
         }
 
@@ -370,7 +409,10 @@
 
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(2,1fr);
+
+            grid-template-columns:
+                repeat(2,1fr);
+
             gap: 22px;
         }
 
@@ -400,7 +442,8 @@
 
             border-radius: 14px;
 
-            background: rgba(255,255,255,.55);
+            background:
+                rgba(255,255,255,.55);
 
             border: 1px solid rgba(67,58,47,.08);
 
@@ -412,7 +455,7 @@
         .support-page {
             position: fixed;
             inset: 0;
-            z-index: 1500;
+            z-index: 3000;
 
             display: none;
 
@@ -469,7 +512,9 @@
 
         .support-box > p {
             color: var(--muted);
+
             line-height: 1.9;
+
             margin-bottom: 28px;
         }
 
@@ -501,10 +546,20 @@
             font-weight: 800;
 
             direction: ltr;
+
+            transition: .2s ease;
+        }
+
+        .phone:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 25px rgba(54,44,31,.08);
         }
 
         .phone small {
             direction: rtl;
+
             color: var(--muted);
 
             font-size: 12px;
@@ -523,8 +578,11 @@
             color: white;
 
             font-weight: 700;
+
             cursor: pointer;
         }
+
+        /* RESPONSIVE */
 
         @media (max-width: 800px) {
 
@@ -883,40 +941,6 @@
             );
 
         /* =========================
-           STORAGE
-        ========================= */
-
-        const ACTIVE_CARDS_KEY =
-            "shn_user_active_cards";
-
-        const DELETED_CARDS_KEY =
-            "shn_user_deleted_cards";
-
-        const DEFAULT_CARDS = [
-            {
-                id: "library",
-                icon: "📚",
-                title: "کتابخانه",
-                description: "مشاهده محتوای کتابخانه",
-                code: "library"
-            },
-            {
-                id: "cafe",
-                icon: "☕",
-                title: "کافه",
-                description: "نوشیدنی‌های کافه",
-                code: "cafe"
-            },
-            {
-                id: "fun",
-                icon: "😄",
-                title: "خنده و سوال",
-                description: "سرگرمی و سوال",
-                code: "fun"
-            }
-        ];
-
-        /* =========================
            ELEMENTS
         ========================= */
 
@@ -942,172 +966,279 @@
             document.getElementById("funPage");
 
         const sectionExitButton =
-            document.getElementById("sectionExitButton");
+            document.getElementById(
+                "sectionExitButton"
+            );
 
         const sectionExitText =
-            document.getElementById("sectionExitText");
+            document.getElementById(
+                "sectionExitText"
+            );
 
         const menuDivider =
-            document.getElementById("menuDivider");
+            document.getElementById(
+                "menuDivider"
+            );
 
         const logoutButton =
-            document.getElementById("logoutButton");
+            document.getElementById(
+                "logoutButton"
+            );
 
         const callSupportBtn =
-            document.getElementById("callSupportBtn");
+            document.getElementById(
+                "callSupportBtn"
+            );
 
         const messageSupportBtn =
-            document.getElementById("messageSupportBtn");
+            document.getElementById(
+                "messageSupportBtn"
+            );
 
         const supportPage =
-            document.getElementById("supportPage");
+            document.getElementById(
+                "supportPage"
+            );
 
         const supportIcon =
-            document.getElementById("supportIcon");
+            document.getElementById(
+                "supportIcon"
+            );
 
         const supportTitle =
-            document.getElementById("supportTitle");
+            document.getElementById(
+                "supportTitle"
+            );
 
         const supportDescription =
-            document.getElementById("supportDescription");
+            document.getElementById(
+                "supportDescription"
+            );
 
         const backSupportBtn =
-            document.getElementById("backSupportBtn");
+            document.getElementById(
+                "backSupportBtn"
+            );
 
         let currentSection = null;
 
         /* =========================
-           GET CARDS
+           CHECK USER
         ========================= */
 
-        function getActiveCards() {
+        async function checkUser() {
 
-            const saved =
-                localStorage.getItem(
-                    ACTIVE_CARDS_KEY
-                );
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .auth
+                    .getSession();
 
-            if (!saved) {
+            if (
+                error ||
+                !data.session
+            ) {
 
-                return structuredClone(
-                    DEFAULT_CARDS
-                );
+                window.location.href =
+                    "index.html";
+
+                return false;
             }
 
-            try {
+            /*
+             * نشست ناشناس کارمند اجازه
+             * ورود به پنل عادی کاربر ندارد.
+             */
 
-                const cards =
-                    JSON.parse(saved);
+            if (
+                data.session.user &&
+                data.session.user.is_anonymous === true
+            ) {
 
-                if (
-                    !Array.isArray(cards)
-                ) {
+                window.location.href =
+                    "index.html";
 
-                    return structuredClone(
-                        DEFAULT_CARDS
-                    );
-                }
-
-                return cards;
-
-            } catch {
-
-                return structuredClone(
-                    DEFAULT_CARDS
-                );
+                return false;
             }
+
+            return true;
         }
 
         /* =========================
-           RENDER CARDS
+           LOAD USER CARDS
         ========================= */
 
-        function renderDashboardCards() {
+        async function loadUserCards() {
 
-            const cards =
-                getActiveCards();
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("site_cards")
+                    .select("*")
+                    .eq(
+                        "is_deleted",
+                        false
+                    )
+                    .order(
+                        "sort_order",
+                        {
+                            ascending: true
+                        }
+                    );
+
+            if (error) {
+
+                console.error(
+                    "خطا در دریافت کارت‌ها:",
+                    error
+                );
+
+                dashboardGrid.innerHTML = `
+                    <div class="dashboard-empty">
+                        دریافت اطلاعات انجام نشد.
+                    </div>
+                `;
+
+                return;
+            }
+
+            renderDashboardCards(
+                data || []
+            );
+        }
+
+        /* =========================
+           RENDER DASHBOARD
+        ========================= */
+
+        function renderDashboardCards(
+            cards
+        ) {
 
             dashboardGrid.innerHTML = "";
 
-            cards.forEach(function(card) {
+            if (
+                cards.length === 0
+            ) {
 
-                const element =
-                    document.createElement(
-                        "article"
-                    );
-
-                element.className =
-                    "dashboard-card";
-
-                element.innerHTML = `
-                    <div class="card-icon">
-                        ${escapeHTML(card.icon)}
+                dashboardGrid.innerHTML = `
+                    <div class="dashboard-empty">
+                        فعلاً کارتی برای نمایش وجود ندارد.
                     </div>
-
-                    <h2>
-                        ${escapeHTML(card.title)}
-                    </h2>
-
-                    <p>
-                        ${escapeHTML(card.description)}
-                    </p>
                 `;
 
-                element.addEventListener(
-                    "click",
-                    function() {
+                return;
+            }
 
-                        openCardPage(
-                            card
+            cards.forEach(
+                function(card) {
+
+                    const element =
+                        document.createElement(
+                            "article"
                         );
-                    }
-                );
 
-                dashboardGrid.appendChild(
-                    element
-                );
-            });
+                    element.className =
+                        "dashboard-card";
+
+                    element.innerHTML = `
+                        <div class="card-icon">
+                            ${escapeHTML(card.icon)}
+                        </div>
+
+                        <h2>
+                            ${escapeHTML(card.title)}
+                        </h2>
+
+                        <p>
+                            ${escapeHTML(card.description)}
+                        </p>
+                    `;
+
+                    element.addEventListener(
+                        "click",
+                        function() {
+
+                            openCardPage(
+                                card
+                            );
+                        }
+                    );
+
+                    dashboardGrid.appendChild(
+                        element
+                    );
+                }
+            );
         }
 
         /* =========================
-           OPEN CARD PAGE
+           OPEN CARD
         ========================= */
 
         function openCardPage(card) {
 
-            /*
-                کارت‌های قدیمی شناخته‌شده
-                همچنان به بخش‌های خودشان می‌روند.
-            */
-
             if (
-                card.code === "library"
+                card.code ===
+                "library"
             ) {
 
-                openSection("library");
+                openSection(
+                    "library"
+                );
+
                 return;
             }
 
             if (
-                card.code === "cafe"
+                card.code ===
+                "cafe"
             ) {
 
-                openSection("cafe");
+                openSection(
+                    "cafe"
+                );
+
                 return;
             }
 
             if (
-                card.code === "fun"
+                card.code ===
+                "fun"
             ) {
 
-                openSection("fun");
+                openSection(
+                    "fun"
+                );
+
                 return;
             }
 
-            /*
-                برای کارت‌های جدید فعلاً
-                صفحه‌ی مخصوصی ساخته نشده.
-            */
+            createCustomPage(
+                card
+            );
+        }
+
+        /* =========================
+           CUSTOM PAGE
+        ========================= */
+
+        function createCustomPage(
+            card
+        ) {
+
+            const oldPage =
+                document.getElementById(
+                    "customCardPage"
+                );
+
+            if (oldPage) {
+                oldPage.remove();
+            }
 
             homePage.style.display =
                 "none";
@@ -1123,28 +1254,6 @@
             funPage.classList.remove(
                 "active"
             );
-
-            currentSection =
-                "custom";
-
-            sectionExitText.textContent =
-                `خروج از ${card.title}`;
-
-            sectionExitButton.style.display =
-                "flex";
-
-            menuDivider.style.display =
-                "block";
-
-            menu.classList.remove(
-                "show"
-            );
-
-            /*
-                محتوای کارت جدید
-                فعلاً به شکل یک صفحه‌ی خالی
-                با اطلاعات همان کارت نمایش داده می‌شود.
-            */
 
             const customPage =
                 document.createElement(
@@ -1192,20 +1301,28 @@
                 </div>
             `;
 
-            const oldCustomPage =
-                document.getElementById(
-                    "customCardPage"
-                );
-
-            if (oldCustomPage) {
-                oldCustomPage.remove();
-            }
-
             document
                 .querySelector("main")
                 .appendChild(
                     customPage
                 );
+
+            currentSection =
+                "custom";
+
+            sectionExitText.textContent =
+                "خروج از " +
+                card.title;
+
+            sectionExitButton.style.display =
+                "flex";
+
+            menuDivider.style.display =
+                "block";
+
+            menu.classList.remove(
+                "show"
+            );
 
             window.scrollTo({
                 top: 0,
@@ -1214,10 +1331,12 @@
         }
 
         /* =========================
-           OPEN SECTION
+           OPEN NORMAL SECTION
         ========================= */
 
-        function openSection(section) {
+        function openSection(
+            section
+        ) {
 
             const customPage =
                 document.getElementById(
@@ -1247,7 +1366,8 @@
                 section;
 
             if (
-                section === "library"
+                section ===
+                "library"
             ) {
 
                 libraryPage.classList.add(
@@ -1258,7 +1378,8 @@
                     "خروج از کتابخانه";
 
             } else if (
-                section === "cafe"
+                section ===
+                "cafe"
             ) {
 
                 cafePage.classList.add(
@@ -1269,7 +1390,8 @@
                     "خروج از کافه";
 
             } else if (
-                section === "fun"
+                section ===
+                "fun"
             ) {
 
                 funPage.classList.add(
@@ -1341,8 +1463,6 @@
                     "show"
                 );
 
-                renderDashboardCards();
-
                 window.scrollTo({
                     top: 0,
                     behavior: "smooth"
@@ -1388,14 +1508,22 @@
            SUPPORT
         ========================= */
 
-        function openSupport(type) {
+        function openSupport(
+            type
+        ) {
 
             menu.classList.remove(
                 "show"
             );
 
+            const labels =
+                document.querySelectorAll(
+                    ".phone small"
+                );
+
             if (
-                type === "call"
+                type ===
+                "call"
             ) {
 
                 supportIcon.textContent =
@@ -1407,15 +1535,12 @@
                 supportDescription.textContent =
                     "برای ارتباط با پشتیبانی می‌توانید با یکی از شماره‌های زیر تماس بگیرید.";
 
-                document
-                    .querySelectorAll(
-                        ".phone small"
-                    )
-                    .forEach(function(item) {
-
+                labels.forEach(
+                    function(item) {
                         item.textContent =
                             "تماس";
-                    });
+                    }
+                );
 
             } else {
 
@@ -1428,15 +1553,12 @@
                 supportDescription.textContent =
                     "برای ارسال پیام، یکی از شماره‌های زیر را انتخاب کنید.";
 
-                document
-                    .querySelectorAll(
-                        ".phone small"
-                    )
-                    .forEach(function(item) {
-
+                labels.forEach(
+                    function(item) {
                         item.textContent =
                             "پیام";
-                    });
+                    }
+                );
             }
 
             supportPage.classList.add(
@@ -1461,6 +1583,7 @@
         backSupportBtn.addEventListener(
             "click",
             function() {
+
                 supportPage.classList.remove(
                     "show"
                 );
@@ -1475,21 +1598,9 @@
             "click",
             async function() {
 
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .auth
-                        .signOut();
-
-                if (error) {
-
-                    console.error(
-                        error
-                    );
-
-                    return;
-                }
+                await supabaseClient
+                    .auth
+                    .signOut();
 
                 window.location.href =
                     "index.html";
@@ -1497,38 +1608,12 @@
         );
 
         /* =========================
-           CHECK USER
-        ========================= */
-
-        async function checkUser() {
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .auth
-                    .getSession();
-
-            if (
-                error ||
-                !data.session
-            ) {
-
-                window.location.href =
-                    "index.html";
-
-                return;
-            }
-
-            renderDashboardCards();
-        }
-
-        /* =========================
            HELPER
         ========================= */
 
-        function escapeHTML(value) {
+        function escapeHTML(
+            value
+        ) {
 
             return String(value)
                 .replaceAll(
@@ -1554,12 +1639,25 @@
         }
 
         /* =========================
-           INIT
+           START
         ========================= */
 
-        checkUser();
+        async function start() {
+
+            const authorized =
+                await checkUser();
+
+            if (!authorized) {
+                return;
+            }
+
+            await loadUserCards();
+        }
+
+        start();
 
     </script>
 
 </body>
 </html>
+```
