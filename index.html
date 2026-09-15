@@ -18,7 +18,6 @@
             --surface-solid: #fffdf8;
             --text: #292722;
             --muted: #777268;
-            --accent: #d77b32;
             --accent-dark: #a9531c;
             --dark: #292824;
             --border: rgba(67, 58, 47, 0.12);
@@ -41,8 +40,16 @@
             color: var(--text);
 
             background:
-                radial-gradient(circle at 10% 10%, rgba(215, 123, 50, .12), transparent 25%),
-                radial-gradient(circle at 90% 80%, rgba(167, 130, 87, .12), transparent 28%),
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(215, 123, 50, .12),
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 90% 80%,
+                    rgba(167, 130, 87, .12),
+                    transparent 28%
+                ),
                 var(--bg);
         }
 
@@ -51,7 +58,9 @@
             font-family: inherit;
         }
 
-        /* NAVBAR */
+        /* =========================
+           NAVBAR
+        ========================= */
 
         .navbar {
             position: sticky;
@@ -68,7 +77,9 @@
             background: rgba(255, 252, 245, 0.82);
 
             border-bottom: 1px solid rgba(67, 58, 47, 0.12);
-            box-shadow: 0 8px 25px rgba(54, 44, 31, 0.08);
+
+            box-shadow:
+                0 8px 25px rgba(54, 44, 31, 0.08);
 
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
@@ -92,19 +103,38 @@
             justify-content: center;
             gap: 5px;
 
-            background: linear-gradient(145deg, #3f3a34, #211f1c);
+            background:
+                linear-gradient(
+                    145deg,
+                    #3f3a34,
+                    #211f1c
+                );
 
             box-shadow:
                 0 8px 20px rgba(45, 35, 25, 0.20),
                 inset 0 1px 1px rgba(255, 255, 255, 0.16);
 
             cursor: pointer;
-            transition: .25s ease;
+
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease,
+                background .25s ease;
         }
 
         .menu-btn:hover {
             transform: translateY(-2px) scale(1.06);
-            background: linear-gradient(145deg, #514a42, #292520);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #514a42,
+                    #292520
+                );
+
+            box-shadow:
+                0 12px 28px rgba(45, 35, 25, 0.28),
+                inset 0 1px 1px rgba(255, 255, 255, 0.20);
         }
 
         .menu-btn:active {
@@ -114,11 +144,24 @@
         .menu-btn span {
             width: 7px;
             height: 7px;
+
             border-radius: 50%;
+
             background: #fffdf8;
+
+            box-shadow:
+                0 1px 3px rgba(0, 0, 0, 0.25);
+
+            transition: .25s ease;
         }
 
-        /* MENU */
+        .menu-btn:hover span {
+            transform: scale(1.12);
+        }
+
+        /* =========================
+           MENU
+        ========================= */
 
         .menu {
             position: fixed;
@@ -129,15 +172,21 @@
             padding: 10px;
 
             background: rgba(255, 253, 248, .95);
+
             border: 1px solid var(--border);
             border-radius: 20px;
 
             box-shadow: var(--shadow);
+
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
 
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px) scale(.96);
+
+            transform:
+                translateY(-10px)
+                scale(.96);
 
             transition: .25s ease;
         }
@@ -145,7 +194,10 @@
         .menu.show {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0) scale(1);
+
+            transform:
+                translateY(0)
+                scale(1);
         }
 
         .menu-item {
@@ -168,6 +220,7 @@
             font-weight: 600;
 
             cursor: pointer;
+
             transition: .2s ease;
         }
 
@@ -185,12 +238,15 @@
             justify-content: center;
 
             border-radius: 10px;
+
             background: #eee7da;
 
             font-size: 16px;
         }
 
-        /* MAIN */
+        /* =========================
+           MAIN
+        ========================= */
 
         main {
             width: min(1100px, 90%);
@@ -215,6 +271,7 @@
             border: 1px solid rgba(215, 123, 50, .18);
 
             color: var(--accent-dark);
+
             font-size: 13px;
             font-weight: 700;
         }
@@ -223,6 +280,7 @@
             font-size: clamp(34px, 6vw, 62px);
             line-height: 1.2;
             margin-bottom: 18px;
+
             letter-spacing: -2px;
         }
 
@@ -231,6 +289,7 @@
             margin: auto;
 
             color: var(--muted);
+
             font-size: 16px;
             line-height: 2;
         }
@@ -249,11 +308,14 @@
             padding: 34px;
 
             background: var(--surface);
+
             border: 1px solid var(--border);
             border-radius: 28px;
 
             box-shadow: var(--shadow);
+
             backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
 
             display: flex;
             flex-direction: column;
@@ -267,7 +329,9 @@
 
         .role-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 28px 60px rgba(54, 44, 31, .15);
+
+            box-shadow:
+                0 28px 60px rgba(54, 44, 31, .15);
         }
 
         .role-icon {
@@ -299,6 +363,7 @@
             font-weight: 700;
 
             cursor: pointer;
+
             transition: .2s ease;
         }
 
@@ -307,7 +372,9 @@
             transform: translateY(-2px);
         }
 
-        /* MODAL */
+        /* =========================
+           MODAL
+        ========================= */
 
         .modal {
             position: fixed;
@@ -321,7 +388,9 @@
             padding: 20px;
 
             background: rgba(35, 30, 24, .48);
+
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .modal.show {
@@ -333,9 +402,11 @@
             padding: 30px;
 
             background: var(--surface-solid);
+
             border-radius: 28px;
 
-            box-shadow: 0 30px 80px rgba(0, 0, 0, .2);
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, .20);
 
             animation: modalIn .25s ease;
         }
@@ -343,12 +414,16 @@
         @keyframes modalIn {
             from {
                 opacity: 0;
-                transform: translateY(20px) scale(.97);
+                transform:
+                    translateY(20px)
+                    scale(.97);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+                transform:
+                    translateY(0)
+                    scale(1);
             }
         }
 
@@ -372,12 +447,15 @@
             border-radius: 12px;
 
             background: #eee8dd;
+
             cursor: pointer;
 
             font-size: 18px;
         }
 
-        /* TABS */
+        /* =========================
+           TABS
+        ========================= */
 
         .tabs {
             display: grid;
@@ -387,11 +465,13 @@
             margin-bottom: 22px;
 
             border-radius: 14px;
+
             background: #eee8dd;
         }
 
         .tab {
             border: none;
+
             padding: 11px;
 
             border-radius: 10px;
@@ -400,16 +480,21 @@
             color: var(--muted);
 
             cursor: pointer;
+
             font-weight: 700;
         }
 
         .tab.active {
             background: white;
             color: var(--text);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, .06);
+
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, .06);
         }
 
-        /* FORM */
+        /* =========================
+           INPUT
+        ========================= */
 
         .field {
             margin-bottom: 16px;
@@ -417,6 +502,7 @@
 
         .field label {
             display: block;
+
             margin-bottom: 7px;
 
             font-size: 13px;
@@ -435,6 +521,7 @@
             border-radius: 13px;
 
             outline: none;
+
             padding: 0 50px 0 14px;
 
             background: #faf8f3;
@@ -447,11 +534,14 @@
 
         .field input:focus {
             border-color: rgba(215, 123, 50, .6);
-            box-shadow: 0 0 0 4px rgba(215, 123, 50, .09);
+
+            box-shadow:
+                0 0 0 4px rgba(215, 123, 50, .09);
         }
 
         .eye-btn {
             position: absolute;
+
             top: 50%;
             right: 8px;
 
@@ -470,6 +560,7 @@
             background: transparent;
 
             color: var(--muted);
+
             font-size: 18px;
 
             cursor: pointer;
@@ -495,6 +586,7 @@
             font-weight: 800;
 
             cursor: pointer;
+
             transition: .2s ease;
         }
 
@@ -520,10 +612,13 @@
 
             font-size: 13px;
             line-height: 1.8;
+
             text-align: center;
         }
 
-        /* SUPPORT */
+        /* =========================
+           SUPPORT PAGE
+        ========================= */
 
         .support-page {
             position: fixed;
@@ -536,8 +631,16 @@
             padding: 100px 20px 50px;
 
             background:
-                radial-gradient(circle at 10% 10%, rgba(215, 123, 50, .12), transparent 25%),
-                radial-gradient(circle at 90% 80%, rgba(167, 130, 87, .12), transparent 28%),
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(215, 123, 50, .12),
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 90% 80%,
+                    rgba(167, 130, 87, .12),
+                    transparent 28%
+                ),
                 var(--bg);
         }
 
@@ -552,11 +655,14 @@
             padding: 35px;
 
             background: var(--surface);
+
             border: 1px solid var(--border);
             border-radius: 30px;
 
             box-shadow: var(--shadow);
+
             backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
 
             text-align: center;
         }
@@ -573,7 +679,9 @@
 
         .support-box > p {
             color: var(--muted);
+
             line-height: 1.9;
+
             margin-bottom: 28px;
         }
 
@@ -594,9 +702,11 @@
             border-radius: 17px;
 
             background: #fffdf8;
+
             border: 1px solid var(--border);
 
             color: var(--text);
+
             text-decoration: none;
 
             font-size: 18px;
@@ -609,12 +719,16 @@
 
         .phone:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(54, 44, 31, .08);
+
+            box-shadow:
+                0 10px 25px rgba(54, 44, 31, .08);
         }
 
         .phone small {
             direction: rtl;
+
             color: var(--muted);
+
             font-size: 12px;
             font-weight: 600;
         }
@@ -631,10 +745,16 @@
             color: white;
 
             font-weight: 700;
+
             cursor: pointer;
         }
 
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
         @media (max-width: 700px) {
+
             .role-grid {
                 grid-template-columns: 1fr;
             }
@@ -682,7 +802,10 @@
 
     <!-- MENU -->
 
-    <div class="menu" id="menu">
+    <div
+        class="menu"
+        id="menu"
+    >
 
         <button
             class="menu-item"
@@ -772,7 +895,9 @@
 
     </main>
 
-    <!-- USER AUTH -->
+    <!-- =========================
+         USER AUTH MODAL
+    ========================= -->
 
     <div
         class="modal"
@@ -879,7 +1004,9 @@
 
     </div>
 
-    <!-- EMPLOYEE AUTH -->
+    <!-- =========================
+         EMPLOYEE AUTH MODAL
+    ========================= -->
 
     <div
         class="modal"
@@ -952,7 +1079,9 @@
 
     </div>
 
-    <!-- SUPPORT -->
+    <!-- =========================
+         SUPPORT PAGE
+    ========================= -->
 
     <section
         class="support-page"
@@ -1008,7 +1137,10 @@
     </section>
 
     <script>
-        /* SUPABASE */
+
+        /* =========================
+           SUPABASE
+        ========================= */
 
         const SUPABASE_URL =
             "https://zyziyyhzxsnwzrsubulu.supabase.co";
@@ -1016,7 +1148,9 @@
         const SUPABASE_ANON_KEY =
             "sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
 
-        const { createClient } = supabase;
+        const {
+            createClient
+        } = supabase;
 
         const supabaseClient =
             createClient(
@@ -1024,13 +1158,17 @@
                 SUPABASE_ANON_KEY
             );
 
-        /* EMPLOYEE CODES */
+        /* =========================
+           EMPLOYEE CODES
+        ========================= */
 
         const EMPLOYEE_CODES = [
             "Reza_Nourzad.S.H.N"
         ];
 
-        /* ELEMENTS */
+        /* =========================
+           ELEMENTS
+        ========================= */
 
         const menuBtn =
             document.getElementById("menuBtn");
@@ -1118,7 +1256,9 @@
 
         let userAuthMode = "login";
 
-        /* MENU */
+        /* =========================
+           MENU
+        ========================= */
 
         menuBtn.addEventListener(
             "click",
@@ -1146,15 +1286,21 @@
             }
         );
 
-        /* SUPPORT */
+        /* =========================
+           SUPPORT
+        ========================= */
 
         function openSupport(type) {
 
             menu.classList.remove("show");
 
+            const phoneLabels =
+                document.querySelectorAll(".phone small");
+
             if (type === "call") {
 
-                supportIcon.textContent = "☎";
+                supportIcon.textContent =
+                    "☎";
 
                 supportTitle.textContent =
                     "تماس با پشتیبانی";
@@ -1162,15 +1308,16 @@
                 supportDescription.textContent =
                     "برای ارتباط با پشتیبانی می‌توانید با یکی از شماره‌های زیر تماس بگیرید.";
 
-                document
-                    .querySelectorAll(".phone small")
-                    .forEach(function(item) {
+                phoneLabels.forEach(
+                    function(item) {
                         item.textContent = "تماس";
-                    });
+                    }
+                );
 
             } else {
 
-                supportIcon.textContent = "✉";
+                supportIcon.textContent =
+                    "✉";
 
                 supportTitle.textContent =
                     "پیام به پشتیبانی";
@@ -1178,11 +1325,11 @@
                 supportDescription.textContent =
                     "برای ارسال پیام، یکی از شماره‌های زیر را انتخاب کنید.";
 
-                document
-                    .querySelectorAll(".phone small")
-                    .forEach(function(item) {
+                phoneLabels.forEach(
+                    function(item) {
                         item.textContent = "پیام";
-                    });
+                    }
+                );
             }
 
             supportPage.classList.add("show");
@@ -1205,11 +1352,14 @@
         backSupportBtn.addEventListener(
             "click",
             function() {
+
                 supportPage.classList.remove("show");
             }
         );
 
-        /* EMPLOYEE LOGIN */
+        /* =========================
+           EMPLOYEE LOGIN
+        ========================= */
 
         employeeLoginButton.addEventListener(
             "click",
@@ -1218,23 +1368,45 @@
                 employeeCode.value = "";
 
                 employeeMessage.textContent = "";
-                employeeMessage.style.display = "none";
 
-                employeeCode.type = "password";
-                employeeEyeBtn.textContent = "👁";
+                employeeMessage.style.display =
+                    "none";
+
+                employeeCode.type =
+                    "password";
+
+                employeeEyeBtn.textContent =
+                    "👁";
 
                 employeeModal.classList.add("show");
 
-                setTimeout(function() {
-                    employeeCode.focus();
-                }, 100);
+                setTimeout(
+                    function() {
+
+                        employeeCode.focus();
+
+                    },
+                    100
+                );
             }
         );
 
         closeEmployeeModal.addEventListener(
             "click",
             function() {
+
                 employeeModal.classList.remove("show");
+            }
+        );
+
+        employeeModal.addEventListener(
+            "click",
+            function(event) {
+
+                if (event.target === employeeModal) {
+
+                    employeeModal.classList.remove("show");
+                }
             }
         );
 
@@ -1244,15 +1416,24 @@
             "click",
             function() {
 
-                if (employeeCode.type === "password") {
+                if (
+                    employeeCode.type ===
+                    "password"
+                ) {
 
-                    employeeCode.type = "text";
-                    employeeEyeBtn.textContent = "🙈";
+                    employeeCode.type =
+                        "text";
+
+                    employeeEyeBtn.textContent =
+                        "🙈";
 
                 } else {
 
-                    employeeCode.type = "password";
-                    employeeEyeBtn.textContent = "👁";
+                    employeeCode.type =
+                        "password";
+
+                    employeeEyeBtn.textContent =
+                        "👁";
                 }
             }
         );
@@ -1268,13 +1449,15 @@
                 const enteredCode =
                     employeeCode.value;
 
-                employeeSubmitBtn.disabled = true;
+                employeeSubmitBtn.disabled =
+                    true;
 
-                if (
-                    !EMPLOYEE_CODES.includes(
+                const isValid =
+                    EMPLOYEE_CODES.includes(
                         enteredCode
-                    )
-                ) {
+                    );
+
+                if (!isValid) {
 
                     employeeMessage.textContent =
                         "کد عبور اشتباه است.";
@@ -1288,21 +1471,21 @@
                     return;
                 }
 
-                employeeMessage.style.display =
-                    "none";
-
                 window.location.href =
                     "employee_dashboard.html";
             }
         );
 
-        /* USER LOGIN */
+        /* =========================
+           USER LOGIN
+        ========================= */
 
         userLoginButton.addEventListener(
             "click",
             function() {
 
-                userAuthMode = "login";
+                userAuthMode =
+                    "login";
 
                 userAuthTitle.textContent =
                     "ورود";
@@ -1310,25 +1493,41 @@
                 userSubmitBtn.textContent =
                     "ورود";
 
-                loginTab.classList.add("active");
-                signupTab.classList.remove("active");
+                loginTab.classList.add(
+                    "active"
+                );
 
-                userAuthMessage.textContent = "";
-                userAuthMessage.style.display = "none";
+                signupTab.classList.remove(
+                    "active"
+                );
+
+                userAuthMessage.textContent =
+                    "";
+
+                userAuthMessage.style.display =
+                    "none";
 
                 userAuthForm.reset();
 
-                userPassword.type = "password";
-                userEyeBtn.textContent = "👁";
+                userPassword.type =
+                    "password";
 
-                userAuthModal.classList.add("show");
+                userEyeBtn.textContent =
+                    "👁";
+
+                userAuthModal.classList.add(
+                    "show"
+                );
             }
         );
 
         closeUserAuth.addEventListener(
             "click",
             function() {
-                userAuthModal.classList.remove("show");
+
+                userAuthModal.classList.remove(
+                    "show"
+                );
             }
         );
 
@@ -1336,8 +1535,14 @@
             "click",
             function(event) {
 
-                if (event.target === userAuthModal) {
-                    userAuthModal.classList.remove("show");
+                if (
+                    event.target ===
+                    userAuthModal
+                ) {
+
+                    userAuthModal.classList.remove(
+                        "show"
+                    );
                 }
             }
         );
@@ -1348,15 +1553,24 @@
             "click",
             function() {
 
-                if (userPassword.type === "password") {
+                if (
+                    userPassword.type ===
+                    "password"
+                ) {
 
-                    userPassword.type = "text";
-                    userEyeBtn.textContent = "🙈";
+                    userPassword.type =
+                        "text";
+
+                    userEyeBtn.textContent =
+                        "🙈";
 
                 } else {
 
-                    userPassword.type = "password";
-                    userEyeBtn.textContent = "👁";
+                    userPassword.type =
+                        "password";
+
+                    userEyeBtn.textContent =
+                        "👁";
                 }
             }
         );
@@ -1367,7 +1581,8 @@
             "click",
             function() {
 
-                userAuthMode = "login";
+                userAuthMode =
+                    "login";
 
                 userAuthTitle.textContent =
                     "ورود";
@@ -1375,8 +1590,13 @@
                 userSubmitBtn.textContent =
                     "ورود";
 
-                loginTab.classList.add("active");
-                signupTab.classList.remove("active");
+                loginTab.classList.add(
+                    "active"
+                );
+
+                signupTab.classList.remove(
+                    "active"
+                );
 
                 userAuthMessage.style.display =
                     "none";
@@ -1387,7 +1607,8 @@
             "click",
             function() {
 
-                userAuthMode = "signup";
+                userAuthMode =
+                    "signup";
 
                 userAuthTitle.textContent =
                     "ساخت حساب";
@@ -1395,8 +1616,13 @@
                 userSubmitBtn.textContent =
                     "ثبت‌نام";
 
-                signupTab.classList.add("active");
-                loginTab.classList.remove("active");
+                signupTab.classList.add(
+                    "active"
+                );
+
+                loginTab.classList.remove(
+                    "active"
+                );
 
                 userAuthMessage.style.display =
                     "none";
@@ -1412,7 +1638,9 @@
                 "block";
         }
 
-        /* USER AUTH */
+        /* =========================
+           USER AUTH
+        ========================= */
 
         userAuthForm.addEventListener(
             "submit",
@@ -1421,7 +1649,9 @@
                 event.preventDefault();
 
                 const emailInput =
-                    document.getElementById("userEmail");
+                    document.getElementById(
+                        "userEmail"
+                    );
 
                 const email =
                     emailInput.value.trim();
@@ -1429,7 +1659,9 @@
                 const password =
                     userPassword.value;
 
-                if (!emailInput.validity.valid) {
+                if (
+                    !emailInput.validity.valid
+                ) {
 
                     showUserMessage(
                         "لطفاً یک ایمیل معتبر وارد کنید."
@@ -1447,28 +1679,54 @@
                     return;
                 }
 
-                userSubmitBtn.disabled = true;
+                userSubmitBtn.disabled =
+                    true;
 
                 try {
 
-                    if (userAuthMode === "login") {
+                    /* LOGIN */
+
+                    if (
+                        userAuthMode ===
+                        "login"
+                    ) {
 
                         const {
                             data,
                             error
                         } =
-                            await supabaseClient.auth.signInWithPassword({
-                                email,
-                                password
-                            });
+                            await supabaseClient
+                                .auth
+                                .signInWithPassword({
+                                    email,
+                                    password
+                                });
 
                         if (error) {
+
+                            const message =
+                                String(
+                                    error.message
+                                ).toLowerCase();
+
+                            if (
+                                message.includes(
+                                    "email not confirmed"
+                                )
+                            ) {
+
+                                throw new Error(
+                                    "این حساب هنوز تأیید نشده است."
+                                );
+                            }
+
                             throw new Error(
                                 "ایمیل یا رمز عبور اشتباه است."
                             );
                         }
 
                         if (!data.session) {
+
                             throw new Error(
                                 "ورود انجام نشد."
                             );
@@ -1477,51 +1735,71 @@
                         window.location.href =
                             "user-dashboard.html";
 
-                    } else {
+                        return;
+                    }
 
-                        const {
-                            data,
-                            error
-                        } =
-                            await supabaseClient.auth.signUp({
+                    /* SIGN UP */
+
+                    const {
+                        data,
+                        error
+                    } =
+                        await supabaseClient
+                            .auth
+                            .signUp({
                                 email,
                                 password
                             });
 
-                        if (error) {
+                    if (error) {
 
-                            const msg =
-                                error.message.toLowerCase();
+                        const message =
+                            String(
+                                error.message
+                            ).toLowerCase();
 
-                            if (
-                                msg.includes("already registered") ||
-                                msg.includes("already been registered") ||
-                                msg.includes("user already registered")
-                            ) {
-                                throw new Error(
-                                    "این ایمیل قبلاً ثبت‌نام کرده است. وارد شوید."
-                                );
-                            }
+                        if (
+                            message.includes(
+                                "already registered"
+                            ) ||
+                            message.includes(
+                                "already been registered"
+                            ) ||
+                            message.includes(
+                                "user already registered"
+                            )
+                        ) {
 
-                            throw error;
-                        }
-
-                        if (!data.session) {
-
-                            showUserMessage(
-                                "ثبت‌نام انجام شد، اما تأیید ایمیل در Supabase هنوز فعال است."
+                            throw new Error(
+                                "این ایمیل قبلاً ثبت‌نام کرده است. وارد شوید."
                             );
-
-                            return;
                         }
 
-                        window.location.href =
-                            "user-dashboard.html";
+                        throw error;
                     }
+
+                    /*
+                      وقتی Confirm email در Supabase خاموش باشد،
+                      اینجا باید session وجود داشته باشد.
+                    */
+
+                    if (!data.session) {
+
+                        showUserMessage(
+                            "حساب ساخته شد، اما تأیید ایمیل در Supabase فعال است. گزینه Confirm email را خاموش کنید."
+                        );
+
+                        return;
+                    }
+
+                    window.location.href =
+                        "user-dashboard.html";
 
                 } catch (error) {
 
-                    console.error(error);
+                    console.error(
+                        error
+                    );
 
                     showUserMessage(
                         error.message ||
@@ -1530,10 +1808,12 @@
 
                 } finally {
 
-                    userSubmitBtn.disabled = false;
+                    userSubmitBtn.disabled =
+                        false;
                 }
             }
         );
+
     </script>
 
 </body>
