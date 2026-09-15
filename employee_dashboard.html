@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>پنل کارمند | س.ح.ن</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -10,14 +11,14 @@
     <style>
         :root {
             --bg: #f5f1e8;
-            --surface: rgba(255,252,245,.84);
+            --surface: rgba(255, 252, 245, 0.84);
             --surface-solid: #fffdf8;
             --text: #292722;
             --muted: #777268;
             --accent: #d77b32;
             --dark: #292824;
-            --border: rgba(67,58,47,.12);
-            --shadow: 0 20px 50px rgba(54,44,31,.10);
+            --border: rgba(67, 58, 47, 0.12);
+            --shadow: 0 20px 50px rgba(54, 44, 31, 0.10);
             --blue: #3e78c5;
             --red: #c94b43;
             --green: #4f8055;
@@ -34,8 +35,8 @@
             font-family: Tahoma, Arial, sans-serif;
             color: var(--text);
             background:
-                radial-gradient(circle at 10% 10%, rgba(215,123,50,.10), transparent 28%),
-                radial-gradient(circle at 90% 20%, rgba(255,185,0,.08), transparent 28%),
+                radial-gradient(circle at 10% 10%, rgba(215, 123, 50, 0.10), transparent 28%),
+                radial-gradient(circle at 90% 20%, rgba(255, 185, 0, 0.08), transparent 28%),
                 var(--bg);
         }
 
@@ -57,9 +58,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(255,252,245,.82);
+            background: rgba(255, 252, 245, 0.82);
             border-bottom: 1px solid var(--border);
-            box-shadow: 0 8px 25px rgba(54,44,31,.08);
+            box-shadow: 0 8px 25px rgba(54, 44, 31, 0.08);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
         }
@@ -78,10 +79,10 @@
             align-items: center;
             justify-content: center;
             gap: 5px;
-            background: linear-gradient(145deg,#3f3a34,#211f1c);
+            background: linear-gradient(145deg, #3f3a34, #211f1c);
             box-shadow:
-                0 8px 20px rgba(45,35,25,.20),
-                inset 0 1px 1px rgba(255,255,255,.16);
+                0 8px 20px rgba(45, 35, 25, 0.20),
+                inset 0 1px 1px rgba(255, 255, 255, 0.16);
             cursor: pointer;
         }
 
@@ -100,14 +101,14 @@
             padding: 10px;
             z-index: 1200;
             border-radius: 20px;
-            background: rgba(255,252,245,.96);
+            background: rgba(255, 252, 245, 0.96);
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
             backdrop-filter: blur(18px);
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
-            transition: .22s;
+            transition: 0.22s;
         }
 
         .dropdown.open {
@@ -132,7 +133,7 @@
         }
 
         .page {
-            width: min(1180px,100%);
+            width: min(1180px, 100%);
             margin: auto;
             padding: 55px 6% 100px;
         }
@@ -163,7 +164,7 @@
 
         .home-grid {
             display: grid;
-            grid-template-columns: repeat(2,minmax(0,1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 22px;
         }
 
@@ -180,7 +181,7 @@
             justify-content: center;
             flex-direction: column;
             text-align: center;
-            transition: .25s;
+            transition: 0.25s;
         }
 
         .home-card:hover {
@@ -230,6 +231,8 @@
             font-size: 12px;
         }
 
+        /* CARD MANAGER */
+
         .manager-tools {
             display: flex;
             gap: 10px;
@@ -256,7 +259,7 @@
 
         .cards-list {
             display: grid;
-            grid-template-columns: repeat(2,minmax(0,1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 18px;
         }
 
@@ -347,7 +350,7 @@
             padding: 15px 18px;
             border-radius: 17px;
             background: #292824;
-            box-shadow: 0 15px 35px rgba(0,0,0,.17);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.17);
             display: none;
             align-items: center;
             gap: 13px;
@@ -385,14 +388,14 @@
             bottom: 0;
             width: 235px;
             z-index: 1100;
-            background: rgba(255,252,245,.95);
+            background: rgba(255, 252, 245, 0.95);
             border-left: 1px solid var(--border);
-            box-shadow: -10px 0 30px rgba(54,44,31,.07);
+            box-shadow: -10px 0 30px rgba(54, 44, 31, 0.07);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             padding: 22px 15px;
             transform: translateX(0);
-            transition: .25s ease;
+            transition: 0.25s ease;
         }
 
         .people-sidebar.closed {
@@ -406,7 +409,7 @@
             width: 42px;
             height: 42px;
             border-radius: 13px 0 0 13px;
-            background: rgba(255,252,245,.95);
+            background: rgba(255, 252, 245, 0.95);
             border: 1px solid var(--border);
             border-right: 0;
             color: var(--text);
@@ -435,7 +438,6 @@
             cursor: pointer;
             font-size: 13px;
             text-align: right;
-            transition: .2s;
         }
 
         .sidebar-option:hover {
@@ -490,18 +492,24 @@
         }
 
         .person-row {
-            padding: 19px;
+            padding: 20px;
             border-radius: 21px;
             border: 1px solid var(--border);
             background: var(--surface);
-            box-shadow: 0 12px 30px rgba(54,44,31,.07);
+            box-shadow: 0 12px 30px rgba(54, 44, 31, 0.07);
         }
 
         .person-main {
             display: grid;
-            grid-template-columns: 1.1fr 1fr 1.1fr 1.3fr auto;
+            grid-template-columns:
+                1.2fr
+                1fr
+                1.4fr
+                1fr
+                auto;
+
             align-items: center;
-            gap: 15px;
+            gap: 16px;
         }
 
         .person-name {
@@ -521,14 +529,21 @@
             margin-bottom: 3px;
         }
 
-        /* فقط حذف حساب کاربر */
+        .password-hidden {
+            direction: ltr;
+            unicode-bidi: plaintext;
+            letter-spacing: 2px;
+            color: var(--text);
+        }
+
         .person-delete {
-            padding: 10px 13px;
+            padding: 10px 14px;
             border-radius: 11px;
             background: var(--red);
             color: white;
             cursor: pointer;
             font-size: 11px;
+            white-space: nowrap;
         }
 
         /* EMPLOYEES */
@@ -546,6 +561,7 @@
             color: white;
             cursor: pointer;
             font-size: 12px;
+            box-shadow: 0 10px 22px rgba(215, 123, 50, 0.18);
         }
 
         .employee-list {
@@ -562,7 +578,7 @@
             border-radius: 21px;
             background: var(--surface);
             border: 1px solid var(--border);
-            box-shadow: 0 12px 30px rgba(54,44,31,.07);
+            box-shadow: 0 12px 30px rgba(54, 44, 31, 0.07);
         }
 
         .employee-info {
@@ -584,14 +600,15 @@
         .employee-title {
             font-size: 16px;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
         .employee-code {
             direction: ltr;
             unicode-bidi: plaintext;
             color: var(--text);
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: bold;
             word-break: break-all;
         }
 
@@ -602,13 +619,14 @@
             color: white;
             cursor: pointer;
             font-size: 11px;
+            white-space: nowrap;
         }
 
         .empty {
             padding: 45px;
             border-radius: 24px;
             text-align: center;
-            background: rgba(255,252,245,.65);
+            background: rgba(255, 252, 245, 0.65);
             border: 1px dashed var(--border);
             color: var(--muted);
             line-height: 2;
@@ -621,7 +639,7 @@
             position: fixed;
             inset: 0;
             z-index: 2500;
-            background: rgba(28,25,21,.48);
+            background: rgba(28, 25, 21, 0.48);
             backdrop-filter: blur(7px);
             display: flex;
             align-items: center;
@@ -629,7 +647,7 @@
             padding: 20px;
             opacity: 0;
             visibility: hidden;
-            transition: .2s;
+            transition: 0.2s;
         }
 
         .overlay.open {
@@ -638,14 +656,14 @@
         }
 
         .modal {
-            width: min(500px,100%);
+            width: min(500px, 100%);
             max-height: 92vh;
             overflow-y: auto;
             padding: 28px;
             border-radius: 27px;
             background: var(--surface-solid);
             border: 1px solid var(--border);
-            box-shadow: 0 35px 90px rgba(35,28,20,.23);
+            box-shadow: 0 35px 90px rgba(35, 28, 20, 0.23);
         }
 
         .modal-head {
@@ -690,8 +708,8 @@
         }
 
         .field input:focus {
-            border-color: rgba(215,123,50,.5);
-            box-shadow: 0 0 0 4px rgba(215,123,50,.08);
+            border-color: rgba(215, 123, 50, 0.5);
+            box-shadow: 0 0 0 4px rgba(215, 123, 50, 0.08);
         }
 
         .modal-submit {
@@ -706,7 +724,7 @@
         }
 
         .modal-submit:disabled {
-            opacity: .6;
+            opacity: 0.6;
             cursor: not-allowed;
         }
 
@@ -730,14 +748,22 @@
             margin-bottom: 16px;
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1000px) {
 
             .person-main {
                 grid-template-columns: 1fr 1fr;
             }
 
+        }
+
+        @media (max-width: 900px) {
+
             .people-layout.sidebar-open .people-main {
                 padding-right: 0;
+            }
+
+            .people-sidebar {
+                width: 225px;
             }
 
         }
@@ -799,6 +825,17 @@
                 width: 100%;
             }
 
+            .person-delete {
+                width: 100%;
+            }
+
+            .confirm-box {
+                right: 15px;
+                left: 15px;
+                bottom: 15px;
+                justify-content: space-between;
+            }
+
         }
     </style>
 </head>
@@ -806,35 +843,56 @@
 <body>
 
 <header class="navbar">
-    <div class="brand">س.ح.ن</div>
+
+    <div class="brand">
+        س.ح.ن
+    </div>
 
     <button class="menu-btn" id="menuBtn">
         <span></span>
         <span></span>
         <span></span>
     </button>
+
 </header>
 
 <div class="dropdown" id="dropdown">
-    <button onclick="logout()">↩ خروج از پنل</button>
+
+    <button onclick="logout()">
+        ↩ خروج از پنل
+    </button>
+
 </div>
 
 <div class="page">
 
     <!-- HOME -->
 
-    <section class="section active" id="homeSection">
+    <section
+        class="section active"
+        id="homeSection">
 
         <div class="page-title">
-            <h1>پنل کارمند</h1>
-            <p>مدیریت بخش‌های سایت س.ح.ن</p>
+
+            <h1>
+                پنل کارمند
+            </h1>
+
+            <p>
+                مدیریت بخش‌های سایت س.ح.ن
+            </p>
+
         </div>
 
         <div class="home-grid">
 
-            <div class="home-card" onclick="openCardsManager()">
+            <div
+                class="home-card"
+                onclick="openCardsManager()">
 
-                <div class="icon">🛠️</div>
+                <div class="icon">
+                    🛠️
+                </div>
 
                 <h2>
                     تغییرات صفحه کاربر
@@ -846,9 +904,13 @@
 
             </div>
 
-            <div class="home-card" onclick="openPeople()">
+            <div
+                class="home-card"
+                onclick="openPeople()">
 
-                <div class="icon">👥</div>
+                <div class="icon">
+                    👥
+                </div>
 
                 <h2>
                     دیدن افراد
@@ -866,7 +928,9 @@
 
     <!-- CARD MANAGER -->
 
-    <section class="section" id="cardsSection">
+    <section
+        class="section"
+        id="cardsSection">
 
         <div class="section-head">
 
@@ -907,13 +971,15 @@
 
     <!-- PEOPLE -->
 
-    <section class="section" id="peopleSection">
+    <section
+        class="section"
+        id="peopleSection">
 
         <div
             class="people-layout sidebar-open"
             id="peopleLayout">
 
-            <!-- RIGHT SIDEBAR -->
+            <!-- SIDEBAR -->
 
             <aside
                 class="people-sidebar"
@@ -961,7 +1027,7 @@
 
             </aside>
 
-            <!-- PEOPLE CONTENT -->
+            <!-- CONTENT -->
 
             <div class="people-main">
 
@@ -996,7 +1062,7 @@
                         </div>
 
                         <div class="account-readonly">
-                            اطلاعات کاربران فقط قابل مشاهده است.
+                            اطلاعات کاربران
                         </div>
 
                     </div>
@@ -1033,7 +1099,9 @@
                         <button
                             class="add-code-btn"
                             onclick="openEmployeeCodeModal()">
+
                             ＋ اضافه کردن کد کارمند
+
                         </button>
 
                     </div>
@@ -1063,7 +1131,8 @@
         تغییرات ذخیره نشده
     </span>
 
-    <button onclick="confirmChanges()">
+    <button
+        onclick="confirmChanges()">
         ✓ تأیید تغییرات
     </button>
 
@@ -1148,10 +1217,6 @@
 
         </div>
 
-        <p class="code-note">
-            کد جدید را وارد کنید.
-        </p>
-
         <div class="field">
 
             <label>
@@ -1202,9 +1267,6 @@ let cards = [];
 let originalCards = [];
 let deletedMode = false;
 let editingCardId = null;
-let peopleType = "users";
-
-/* MENU */
 
 const menuBtn =
     document.getElementById("menuBtn");
@@ -1212,28 +1274,36 @@ const menuBtn =
 const dropdown =
     document.getElementById("dropdown");
 
-menuBtn.addEventListener("click", event => {
+menuBtn.addEventListener(
+    "click",
+    event => {
 
-    event.stopPropagation();
+        event.stopPropagation();
 
-    dropdown.classList.toggle("open");
-
-});
-
-document.addEventListener("click", event => {
-
-    if (
-        !dropdown.contains(event.target) &&
-        !menuBtn.contains(event.target)
-    ) {
-
-        dropdown.classList.remove("open");
+        dropdown.classList.toggle("open");
 
     }
+);
 
-});
+document.addEventListener(
+    "click",
+    event => {
 
-/* INIT */
+        if (
+            !dropdown.contains(event.target) &&
+            !menuBtn.contains(event.target)
+        ) {
+
+            dropdown.classList.remove("open");
+
+        }
+
+    }
+);
+
+/* =========================
+   INIT
+========================= */
 
 async function init() {
 
@@ -1277,7 +1347,9 @@ async function init() {
 
 }
 
-/* CARDS */
+/* =========================
+   CARDS
+========================= */
 
 async function loadCards() {
 
@@ -1340,6 +1412,7 @@ function renderCards() {
         `;
 
         return;
+
     }
 
     container.innerHTML =
@@ -1521,23 +1594,19 @@ function closeCardModal() {
 function saveCard() {
 
     const title =
-        document
-            .getElementById("cardTitle")
+        document.getElementById("cardTitle")
             .value.trim();
 
     const description =
-        document
-            .getElementById("cardDescription")
+        document.getElementById("cardDescription")
             .value.trim();
 
     const code =
-        document
-            .getElementById("cardCode")
+        document.getElementById("cardCode")
             .value.trim();
 
     const icon =
-        document
-            .getElementById("cardIcon")
+        document.getElementById("cardIcon")
             .value.trim();
 
     if (
@@ -1589,8 +1658,11 @@ function saveCard() {
                 crypto.randomUUID(),
 
             title,
+
             description,
+
             code,
+
             icon,
 
             is_deleted:
@@ -1760,7 +1832,9 @@ async function confirmChanges() {
 
 }
 
-/* PEOPLE */
+/* =========================
+   PEOPLE
+========================= */
 
 async function openPeople() {
 
@@ -1784,7 +1858,9 @@ async function openPeople() {
         .getElementById("peopleSidebar")
         .classList.remove("closed");
 
-    await switchPeopleType("users");
+    await switchPeopleType(
+        "users"
+    );
 
 }
 
@@ -1805,8 +1881,6 @@ function togglePeopleSidebar() {
 }
 
 async function switchPeopleType(type) {
-
-    peopleType = type;
 
     const userBtn =
         document.getElementById(
@@ -1870,9 +1944,9 @@ async function switchPeopleType(type) {
 
 }
 
-/* USERS
-   فقط نمایش + حذف
-*/
+/* =========================
+   USERS
+   ========================= */
 
 async function loadPeople() {
 
@@ -1980,12 +2054,12 @@ async function loadPeople() {
                         <div class="person-item">
 
                             <strong>
-                                تاریخ ساخت
+                                رمز عبور
                             </strong>
 
-                            ${formatDate(
-                                user.created_at
-                            )}
+                            <span class="password-hidden">
+                                ••••••••
+                            </span>
 
                         </div>
 
@@ -2007,13 +2081,15 @@ async function loadPeople() {
 
 }
 
-/* حذف اکانت کاربر */
+/* =========================
+   DELETE USER
+========================= */
 
 async function deleteUserAccount(id) {
 
     const confirmed =
         confirm(
-            "آیا از حذف این اکانت کاربری مطمئن هستید؟"
+            "آیا از حذف این اکانت مطمئن هستید؟"
         );
 
     if (!confirmed) {
@@ -2063,7 +2139,9 @@ async function deleteUserAccount(id) {
 
 }
 
-/* EMPLOYEES */
+/* =========================
+   EMPLOYEES
+========================= */
 
 async function loadEmployees() {
 
@@ -2165,7 +2243,9 @@ async function loadEmployees() {
 
 }
 
-/* ADD EMPLOYEE CODE */
+/* =========================
+   ADD EMPLOYEE CODE
+========================= */
 
 function openEmployeeCodeModal() {
 
@@ -2300,7 +2380,9 @@ async function addEmployeeCode() {
 
 }
 
-/* DELETE EMPLOYEE CODE */
+/* =========================
+   DELETE EMPLOYEE CODE
+========================= */
 
 async function deleteEmployeeCode(id) {
 
@@ -2353,7 +2435,9 @@ async function deleteEmployeeCode(id) {
 
 }
 
-/* HOME */
+/* =========================
+   HOME / LOGOUT
+========================= */
 
 function goHome() {
 
@@ -2371,8 +2455,6 @@ function goHome() {
 
 }
 
-/* LOGOUT */
-
 async function logout() {
 
     await supabaseClient.auth.signOut();
@@ -2382,34 +2464,9 @@ async function logout() {
 
 }
 
-/* HELPERS */
-
-function formatDate(value) {
-
-    if (!value) {
-        return "-";
-    }
-
-    try {
-
-        return new Intl.DateTimeFormat(
-            "fa-IR",
-            {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit"
-            }
-        ).format(
-            new Date(value)
-        );
-
-    } catch {
-
-        return "-";
-
-    }
-
-}
+/* =========================
+   HELPERS
+========================= */
 
 function escapeHtml(value) {
 
@@ -2422,7 +2479,9 @@ function escapeHtml(value) {
 
 }
 
-/* OUTSIDE CLICK */
+/* =========================
+   OUTSIDE CLICK
+========================= */
 
 document
     .getElementById("cardOverlay")
