@@ -6,18 +6,27 @@
 
     <title>پنل کارمند | س.ح.ن</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
 
         :root {
             --bg: #f5f1e8;
-            --surface: rgba(255, 252, 245, 0.82);
+            --surface: rgba(255, 252, 245, .84);
+            --surface-solid: #fffdf8;
             --text: #292722;
+            --muted: #777268;
             --dark: #292824;
-            --border: rgba(67, 58, 47, 0.12);
-            --shadow: 0 20px 50px rgba(54, 44, 31, 0.10);
+            --border: rgba(67, 58, 47, .12);
+            --shadow: 0 20px 50px rgba(54, 44, 31, .10);
+
+            --blue: #1976d2;
+            --blue-dark: #125da8;
+
+            --red: #d93636;
+            --red-dark: #b92727;
+
+            --green: #2e8b57;
+            --green-dark: #247046;
         }
 
         * {
@@ -26,9 +35,8 @@
             padding: 0;
         }
 
-        html,
-        body {
-            min-height: 100%;
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -40,22 +48,25 @@
             background:
                 radial-gradient(
                     circle at 10% 10%,
-                    rgba(215, 123, 50, .12),
+                    rgba(215,123,50,.12),
                     transparent 25%
                 ),
                 radial-gradient(
                     circle at 90% 80%,
-                    rgba(167, 130, 87, .12),
+                    rgba(167,130,87,.12),
                     transparent 28%
                 ),
                 var(--bg);
         }
 
-        button {
+        button,
+        input {
             font-family: inherit;
         }
 
-        /* NAVBAR */
+        /* =========================
+           NAVBAR
+        ========================= */
 
         .navbar {
             position: sticky;
@@ -69,12 +80,12 @@
             align-items: center;
             justify-content: space-between;
 
-            background: rgba(255, 252, 245, 0.82);
+            background: rgba(255,252,245,.82);
 
-            border-bottom: 1px solid rgba(67, 58, 47, 0.12);
+            border-bottom: 1px solid var(--border);
 
             box-shadow:
-                0 8px 25px rgba(54, 44, 31, 0.08);
+                0 8px 25px rgba(54,44,31,.08);
 
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
@@ -83,18 +94,13 @@
         .brand {
             font-size: 25px;
             font-weight: 800;
-            letter-spacing: -1px;
         }
 
-        /* THREE DOTS */
-
         .menu-btn {
-            position: relative;
-
             width: 56px;
             height: 56px;
 
-            border: 1px solid rgba(67, 58, 47, 0.12);
+            border: 1px solid rgba(67,58,47,.12);
             border-radius: 30%;
 
             display: flex;
@@ -111,15 +117,12 @@
                 );
 
             box-shadow:
-                0 8px 20px rgba(45, 35, 25, 0.20),
-                inset 0 1px 1px rgba(255, 255, 255, 0.16);
+                0 8px 20px rgba(45,35,25,.20),
+                inset 0 1px 1px rgba(255,255,255,.16);
 
             cursor: pointer;
 
-            transition:
-                transform .25s ease,
-                box-shadow .25s ease,
-                background .25s ease;
+            transition: .25s ease;
         }
 
         .menu-btn:hover {
@@ -131,10 +134,6 @@
                     #514a42,
                     #292520
                 );
-
-            box-shadow:
-                0 12px 28px rgba(45, 35, 25, 0.28),
-                inset 0 1px 1px rgba(255, 255, 255, 0.20);
         }
 
         .menu-btn:active {
@@ -148,29 +147,22 @@
             border-radius: 50%;
 
             background: #fffdf8;
-
-            box-shadow:
-                0 1px 3px rgba(0, 0, 0, 0.25);
-
-            transition: .25s ease;
         }
 
-        .menu-btn:hover span {
-            transform: scale(1.12);
-        }
-
-        /* MENU */
+        /* =========================
+           MENU
+        ========================= */
 
         .menu {
             position: fixed;
-
             top: 94px;
             left: 6%;
+            z-index: 3000;
 
             width: 255px;
             padding: 10px;
 
-            background: rgba(255, 253, 248, .95);
+            background: rgba(255,253,248,.95);
 
             border: 1px solid var(--border);
             border-radius: 20px;
@@ -203,32 +195,29 @@
             width: 100%;
             min-height: 50px;
 
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+            padding: 0 14px;
+
             border: none;
             border-radius: 13px;
 
             background: transparent;
             color: var(--text);
 
-            display: flex;
-            align-items: center;
-
-            gap: 12px;
-
-            padding: 0 14px;
+            cursor: pointer;
 
             font-size: 14px;
             font-weight: 600;
-
-            cursor: pointer;
 
             transition: .2s ease;
         }
 
         .menu-item:hover {
             background: #f3eee5;
-
-            transform:
-                translateX(-3px);
+            transform: translateX(-3px);
         }
 
         .menu-icon {
@@ -240,21 +229,631 @@
             justify-content: center;
 
             border-radius: 10px;
-
             background: #eee7da;
 
             font-size: 16px;
         }
 
-        /* EMPTY CONTENT */
+        /* =========================
+           PAGE
+        ========================= */
 
-        main {
-            min-height: calc(100vh - 82px);
+        .page {
+            width: min(1100px, 90%);
+            margin: auto;
+            padding: 75px 0 130px;
         }
 
-        /* RESPONSIVE */
+        .hero {
+            text-align: center;
+            margin-bottom: 42px;
+        }
 
-        @media (max-width: 700px) {
+        .badge {
+            display: inline-block;
+
+            padding: 8px 15px;
+            margin-bottom: 18px;
+
+            border-radius: 999px;
+
+            background: rgba(215,123,50,.10);
+            border: 1px solid rgba(215,123,50,.18);
+
+            color: #a9531c;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 52px);
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: var(--muted);
+            line-height: 2;
+        }
+
+        /* =========================
+           EMPLOYEE HOME
+        ========================= */
+
+        #employeeHome {
+            display: block;
+        }
+
+        .home-grid {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .main-card {
+            min-height: 235px;
+
+            padding: 35px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+            border-radius: 28px;
+
+            box-shadow: var(--shadow);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            cursor: pointer;
+
+            transition: .3s ease;
+        }
+
+        .main-card:hover {
+            transform: translateY(-7px);
+
+            box-shadow:
+                0 28px 60px rgba(54,44,31,.15);
+        }
+
+        .main-card .icon {
+            font-size: 52px;
+            margin-bottom: 17px;
+        }
+
+        .main-card h2 {
+            margin-bottom: 8px;
+            font-size: 23px;
+        }
+
+        .main-card p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* =========================
+           MANAGER
+        ========================= */
+
+        #managerPage,
+        #trashPage {
+            display: none;
+        }
+
+        #managerPage.show,
+        #trashPage.show {
+            display: block;
+        }
+
+        .manager-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 18px;
+
+            margin-bottom: 28px;
+        }
+
+        .manager-title h2 {
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        .manager-title p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .manager-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .action-btn {
+            min-height: 46px;
+
+            border: none;
+            border-radius: 13px;
+
+            padding: 0 16px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition: .2s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .add-btn {
+            background: var(--dark);
+            color: white;
+        }
+
+        .trash-btn {
+            background: #eee8dd;
+            color: var(--text);
+        }
+
+        .back-btn {
+            background: #eee8dd;
+            color: var(--text);
+        }
+
+        .user-page-btn {
+            background: rgba(25,118,210,.10);
+            color: var(--blue-dark);
+        }
+
+        .cards-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 20px;
+        }
+
+        /* =========================
+           MANAGED CARD
+        ========================= */
+
+        .managed-card {
+            position: relative;
+
+            min-height: 245px;
+
+            padding:
+                76px
+                25px
+                25px;
+
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+            border-radius: 25px;
+
+            box-shadow: var(--shadow);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            text-align: center;
+
+            transition: .2s ease;
+        }
+
+        .managed-actions {
+            position: absolute;
+
+            top: 12px;
+            left: 12px;
+            right: 12px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 8px;
+        }
+
+        .card-action {
+            height: 42px;
+
+            border: none;
+            border-radius: 11px;
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition: .2s ease;
+        }
+
+        .card-action:hover {
+            transform: translateY(-2px);
+        }
+
+        .edit-action {
+            background: var(--blue);
+        }
+
+        .edit-action:hover {
+            background: var(--blue-dark);
+        }
+
+        .delete-action {
+            background: var(--red);
+        }
+
+        .delete-action:hover {
+            background: var(--red-dark);
+        }
+
+        .managed-icon {
+            font-size: 47px;
+            margin-bottom: 11px;
+        }
+
+        .managed-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .managed-card p {
+            color: var(--muted);
+
+            font-size: 13px;
+            line-height: 1.9;
+
+            margin-bottom: 12px;
+        }
+
+        .code-preview {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 9px;
+
+            background: #eee8dd;
+            color: #5c574f;
+
+            direction: ltr;
+
+            font-family: Consolas, monospace;
+            font-size: 11px;
+        }
+
+        .empty-state {
+            padding: 55px 25px;
+
+            text-align: center;
+
+            background: var(--surface);
+
+            border: 1px dashed rgba(67,58,47,.18);
+            border-radius: 25px;
+
+            color: var(--muted);
+        }
+
+        /* =========================
+           TRASH
+        ========================= */
+
+        .trash-list {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+        .trash-card {
+            padding: 24px;
+
+            background: rgba(255,255,255,.55);
+
+            border: 1px solid rgba(217,54,54,.14);
+            border-radius: 22px;
+
+            text-align: center;
+        }
+
+        .trash-card .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .trash-card h3 {
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .trash-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .restore-card-btn {
+            border: none;
+            border-radius: 11px;
+
+            padding: 10px 16px;
+
+            background: var(--green);
+            color: white;
+
+            font-weight: 700;
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+        .restore-card-btn:hover {
+            background: var(--green-dark);
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 4000;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(35,30,24,.48);
+
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: min(520px, 100%);
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            padding: 30px;
+
+            background: var(--surface-solid);
+
+            border-radius: 28px;
+
+            box-shadow:
+                0 30px 80px rgba(0,0,0,.20);
+
+            animation: modalIn .25s ease;
+        }
+
+        @keyframes modalIn {
+
+            from {
+                opacity: 0;
+                transform:
+                    translateY(18px)
+                    scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+        .modal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+        }
+
+        .modal-head h2 {
+            font-size: 23px;
+        }
+
+        .close-btn {
+            width: 38px;
+            height: 38px;
+
+            border: none;
+            border-radius: 11px;
+
+            background: #eee8dd;
+
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .field {
+            margin-bottom: 17px;
+        }
+
+        .field label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .field input {
+            width: 100%;
+            height: 50px;
+
+            border: 1px solid var(--border);
+            border-radius: 13px;
+
+            outline: none;
+
+            padding: 0 14px;
+
+            background: #faf8f3;
+            color: var(--text);
+
+            font-size: 14px;
+
+            transition: .2s ease;
+        }
+
+        .field input:focus {
+            border-color: rgba(25,118,210,.45);
+
+            box-shadow:
+                0 0 0 4px rgba(25,118,210,.08);
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+
+            margin-top: 10px;
+        }
+
+        .modal-btn {
+            height: 50px;
+
+            border: none;
+            border-radius: 13px;
+
+            cursor: pointer;
+
+            font-weight: 800;
+        }
+
+        .save-btn {
+            background: var(--dark);
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #eee8dd;
+            color: var(--text);
+        }
+
+        /* =========================
+           CONFIRM CHANGES
+        ========================= */
+
+        .confirm-changes {
+            position: fixed;
+
+            right: 24px;
+            bottom: 24px;
+            z-index: 2500;
+
+            min-height: 55px;
+
+            padding: 0 22px;
+
+            border: none;
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2e8b57,
+                    #247046
+                );
+
+            color: white;
+
+            box-shadow:
+                0 12px 30px rgba(46,139,87,.28);
+
+            font-size: 14px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            transition: .25s ease;
+        }
+
+        .confirm-changes.show {
+            display: flex;
+        }
+
+        .confirm-changes:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 16px 34px rgba(46,139,87,.34);
+        }
+
+        .confirm-changes:active {
+            transform: scale(.96);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .cards-grid,
+            .trash-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .manager-head {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .cards-grid,
+            .trash-list {
+                grid-template-columns: 1fr;
+            }
 
             .navbar {
                 padding: 0 20px;
@@ -262,6 +861,17 @@
 
             .menu {
                 left: 20px;
+            }
+
+            .page {
+                width: min(92%, 1100px);
+                padding-top: 50px;
+            }
+
+            .confirm-changes {
+                right: 15px;
+                left: 15px;
+                bottom: 15px;
             }
         }
     </style>
@@ -306,29 +916,301 @@
 
     </div>
 
-    <!-- EMPTY EMPLOYEE DASHBOARD -->
+    <main class="page">
 
-    <main id="employeeContent"></main>
+        <!-- EMPLOYEE HOME -->
+
+        <section id="employeeHome">
+
+            <div class="hero">
+
+                <span class="badge">
+                    ✦ پنل کارمند
+                </span>
+
+                <h1>
+                    س.ح.ن
+                </h1>
+
+                <p>
+                    مدیریت بخش‌های مختلف سایت
+                </p>
+
+            </div>
+
+            <div class="home-grid">
+
+                <article
+                    class="main-card"
+                    id="manageUserCard"
+                >
+
+                    <div class="icon">
+                        ⚙️
+                    </div>
+
+                    <h2>
+                        تغییرات صفحه کاربر
+                    </h2>
+
+                    <p>
+                        تغییر دادن صفحه کاربر
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- USER PAGE MANAGER -->
+
+        <section id="managerPage">
+
+            <div class="manager-head">
+
+                <div class="manager-title">
+
+                    <h2>
+                        مدیریت صفحه کاربر
+                    </h2>
+
+                    <p>
+                        کارت‌های صفحه کاربر را مدیریت کنید.
+                    </p>
+
+                </div>
+
+                <div class="manager-actions">
+
+                    <button
+                        class="action-btn user-page-btn"
+                        id="openUserPageButton"
+                    >
+                        ↗ صفحه کاربر
+                    </button>
+
+                    <button
+                        class="action-btn trash-btn"
+                        id="openTrashButton"
+                    >
+                        🗑 حذف‌شده‌ها
+                    </button>
+
+                    <button
+                        class="action-btn add-btn"
+                        id="addCardButton"
+                    >
+                        ＋ افزودن کارت
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div
+                class="cards-grid"
+                id="managedCards"
+            ></div>
+
+        </section>
+
+        <!-- TRASH -->
+
+        <section id="trashPage">
+
+            <div class="manager-head">
+
+                <div class="manager-title">
+
+                    <h2>
+                        کارت‌های حذف‌شده
+                    </h2>
+
+                    <p>
+                        کارت‌های حذف‌شده را مشاهده یا بازگردانی کنید.
+                    </p>
+
+                </div>
+
+                <div class="manager-actions">
+
+                    <button
+                        class="action-btn back-btn"
+                        id="backToManagerButton"
+                    >
+                        ← بازگشت
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div
+                class="trash-list"
+                id="trashList"
+            ></div>
+
+        </section>
+
+    </main>
+
+    <!-- ADD / EDIT MODAL -->
+
+    <div
+        class="modal"
+        id="cardModal"
+    >
+
+        <div class="modal-box">
+
+            <div class="modal-head">
+
+                <h2 id="modalTitle">
+                    افزودن کارت
+                </h2>
+
+                <button
+                    class="close-btn"
+                    id="closeModalButton"
+                >
+                    ×
+                </button>
+
+            </div>
+
+            <div class="field">
+
+                <label for="cardTitle">
+                    اسم بزرگ کارت
+                </label>
+
+                <input
+                    id="cardTitle"
+                    type="text"
+                    placeholder="مثلاً کافه"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="cardDescription">
+                    نوشته زیر کارت
+                </label>
+
+                <input
+                    id="cardDescription"
+                    type="text"
+                    placeholder="مثلاً نوشیدنی‌های کافه"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="cardCode">
+                    کد صفحه
+                </label>
+
+                <input
+                    id="cardCode"
+                    type="text"
+                    placeholder="مثلاً cafe"
+                    dir="ltr"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="cardIcon">
+                    آیکن کارت
+                </label>
+
+                <input
+                    id="cardIcon"
+                    type="text"
+                    placeholder="مثلاً ☕"
+                    maxlength="4"
+                >
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    class="modal-btn save-btn"
+                    id="saveCardButton"
+                >
+                    ذخیره
+                </button>
+
+                <button
+                    class="modal-btn cancel-btn"
+                    id="cancelCardButton"
+                >
+                    لغو
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CONFIRM -->
+
+    <button
+        class="confirm-changes"
+        id="confirmChangesButton"
+    >
+        ✓ تأیید تغییرات
+    </button>
 
     <script>
 
-        /* SUPABASE */
+        /* =========================
+           STORAGE KEYS
+        ========================= */
 
-        const SUPABASE_URL =
-            "https://zyziyyhzxsnwzrsubulu.supabase.co";
+        const ACTIVE_CARDS_KEY =
+            "shn_user_active_cards";
 
-        const SUPABASE_ANON_KEY =
-            "sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
+        const DELETED_CARDS_KEY =
+            "shn_user_deleted_cards";
 
-        const { createClient } = supabase;
+        /* =========================
+           DEFAULT CARDS
+        ========================= */
 
-        const supabaseClient =
-            createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
+        const DEFAULT_CARDS = [
+            {
+                id: "library",
+                icon: "📚",
+                title: "کتابخانه",
+                description: "مشاهده محتوای کتابخانه",
+                code: "library"
+            },
+            {
+                id: "cafe",
+                icon: "☕",
+                title: "کافه",
+                description: "نوشیدنی‌های کافه",
+                code: "cafe"
+            },
+            {
+                id: "fun",
+                icon: "😄",
+                title: "خنده و سوال",
+                description: "سرگرمی و سوال",
+                code: "fun"
+            }
+        ];
 
-        /* ELEMENTS */
+        /* =========================
+           ELEMENTS
+        ========================= */
 
         const menuBtn =
             document.getElementById("menuBtn");
@@ -339,7 +1221,165 @@
         const logoutButton =
             document.getElementById("logoutButton");
 
-        /* MENU */
+        const employeeHome =
+            document.getElementById("employeeHome");
+
+        const manageUserCard =
+            document.getElementById("manageUserCard");
+
+        const managerPage =
+            document.getElementById("managerPage");
+
+        const trashPage =
+            document.getElementById("trashPage");
+
+        const managedCards =
+            document.getElementById("managedCards");
+
+        const trashList =
+            document.getElementById("trashList");
+
+        const addCardButton =
+            document.getElementById("addCardButton");
+
+        const openTrashButton =
+            document.getElementById("openTrashButton");
+
+        const backToManagerButton =
+            document.getElementById("backToManagerButton");
+
+        const openUserPageButton =
+            document.getElementById("openUserPageButton");
+
+        const cardModal =
+            document.getElementById("cardModal");
+
+        const closeModalButton =
+            document.getElementById("closeModalButton");
+
+        const cancelCardButton =
+            document.getElementById("cancelCardButton");
+
+        const saveCardButton =
+            document.getElementById("saveCardButton");
+
+        const modalTitle =
+            document.getElementById("modalTitle");
+
+        const cardTitle =
+            document.getElementById("cardTitle");
+
+        const cardDescription =
+            document.getElementById("cardDescription");
+
+        const cardCode =
+            document.getElementById("cardCode");
+
+        const cardIcon =
+            document.getElementById("cardIcon");
+
+        const confirmChangesButton =
+            document.getElementById("confirmChangesButton");
+
+        /* =========================
+           STATE
+        ========================= */
+
+        let activeCards = [];
+        let deletedCards = [];
+
+        let editingId = null;
+
+        let hasPendingChanges = false;
+
+        /* =========================
+           STORAGE
+        ========================= */
+
+        function loadStorage() {
+
+            const savedActive =
+                localStorage.getItem(
+                    ACTIVE_CARDS_KEY
+                );
+
+            const savedDeleted =
+                localStorage.getItem(
+                    DELETED_CARDS_KEY
+                );
+
+            if (savedActive) {
+
+                try {
+
+                    activeCards =
+                        JSON.parse(savedActive);
+
+                } catch {
+
+                    activeCards =
+                        structuredClone(
+                            DEFAULT_CARDS
+                        );
+                }
+
+            } else {
+
+                activeCards =
+                    structuredClone(
+                        DEFAULT_CARDS
+                    );
+            }
+
+            if (savedDeleted) {
+
+                try {
+
+                    deletedCards =
+                        JSON.parse(savedDeleted);
+
+                } catch {
+
+                    deletedCards = [];
+                }
+
+            } else {
+
+                deletedCards = [];
+            }
+        }
+
+        function saveStorage() {
+
+            localStorage.setItem(
+                ACTIVE_CARDS_KEY,
+                JSON.stringify(activeCards)
+            );
+
+            localStorage.setItem(
+                DELETED_CARDS_KEY,
+                JSON.stringify(deletedCards)
+            );
+
+            hasPendingChanges = false;
+
+            confirmChangesButton.classList.remove(
+                "show"
+            );
+        }
+
+        function markChanged() {
+
+            hasPendingChanges = true;
+
+            confirmChangesButton.classList.add(
+                "show"
+            );
+        }
+
+        /* =========================
+           MENU
+        ========================= */
 
         menuBtn.addEventListener(
             "click",
@@ -367,35 +1407,608 @@
             }
         );
 
-        /* LOGOUT */
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        manageUserCard.addEventListener(
+            "click",
+            function() {
+
+                employeeHome.style.display =
+                    "none";
+
+                trashPage.classList.remove(
+                    "show"
+                );
+
+                managerPage.classList.add(
+                    "show"
+                );
+
+                renderCards();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        );
+
+        openTrashButton.addEventListener(
+            "click",
+            function() {
+
+                managerPage.classList.remove(
+                    "show"
+                );
+
+                trashPage.classList.add(
+                    "show"
+                );
+
+                renderTrash();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        );
+
+        backToManagerButton.addEventListener(
+            "click",
+            function() {
+
+                trashPage.classList.remove(
+                    "show"
+                );
+
+                managerPage.classList.add(
+                    "show"
+                );
+
+                renderCards();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        );
+
+        openUserPageButton.addEventListener(
+            "click",
+            function() {
+
+                window.open(
+                    "user-dashboard.html",
+                    "_blank"
+                );
+            }
+        );
+
+        /* =========================
+           RENDER ACTIVE
+        ========================= */
+
+        function renderCards() {
+
+            managedCards.innerHTML = "";
+
+            if (activeCards.length === 0) {
+
+                managedCards.innerHTML = `
+                    <div class="empty-state">
+                        فعلاً هیچ کارتی در صفحه کاربر وجود ندارد.
+                    </div>
+                `;
+
+                return;
+            }
+
+            activeCards.forEach(function(card) {
+
+                const element =
+                    document.createElement("article");
+
+                element.className =
+                    "managed-card";
+
+                element.innerHTML = `
+                    <div class="managed-actions">
+
+                        <button
+                            class="card-action edit-action"
+                            data-action="edit"
+                            data-id="${escapeAttribute(card.id)}"
+                        >
+                            ✎ ویرایش
+                        </button>
+
+                        <button
+                            class="card-action delete-action"
+                            data-action="delete"
+                            data-id="${escapeAttribute(card.id)}"
+                        >
+                            ✕ حذف
+                        </button>
+
+                    </div>
+
+                    <div class="managed-icon">
+                        ${escapeHTML(card.icon || "□")}
+                    </div>
+
+                    <h3>
+                        ${escapeHTML(card.title)}
+                    </h3>
+
+                    <p>
+                        ${escapeHTML(card.description)}
+                    </p>
+
+                    <span class="code-preview">
+                        ${escapeHTML(card.code)}
+                    </span>
+                `;
+
+                managedCards.appendChild(
+                    element
+                );
+            });
+
+            managedCards
+                .querySelectorAll("[data-action]")
+                .forEach(function(button) {
+
+                    button.addEventListener(
+                        "click",
+                        function(event) {
+
+                            event.stopPropagation();
+
+                            const action =
+                                button.dataset.action;
+
+                            const id =
+                                button.dataset.id;
+
+                            if (
+                                action ===
+                                "edit"
+                            ) {
+
+                                editCard(id);
+
+                            } else if (
+                                action ===
+                                "delete"
+                            ) {
+
+                                deleteCard(id);
+                            }
+                        }
+                    );
+                });
+        }
+
+        /* =========================
+           RENDER TRASH
+        ========================= */
+
+        function renderTrash() {
+
+            trashList.innerHTML = "";
+
+            if (deletedCards.length === 0) {
+
+                trashList.innerHTML = `
+                    <div class="empty-state">
+                        هیچ کارت حذف‌شده‌ای وجود ندارد.
+                    </div>
+                `;
+
+                return;
+            }
+
+            deletedCards.forEach(function(card) {
+
+                const element =
+                    document.createElement("article");
+
+                element.className =
+                    "trash-card";
+
+                element.innerHTML = `
+                    <div class="icon">
+                        ${escapeHTML(card.icon || "□")}
+                    </div>
+
+                    <h3>
+                        ${escapeHTML(card.title)}
+                    </h3>
+
+                    <p>
+                        ${escapeHTML(card.description)}
+                    </p>
+
+                    <button
+                        class="restore-card-btn"
+                        data-id="${escapeAttribute(card.id)}"
+                    >
+                        ↶ بازگردانی
+                    </button>
+                `;
+
+                trashList.appendChild(
+                    element
+                );
+            });
+
+            trashList
+                .querySelectorAll(
+                    ".restore-card-btn"
+                )
+                .forEach(function(button) {
+
+                    button.addEventListener(
+                        "click",
+                        function() {
+
+                            restoreCard(
+                                button.dataset.id
+                            );
+                        }
+                    );
+                });
+        }
+
+        /* =========================
+           ADD CARD
+        ========================= */
+
+        addCardButton.addEventListener(
+            "click",
+            function() {
+
+                editingId = null;
+
+                modalTitle.textContent =
+                    "افزودن کارت";
+
+                saveCardButton.textContent =
+                    "ساخت کارت";
+
+                cardTitle.value = "";
+                cardDescription.value = "";
+                cardCode.value = "";
+                cardIcon.value = "";
+
+                cardModal.classList.add(
+                    "show"
+                );
+            }
+        );
+
+        /* =========================
+           EDIT CARD
+        ========================= */
+
+        function editCard(id) {
+
+            const card =
+                activeCards.find(
+                    function(item) {
+                        return item.id === id;
+                    }
+                );
+
+            if (!card) {
+                return;
+            }
+
+            editingId = id;
+
+            modalTitle.textContent =
+                "ویرایش کارت";
+
+            saveCardButton.textContent =
+                "ذخیره تغییرات";
+
+            cardTitle.value =
+                card.title || "";
+
+            cardDescription.value =
+                card.description || "";
+
+            cardCode.value =
+                card.code || "";
+
+            cardIcon.value =
+                card.icon || "";
+
+            cardModal.classList.add(
+                "show"
+            );
+        }
+
+        /* =========================
+           SAVE CARD
+        ========================= */
+
+        saveCardButton.addEventListener(
+            "click",
+            function() {
+
+                const title =
+                    cardTitle.value.trim();
+
+                const description =
+                    cardDescription.value.trim();
+
+                const code =
+                    cardCode.value.trim();
+
+                const icon =
+                    cardIcon.value.trim();
+
+                if (!title) {
+
+                    cardTitle.focus();
+                    return;
+                }
+
+                if (!description) {
+
+                    cardDescription.focus();
+                    return;
+                }
+
+                if (!code) {
+
+                    cardCode.focus();
+                    return;
+                }
+
+                if (!icon) {
+
+                    cardIcon.focus();
+                    return;
+                }
+
+                if (editingId) {
+
+                    const index =
+                        activeCards.findIndex(
+                            function(item) {
+                                return (
+                                    item.id ===
+                                    editingId
+                                );
+                            }
+                        );
+
+                    if (index !== -1) {
+
+                        activeCards[index] = {
+                            ...activeCards[index],
+                            title,
+                            description,
+                            code,
+                            icon
+                        };
+                    }
+
+                } else {
+
+                    const newCard = {
+                        id:
+                            createId(),
+
+                        title,
+                        description,
+                        code,
+                        icon
+                    };
+
+                    activeCards.push(
+                        newCard
+                    );
+                }
+
+                markChanged();
+
+                closeModal();
+
+                renderCards();
+            }
+        );
+
+        /* =========================
+           DELETE
+        ========================= */
+
+        function deleteCard(id) {
+
+            const index =
+                activeCards.findIndex(
+                    function(item) {
+                        return item.id === id;
+                    }
+                );
+
+            if (index === -1) {
+                return;
+            }
+
+            const removed =
+                activeCards.splice(
+                    index,
+                    1
+                )[0];
+
+            deletedCards.unshift(
+                removed
+            );
+
+            markChanged();
+
+            renderCards();
+        }
+
+        /* =========================
+           RESTORE
+        ========================= */
+
+        function restoreCard(id) {
+
+            const index =
+                deletedCards.findIndex(
+                    function(item) {
+                        return item.id === id;
+                    }
+                );
+
+            if (index === -1) {
+                return;
+            }
+
+            const restored =
+                deletedCards.splice(
+                    index,
+                    1
+                )[0];
+
+            activeCards.push(
+                restored
+            );
+
+            markChanged();
+
+            renderTrash();
+        }
+
+        /* =========================
+           MODAL CLOSE
+        ========================= */
+
+        function closeModal() {
+
+            cardModal.classList.remove(
+                "show"
+            );
+
+            editingId = null;
+        }
+
+        closeModalButton.addEventListener(
+            "click",
+            closeModal
+        );
+
+        cancelCardButton.addEventListener(
+            "click",
+            closeModal
+        );
+
+        cardModal.addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    event.target ===
+                    cardModal
+                ) {
+
+                    closeModal();
+                }
+            }
+        );
+
+        /* =========================
+           CONFIRM CHANGES
+        ========================= */
+
+        confirmChangesButton.addEventListener(
+            "click",
+            function() {
+
+                saveStorage();
+
+                managerPage.classList.remove(
+                    "show"
+                );
+
+                trashPage.classList.remove(
+                    "show"
+                );
+
+                employeeHome.style.display =
+                    "block";
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+                renderCards();
+                renderTrash();
+            }
+        );
+
+        /* =========================
+           LOGOUT
+        ========================= */
 
         logoutButton.addEventListener(
             "click",
-            async function() {
-
-                logoutButton.disabled = true;
-
-                const {
-                    error
-                } =
-                    await supabaseClient.auth.signOut();
-
-                if (error) {
-
-                    console.error(
-                        "خطا در خروج:",
-                        error
-                    );
-
-                    logoutButton.disabled = false;
-
-                    return;
-                }
+            function() {
 
                 window.location.href =
                     "index.html";
             }
         );
+
+        /* =========================
+           HELPERS
+        ========================= */
+
+        function createId() {
+
+            return (
+                "card_" +
+                Date.now() +
+                "_" +
+                Math.random()
+                    .toString(36)
+                    .slice(2, 9)
+            );
+        }
+
+        function escapeHTML(value) {
+
+            return String(value)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        function escapeAttribute(value) {
+
+            return escapeHTML(value);
+        }
+
+        /* =========================
+           INIT
+        ========================= */
+
+        loadStorage();
+
+        renderCards();
+        renderTrash();
 
     </script>
 
