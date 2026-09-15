@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -6,11 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>س.ح.ن</title>
+    <meta name="description" content="س.ح.ن">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+        @font-face {
+            font-family: "Lalezar";
+            src: url("./Lalezar-Regular.ttf") format("truetype");
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
 
         :root {
             --bg: #f5f1e8;
@@ -18,16 +24,19 @@
             --surface-solid: #fffdf8;
             --text: #292722;
             --muted: #777268;
+            --accent: #d77b32;
             --accent-dark: #a9531c;
             --dark: #292824;
             --border: rgba(67, 58, 47, 0.12);
             --shadow: 0 20px 50px rgba(54, 44, 31, 0.10);
+            --danger: #c94b43;
+            --success: #4f8055;
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         html {
@@ -36,17 +45,12 @@
 
         body {
             min-height: 100vh;
-            font-family: "Vazirmatn", Tahoma, sans-serif;
+            font-family: Tahoma, Arial, sans-serif;
             color: var(--text);
-
             background:
-                radial-gradient(circle at 10% 10%, rgba(215, 123, 50, .12), transparent 25%),
-                radial-gradient(circle at 90% 80%, rgba(167, 130, 87, .12), transparent 28%),
+                radial-gradient(circle at 8% 10%, rgba(215,123,50,.11), transparent 28%),
+                radial-gradient(circle at 92% 18%, rgba(255,185,0,.09), transparent 28%),
                 var(--bg);
-        }
-
-        body.modal-open {
-            overflow: hidden;
         }
 
         button,
@@ -54,70 +58,50 @@
             font-family: inherit;
         }
 
-        /* NAVBAR */
+        button {
+            border: 0;
+        }
 
         .navbar {
             position: sticky;
             top: 0;
             z-index: 1000;
-
             height: 82px;
             padding: 0 6%;
-
             display: flex;
             align-items: center;
             justify-content: space-between;
-
             background: rgba(255, 252, 245, 0.82);
-
-            border-bottom: 1px solid rgba(67, 58, 47, 0.12);
-
+            border-bottom: 1px solid var(--border);
             box-shadow: 0 8px 25px rgba(54, 44, 31, 0.08);
-
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
         }
 
         .brand {
-            font-size: 25px;
-            font-weight: 800;
-            letter-spacing: -1px;
+            font-family: "Lalezar", Tahoma, sans-serif;
+            font-size: 32px;
         }
 
         .menu-btn {
             width: 56px;
             height: 56px;
-
-            border: 1px solid rgba(67, 58, 47, 0.12);
+            border: 1px solid var(--border);
             border-radius: 30%;
-
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 5px;
-
             background: linear-gradient(145deg, #3f3a34, #211f1c);
-
             box-shadow:
                 0 8px 20px rgba(45, 35, 25, 0.20),
-                inset 0 1px 1px rgba(255, 255, 255, 0.16);
-
+                inset 0 1px 1px rgba(255,255,255,.16);
             cursor: pointer;
             transition: .25s ease;
         }
 
         .menu-btn:hover {
-            transform: translateY(-2px) scale(1.06);
-
-            background: linear-gradient(145deg, #514a42, #292520);
-
-            box-shadow:
-                0 12px 28px rgba(45, 35, 25, 0.28),
-                inset 0 1px 1px rgba(255, 255, 255, 0.20);
-        }
-
-        .menu-btn:active {
-            transform: scale(.93);
+            transform: translateY(-2px);
         }
 
         .menu-btn span {
@@ -125,587 +109,386 @@
             height: 7px;
             border-radius: 50%;
             background: #fffdf8;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
         }
 
-        /* MENU */
-
-        .menu {
+        .dropdown {
             position: fixed;
             top: 94px;
             left: 6%;
-            z-index: 2500;
-
-            width: 255px;
+            width: 250px;
             padding: 10px;
-
-            background: rgba(255, 253, 248, .95);
+            z-index: 1300;
             border: 1px solid var(--border);
             border-radius: 20px;
-
+            background: rgba(255,252,245,.96);
             box-shadow: var(--shadow);
-
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-
+            backdrop-filter: blur(18px);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px) scale(.96);
-
-            transition: .25s ease;
+            transform: translateY(-10px) scale(.98);
+            transition: .22s ease;
         }
 
-        .menu.show {
+        .dropdown.open {
             opacity: 1;
             visibility: visible;
             transform: translateY(0) scale(1);
         }
 
-        .menu-item {
+        .dropdown button {
             width: 100%;
-            min-height: 50px;
-
             display: flex;
             align-items: center;
-            gap: 12px;
-
-            padding: 0 14px;
-
-            border: 0;
+            justify-content: flex-start;
+            gap: 10px;
+            padding: 14px;
+            margin: 2px 0;
             border-radius: 13px;
-
             background: transparent;
             color: var(--text);
-
             cursor: pointer;
-
-            font-size: 14px;
-            font-weight: 600;
-
-            transition: .2s ease;
-        }
-
-        .menu-item:hover {
-            background: #f3eee5;
-            transform: translateX(-3px);
-        }
-
-        .menu-icon {
-            width: 30px;
-            height: 30px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 10px;
-
-            background: #eee7da;
-
-            font-size: 16px;
-        }
-
-        /* MAIN */
-
-        main {
-            width: min(1100px, 90%);
-            margin: auto;
-            padding: 85px 0 70px;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 55px;
-        }
-
-        .badge {
-            display: inline-block;
-
-            padding: 8px 15px;
-            margin-bottom: 20px;
-
-            border-radius: 999px;
-
-            background: rgba(215, 123, 50, .10);
-            border: 1px solid rgba(215, 123, 50, .18);
-
-            color: var(--accent-dark);
-
             font-size: 13px;
-            font-weight: 700;
+            text-align: right;
         }
 
-        h1 {
-            font-size: clamp(34px, 6vw, 62px);
-            line-height: 1.2;
-            margin-bottom: 18px;
-            letter-spacing: -2px;
+        .dropdown button:hover {
+            background: #f1eade;
         }
 
-        .hero p {
-            max-width: 620px;
-            margin: auto;
-
-            color: var(--muted);
-
-            font-size: 16px;
-            line-height: 2;
-        }
-
-        .role-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-
-            max-width: 780px;
-            margin: auto;
-        }
-
-        .role-card {
-            min-height: 245px;
-            padding: 34px;
-
-            background: var(--surface);
-
-            border: 1px solid var(--border);
-            border-radius: 28px;
-
-            box-shadow: var(--shadow);
-
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-
+        .dropdown-icon {
+            width: 25px;
             text-align: center;
-
-            transition: .3s ease;
-        }
-
-        .role-card:hover {
-            transform: translateY(-8px);
-
-            box-shadow:
-                0 28px 60px rgba(54, 44, 31, .15);
-        }
-
-        .role-icon {
-            font-size: 48px;
-            margin-bottom: 17px;
-        }
-
-        .role-card h2 {
-            font-size: 23px;
-            margin-bottom: 9px;
-        }
-
-        .role-card p {
-            color: var(--muted);
-            font-size: 14px;
-            margin-bottom: 22px;
-        }
-
-        .role-card button {
-            border: none;
-            border-radius: 13px;
-
-            padding: 12px 28px;
-
-            background: var(--dark);
-            color: white;
-
-            font-size: 14px;
-            font-weight: 700;
-
-            cursor: pointer;
-            transition: .2s ease;
-        }
-
-        .role-card button:hover {
-            background: #403a34;
-            transform: translateY(-2px);
-        }
-
-        /* MODAL */
-
-        .modal {
-            position: fixed;
-            inset: 0;
-            z-index: 3500;
-
-            display: none;
-            align-items: center;
-            justify-content: center;
-
-            padding: 20px;
-
-            background: rgba(35, 30, 24, .48);
-
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-box {
-            width: min(440px, 100%);
-            max-height: 90vh;
-            overflow-y: auto;
-
-            padding: 30px;
-
-            background: var(--surface-solid);
-
-            border-radius: 28px;
-
-            box-shadow:
-                0 30px 80px rgba(0, 0, 0, .20);
-
-            animation: modalIn .25s ease;
-        }
-
-        @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(.97);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .modal-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            margin-bottom: 24px;
-        }
-
-        .modal-top h2 {
-            font-size: 22px;
-        }
-
-        .close-btn {
-            width: 38px;
-            height: 38px;
-
-            border: none;
-            border-radius: 12px;
-
-            background: #eee8dd;
-
-            cursor: pointer;
             font-size: 18px;
         }
 
-        /* TABS */
+        .hero {
+            min-height: calc(100vh - 82px);
+            padding: 70px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-inner {
+            width: min(1100px, 100%);
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            padding: 9px 16px;
+            border-radius: 999px;
+            background: rgba(215,123,50,.10);
+            color: var(--accent-dark);
+            border: 1px solid rgba(215,123,50,.16);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-family: "Lalezar", Tahoma, sans-serif;
+            font-size: clamp(45px, 7vw, 78px);
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            max-width: 600px;
+            margin: 0 auto 45px;
+            color: var(--muted);
+            line-height: 2;
+            font-size: 15px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            min-height: 220px;
+            padding: 28px;
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 28px 55px rgba(54,44,31,.14);
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 22px;
+            display: grid;
+            place-items: center;
+            background: #f1e8dc;
+            font-size: 31px;
+            margin-bottom: 17px;
+        }
+
+        .card h3 {
+            font-family: "Lalezar", Tahoma, sans-serif;
+            font-size: 27px;
+            margin-bottom: 7px;
+        }
+
+        .card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.9;
+            margin: 0;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(28,25,21,.48);
+            backdrop-filter: blur(7px);
+            opacity: 0;
+            visibility: hidden;
+            transition: .25s ease;
+        }
+
+        .overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            width: min(470px, 100%);
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 30px;
+            border-radius: 28px;
+            background: var(--surface-solid);
+            border: 1px solid var(--border);
+            box-shadow: 0 35px 90px rgba(35,28,20,.24);
+            transform: translateY(18px) scale(.98);
+            transition: .25s ease;
+        }
+
+        .overlay.open .modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .modal-header h2 {
+            font-family: "Lalezar", Tahoma, sans-serif;
+            font-size: 30px;
+        }
+
+        .close-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: #eee7dd;
+            cursor: pointer;
+            font-size: 21px;
+            color: var(--text);
+        }
 
         .tabs {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-
+            grid-template-columns: repeat(3,1fr);
+            gap: 6px;
             padding: 5px;
-            margin-bottom: 22px;
-
-            border-radius: 14px;
-
-            background: #eee8dd;
+            background: #f0e9df;
+            border-radius: 15px;
+            margin-bottom: 20px;
         }
 
         .tab {
-            border: none;
-
-            padding: 11px;
-
-            border-radius: 10px;
-
+            padding: 11px 7px;
+            border-radius: 11px;
             background: transparent;
             color: var(--muted);
-
             cursor: pointer;
-
-            font-weight: 700;
+            font-size: 12px;
         }
 
         .tab.active {
-            background: white;
             color: var(--text);
-
-            box-shadow:
-                0 4px 12px rgba(0, 0, 0, .06);
+            background: var(--surface-solid);
+            box-shadow: 0 3px 10px rgba(54,44,31,.07);
         }
 
-        /* FORM */
+        .form {
+            display: none;
+        }
+
+        .form.active {
+            display: block;
+        }
 
         .field {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .field label {
             display: block;
-
             margin-bottom: 7px;
-
             font-size: 13px;
-            font-weight: 700;
+        }
+
+        .field input {
+            width: 100%;
+            height: 48px;
+            padding: 0 14px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: #fffefa;
+            color: var(--text);
+            outline: none;
+            font-size: 13px;
+            transition: .2s;
+        }
+
+        .field input:focus {
+            border-color: rgba(215,123,50,.55);
+            box-shadow: 0 0 0 4px rgba(215,123,50,.09);
         }
 
         .password-wrap {
             position: relative;
         }
 
-        .field input {
-            width: 100%;
-            height: 50px;
-
-            border: 1px solid var(--border);
-            border-radius: 13px;
-
-            outline: none;
-
-            padding: 0 50px 0 14px;
-
-            background: #faf8f3;
-            color: var(--text);
-
-            font-size: 14px;
-
-            transition: .2s ease;
+        .password-wrap input {
+            padding-left: 48px;
         }
 
-        .field input:focus {
-            border-color: rgba(215,123,50,.6);
-
-            box-shadow:
-                0 0 0 4px rgba(215,123,50,.09);
-        }
-
-        .eye-btn {
+        .eye {
             position: absolute;
-
+            left: 8px;
             top: 50%;
-            right: 8px;
-
-            width: 36px;
-            height: 36px;
-
             transform: translateY(-50%);
-
-            border: none;
+            width: 34px;
+            height: 34px;
             border-radius: 10px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: transparent;
             color: var(--muted);
-
-            font-size: 18px;
-
+            background: transparent;
             cursor: pointer;
-        }
-
-        .eye-btn:hover {
-            background: #eee8dd;
         }
 
         .submit-btn {
             width: 100%;
-            height: 52px;
-
-            margin-top: 7px;
-
-            border: none;
-            border-radius: 14px;
-
-            background: var(--dark);
+            height: 50px;
+            margin-top: 5px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, var(--accent), #e28f42);
             color: white;
-
-            font-size: 15px;
-            font-weight: 800;
-
             cursor: pointer;
-
-            transition: .2s ease;
-        }
-
-        .submit-btn:hover {
-            background: #403a34;
-        }
-
-        .submit-btn:disabled {
-            opacity: .6;
-            cursor: wait;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 12px 24px rgba(215,123,50,.20);
         }
 
         .message {
-            display: none;
-
-            margin-top: 14px;
-            padding: 12px;
-
-            border-radius: 12px;
-
-            background: #f4eee5;
-            color: var(--text);
-
-            font-size: 13px;
-            line-height: 1.8;
-
+            min-height: 23px;
+            margin-top: 12px;
             text-align: center;
-        }
-
-        /* SUPPORT */
-
-        .support-page {
-            position: fixed;
-            inset: 0;
-            z-index: 3000;
-
-            display: none;
-            overflow-y: auto;
-
-            padding: 100px 20px 50px;
-
-            background:
-                radial-gradient(circle at 10% 10%, rgba(215,123,50,.12), transparent 25%),
-                radial-gradient(circle at 90% 80%, rgba(167,130,87,.12), transparent 28%),
-                var(--bg);
-        }
-
-        .support-page.show {
-            display: block;
-        }
-
-        .support-box {
-            width: min(650px,100%);
-            margin: auto;
-
-            padding: 35px;
-
-            background: var(--surface);
-
-            border: 1px solid var(--border);
-            border-radius: 30px;
-
-            box-shadow: var(--shadow);
-
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-
-            text-align: center;
-        }
-
-        .support-icon {
-            font-size: 52px;
-            margin-bottom: 15px;
-        }
-
-        .support-box h2 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .support-box > p {
-            color: var(--muted);
-
-            line-height: 1.9;
-
-            margin-bottom: 28px;
-        }
-
-        .phone-list {
-            display: grid;
-            gap: 13px;
-        }
-
-        .phone {
-            min-height: 65px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 0 20px;
-
-            border-radius: 17px;
-
-            background: #fffdf8;
-
-            border: 1px solid var(--border);
-
-            color: var(--text);
-
-            text-decoration: none;
-
-            font-size: 18px;
-            font-weight: 800;
-
-            direction: ltr;
-
-            transition: .2s ease;
-        }
-
-        .phone:hover {
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 10px 25px rgba(54,44,31,.08);
-        }
-
-        .phone small {
-            direction: rtl;
-            color: var(--muted);
-
             font-size: 12px;
-            font-weight: 600;
+            line-height: 1.8;
         }
 
-        .back-support {
-            margin-top: 25px;
+        .error {
+            color: var(--danger);
+        }
 
-            border: none;
-            border-radius: 13px;
+        .success {
+            color: var(--success);
+        }
 
-            padding: 12px 25px;
+        .support-description {
+            color: var(--muted);
+            line-height: 2;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
 
+        .support-number {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 15px;
+            border-radius: 16px;
+            background: #f4ede4;
+            border: 1px solid var(--border);
+        }
+
+        .support-number strong {
+            direction: ltr;
+            unicode-bidi: plaintext;
+        }
+
+        .support-number a {
+            text-decoration: none;
             background: var(--dark);
             color: white;
-
-            font-weight: 700;
-
-            cursor: pointer;
+            border-radius: 11px;
+            padding: 9px 14px;
+            font-size: 12px;
         }
 
-        @media (max-width: 700px) {
-
-            .role-grid {
+        @media (max-width: 850px) {
+            .cards {
                 grid-template-columns: 1fr;
             }
+        }
 
+        @media (max-width: 520px) {
             .navbar {
+                height: 74px;
                 padding: 0 20px;
             }
 
-            .menu {
+            .menu-btn {
+                width: 50px;
+                height: 50px;
+            }
+
+            .dropdown {
+                top: 84px;
                 left: 20px;
+                right: 20px;
+                width: auto;
             }
 
-            main {
-                padding-top: 55px;
+            .hero {
+                padding: 45px 20px;
             }
 
-            .support-box {
-                padding: 25px 18px;
+            .tabs {
+                grid-template-columns: 1fr;
+            }
+
+            .modal {
+                padding: 22px;
+                border-radius: 23px;
             }
         }
     </style>
@@ -713,1153 +496,564 @@
 
 <body>
 
-    <nav class="navbar">
+<header class="navbar">
+    <div class="brand">س.ح.ن</div>
 
-        <div class="brand">
-            س.ح.ن
-        </div>
+    <button class="menu-btn" id="menuBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+</header>
 
-        <button
-            class="menu-btn"
-            id="menuBtn"
-            aria-label="منو"
-        >
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+<div class="dropdown" id="dropdownMenu">
 
-    </nav>
+    <button onclick="openSupport()">
+        <span class="dropdown-icon">☎</span>
+        <span>تماس با پشتیبانی</span>
+    </button>
 
-    <div
-        class="menu"
-        id="menu"
-    >
+    <button onclick="openSupport()">
+        <span class="dropdown-icon">✉</span>
+        <span>پیام به پشتیبانی</span>
+    </button>
 
-        <button
-            class="menu-item"
-            id="callSupportBtn"
-        >
-            <span class="menu-icon">☎</span>
-            <span>تماس با پشتیبانی</span>
-        </button>
+    <button onclick="openAuth('employee')">
+        <span class="dropdown-icon">↪</span>
+        <span>ورود کارمند</span>
+    </button>
 
-        <button
-            class="menu-item"
-            id="messageSupportBtn"
-        >
-            <span class="menu-icon">✉</span>
-            <span>پیام به پشتیبانی</span>
-        </button>
+    <button onclick="logout()">
+        <span class="dropdown-icon">↩</span>
+        <span>خروج از پنل</span>
+    </button>
 
-    </div>
+</div>
 
-    <main>
+<main class="hero">
+    <div class="hero-inner">
 
-        <section class="hero">
+        <div class="badge">✦ به دنیای س.ح.ن خوش آمدید</div>
 
-            <span class="badge">
-                ✦ به دنیای س.ح.ن خوش آمدید
-            </span>
+        <h1>س.ح.ن</h1>
 
-            <h1>
-                س.ح.ن
-            </h1>
+        <p>
+            برای ورود به بخش کاربری یا ساخت یک حساب جدید، گزینه موردنظر را انتخاب کنید.
+        </p>
 
-            <p>
-                برای ورود، نوع حساب خود را انتخاب کنید.
-            </p>
+        <div class="cards">
 
-        </section>
-
-        <section class="role-grid">
-
-            <article class="role-card">
-
-                <div class="role-icon">
-                    💼
-                </div>
-
-                <h2>
-                    کارمند
-                </h2>
-
-                <p>
-                    ورود به پنل کارمندان
-                </p>
-
-                <button id="employeeLoginButton">
-                    ورود
-                </button>
-
-            </article>
-
-            <article class="role-card">
-
-                <div class="role-icon">
-                    👤
-                </div>
-
-                <h2>
-                    کاربر
-                </h2>
-
-                <p>
-                    ورود به پنل کاربری
-                </p>
-
-                <button id="userLoginButton">
-                    ورود
-                </button>
-
-            </article>
-
-        </section>
-
-    </main>
-
-    <!-- USER AUTH -->
-
-    <div
-        class="modal"
-        id="userAuthModal"
-    >
-
-        <div class="modal-box">
-
-            <div class="modal-top">
-
-                <h2 id="userAuthTitle">
-                    ورود
-                </h2>
-
-                <button
-                    class="close-btn"
-                    id="closeUserAuth"
-                >
-                    ×
-                </button>
-
+            <div class="card" onclick="openAuth('login')">
+                <div class="card-icon">🔐</div>
+                <h3>حساب دارم</h3>
+                <p>ورود با جیمیل و رمز عبور</p>
             </div>
 
-            <div class="tabs">
-
-                <button
-                    class="tab active"
-                    id="loginTab"
-                >
-                    حساب دارم
-                </button>
-
-                <button
-                    class="tab"
-                    id="signupTab"
-                >
-                    حساب ندارم
-                </button>
-
+            <div class="card" onclick="openAuth('signup')">
+                <div class="card-icon">✨</div>
+                <h3>حساب ندارم</h3>
+                <p>ساخت حساب جدید</p>
             </div>
 
-            <form id="userAuthForm">
-
-                <div class="field">
-
-                    <label for="userEmail">
-                        ایمیل
-                    </label>
-
-                    <input
-                        id="userEmail"
-                        type="email"
-                        autocomplete="email"
-                        required
-                    >
-
-                </div>
-
-                <div class="field">
-
-                    <label for="userPassword">
-                        رمز عبور
-                    </label>
-
-                    <div class="password-wrap">
-
-                        <input
-                            id="userPassword"
-                            type="password"
-                            autocomplete="current-password"
-                            minlength="6"
-                            required
-                        >
-
-                        <button
-                            type="button"
-                            class="eye-btn"
-                            id="userEyeBtn"
-                        >
-                            👁
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <button
-                    class="submit-btn"
-                    id="userSubmitBtn"
-                    type="submit"
-                >
-                    ورود
-                </button>
-
-                <div
-                    class="message"
-                    id="userAuthMessage"
-                ></div>
-
-            </form>
+            <div class="card" onclick="openAuth('employee')">
+                <div class="card-icon">👤</div>
+                <h3>ورود کارمند</h3>
+                <p>ورود به پنل کارمند</p>
+            </div>
 
         </div>
 
     </div>
+</main>
 
-    <!-- EMPLOYEE AUTH -->
+<!-- AUTH -->
+<div class="overlay" id="authOverlay">
 
-    <div
-        class="modal"
-        id="employeeModal"
-    >
+    <div class="modal">
 
-        <div class="modal-box">
-
-            <div class="modal-top">
-
-                <h2>
-                    ورود کارمند
-                </h2>
-
-                <button
-                    class="close-btn"
-                    id="closeEmployeeModal"
-                >
-                    ×
-                </button>
-
-            </div>
-
-            <form id="employeeForm">
-
-                <div class="field">
-
-                    <label for="employeeCode">
-                        کد عبور
-                    </label>
-
-                    <div class="password-wrap">
-
-                        <input
-                            id="employeeCode"
-                            type="password"
-                            autocomplete="off"
-                            required
-                        >
-
-                        <button
-                            type="button"
-                            class="eye-btn"
-                            id="employeeEyeBtn"
-                        >
-                            👁
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <button
-                    class="submit-btn"
-                    id="employeeSubmitBtn"
-                    type="submit"
-                >
-                    ورود
-                </button>
-
-                <div
-                    class="message"
-                    id="employeeMessage"
-                ></div>
-
-            </form>
-
+        <div class="modal-header">
+            <h2 id="authTitle">ورود به حساب</h2>
+            <button class="close-btn" onclick="closeAuth()">×</button>
         </div>
 
-    </div>
+        <div class="tabs">
 
-    <!-- SUPPORT -->
+            <button class="tab active" data-type="login"
+                    onclick="switchAuth('login')">
+                حساب دارم
+            </button>
 
-    <section
-        class="support-page"
-        id="supportPage"
-    >
+            <button class="tab" data-type="signup"
+                    onclick="switchAuth('signup')">
+                حساب ندارم
+            </button>
 
-        <div class="support-box">
-
-            <div
-                class="support-icon"
-                id="supportIcon"
-            >
-                ☎
-            </div>
-
-            <h2 id="supportTitle">
-                تماس با پشتیبانی
-            </h2>
-
-            <p id="supportDescription">
-                برای ارتباط با پشتیبانی می‌توانید با یکی از شماره‌های زیر تماس بگیرید.
-            </p>
-
-            <div class="phone-list">
-
-                <a
-                    class="phone"
-                    href="tel:09122162177"
-                >
-                    <span>09122162177</span>
-                    <small>تماس</small>
-                </a>
-
-                <a
-                    class="phone"
-                    href="tel:09122940829"
-                >
-                    <span>09122940829</span>
-                    <small>تماس</small>
-                </a>
-
-            </div>
-
-            <button
-                class="back-support"
-                id="backSupportBtn"
-            >
-                بازگشت
+            <button class="tab" data-type="employee"
+                    onclick="switchAuth('employee')">
+                کارمند
             </button>
 
         </div>
 
-    </section>
+        <!-- LOGIN -->
+        <form class="form active" id="loginForm">
 
-    <script>
+            <div class="field">
+                <label>جیمیل</label>
+                <input
+                    id="loginEmail"
+                    type="email"
+                    placeholder="example@gmail.com"
+                    autocomplete="email"
+                    required
+                >
+            </div>
 
-        const SUPABASE_URL =
-            "https://zyziyyhzxsnwzrsubulu.supabase.co";
+            <div class="field">
+                <label>رمز عبور</label>
 
-        const SUPABASE_ANON_KEY =
-            "sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
+                <div class="password-wrap">
+                    <input
+                        id="loginPassword"
+                        type="password"
+                        placeholder="رمز عبور"
+                        autocomplete="current-password"
+                        required
+                    >
 
-        const {
-            createClient
-        } = supabase;
+                    <button type="button" class="eye"
+                            onclick="togglePassword('loginPassword',this)">
+                        ◉
+                    </button>
+                </div>
+            </div>
 
-        const supabaseClient =
-            createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
+            <button class="submit-btn" type="submit">
+                ورود به حساب
+            </button>
 
-        /* ELEMENTS */
+            <div id="loginMessage" class="message"></div>
 
-        const menuBtn =
-            document.getElementById("menuBtn");
+        </form>
 
-        const menu =
-            document.getElementById("menu");
+        <!-- SIGNUP -->
+        <form class="form" id="signupForm">
 
-        const employeeLoginButton =
-            document.getElementById(
-                "employeeLoginButton"
-            );
+            <div class="field">
+                <label>نام</label>
+                <input
+                    id="signupFirstName"
+                    type="text"
+                    placeholder="نام"
+                    autocomplete="given-name"
+                    required
+                >
+            </div>
 
-        const userLoginButton =
-            document.getElementById(
-                "userLoginButton"
-            );
+            <div class="field">
+                <label>نام خانوادگی</label>
+                <input
+                    id="signupLastName"
+                    type="text"
+                    placeholder="نام خانوادگی"
+                    autocomplete="family-name"
+                    required
+                >
+            </div>
 
-        const employeeModal =
-            document.getElementById(
-                "employeeModal"
-            );
+            <div class="field">
+                <label>شماره تلفن</label>
+                <input
+                    id="signupPhone"
+                    type="tel"
+                    placeholder="0912..."
+                    autocomplete="tel"
+                    required
+                >
+            </div>
 
-        const userAuthModal =
-            document.getElementById(
-                "userAuthModal"
-            );
+            <div class="field">
+                <label>جیمیل</label>
+                <input
+                    id="signupEmail"
+                    type="email"
+                    placeholder="example@gmail.com"
+                    autocomplete="email"
+                    required
+                >
+            </div>
 
-        const closeEmployeeModal =
-            document.getElementById(
-                "closeEmployeeModal"
-            );
+            <div class="field">
+                <label>رمز عبور</label>
 
-        const closeUserAuth =
-            document.getElementById(
-                "closeUserAuth"
-            );
+                <div class="password-wrap">
+                    <input
+                        id="signupPassword"
+                        type="password"
+                        placeholder="رمز عبور"
+                        autocomplete="new-password"
+                        required
+                    >
 
-        const employeeForm =
-            document.getElementById(
-                "employeeForm"
-            );
+                    <button type="button" class="eye"
+                            onclick="togglePassword('signupPassword',this)">
+                        ◉
+                    </button>
+                </div>
+            </div>
 
-        const userAuthForm =
-            document.getElementById(
-                "userAuthForm"
-            );
+            <div class="field">
+                <label>تکرار رمز عبور</label>
 
-        const employeeCode =
-            document.getElementById(
-                "employeeCode"
-            );
+                <div class="password-wrap">
+                    <input
+                        id="signupPasswordRepeat"
+                        type="password"
+                        placeholder="تکرار رمز عبور"
+                        autocomplete="new-password"
+                        required
+                    >
 
-        const employeeEyeBtn =
-            document.getElementById(
-                "employeeEyeBtn"
-            );
+                    <button type="button" class="eye"
+                            onclick="togglePassword('signupPasswordRepeat',this)">
+                        ◉
+                    </button>
+                </div>
+            </div>
 
-        const userPassword =
-            document.getElementById(
-                "userPassword"
-            );
+            <button class="submit-btn" type="submit">
+                ساخت حساب
+            </button>
 
-        const userEyeBtn =
-            document.getElementById(
-                "userEyeBtn"
-            );
+            <div id="signupMessage" class="message"></div>
 
-        const employeeSubmitBtn =
-            document.getElementById(
-                "employeeSubmitBtn"
-            );
+        </form>
 
-        const employeeMessage =
-            document.getElementById(
-                "employeeMessage"
-            );
+        <!-- EMPLOYEE -->
+        <form class="form" id="employeeForm">
 
-        const userSubmitBtn =
-            document.getElementById(
-                "userSubmitBtn"
-            );
+            <div class="field">
+                <label>کد کارمند</label>
 
-        const userAuthMessage =
-            document.getElementById(
-                "userAuthMessage"
-            );
+                <div class="password-wrap">
+                    <input
+                        id="employeeCode"
+                        type="password"
+                        placeholder="کد کارمند"
+                        autocomplete="off"
+                        required
+                    >
 
-        const loginTab =
-            document.getElementById(
-                "loginTab"
-            );
+                    <button type="button" class="eye"
+                            onclick="togglePassword('employeeCode',this)">
+                        ◉
+                    </button>
+                </div>
+            </div>
 
-        const signupTab =
-            document.getElementById(
-                "signupTab"
-            );
+            <button class="submit-btn" type="submit">
+                ورود به پنل کارمند
+            </button>
 
-        const userAuthTitle =
-            document.getElementById(
-                "userAuthTitle"
-            );
+            <div id="employeeMessage" class="message"></div>
 
-        const callSupportBtn =
-            document.getElementById(
-                "callSupportBtn"
-            );
+        </form>
 
-        const messageSupportBtn =
-            document.getElementById(
-                "messageSupportBtn"
-            );
+    </div>
+</div>
 
-        const supportPage =
-            document.getElementById(
-                "supportPage"
-            );
+<!-- SUPPORT -->
+<div class="overlay" id="supportOverlay">
 
-        const supportIcon =
-            document.getElementById(
-                "supportIcon"
-            );
+    <div class="modal">
 
-        const supportTitle =
-            document.getElementById(
-                "supportTitle"
-            );
+        <div class="modal-header">
+            <h2>پشتیبانی</h2>
+            <button class="close-btn" onclick="closeSupport()">×</button>
+        </div>
 
-        const supportDescription =
-            document.getElementById(
-                "supportDescription"
-            );
+        <p class="support-description">
+            برای تماس با پشتیبانی می‌توانید از شماره‌های زیر استفاده کنید.
+        </p>
 
-        const backSupportBtn =
-            document.getElementById(
-                "backSupportBtn"
-            );
+        <div class="support-number">
+            <strong>09122162177</strong>
+            <a href="tel:09122162177">تماس</a>
+        </div>
 
-        let userAuthMode = "login";
+        <div class="support-number">
+            <strong>09122940829</strong>
+            <a href="tel:09122940829">تماس</a>
+        </div>
 
-        /* MENU */
+    </div>
+</div>
 
-        menuBtn.addEventListener(
-            "click",
-            function(event) {
+<script>
+    const SUPABASE_URL = "https://zyziyyhzxsnwzrsubulu.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
 
-                event.stopPropagation();
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
-                menu.classList.toggle(
-                    "show"
-                );
-            }
-        );
+    const menuBtn = document.getElementById("menuBtn");
+    const dropdownMenu = document.getElementById("dropdownMenu");
 
-        menu.addEventListener(
-            "click",
-            function(event) {
+    menuBtn.addEventListener("click", e => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle("open");
+    });
 
-                event.stopPropagation();
-            }
-        );
+    document.addEventListener("click", e => {
+        if (!dropdownMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+            dropdownMenu.classList.remove("open");
+        }
+    });
 
-        document.addEventListener(
-            "click",
-            function() {
+    function openAuth(type = "login") {
+        dropdownMenu.classList.remove("open");
+        document.getElementById("authOverlay").classList.add("open");
+        switchAuth(type);
+    }
 
-                menu.classList.remove(
-                    "show"
-                );
-            }
-        );
+    function closeAuth() {
+        document.getElementById("authOverlay").classList.remove("open");
+        clearMessages();
+    }
 
-        /* SUPPORT */
+    function switchAuth(type) {
+        document.querySelectorAll(".form").forEach(x => x.classList.remove("active"));
+        document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
 
-        function openSupport(type) {
+        document.getElementById(type + "Form").classList.add("active");
+        document.querySelector(`.tab[data-type="${type}"]`).classList.add("active");
 
-            menu.classList.remove(
-                "show"
-            );
+        const titles = {
+            login: "ورود به حساب",
+            signup: "ساخت حساب",
+            employee: "ورود کارمند"
+        };
 
-            const labels =
-                document.querySelectorAll(
-                    ".phone small"
-                );
+        document.getElementById("authTitle").textContent = titles[type];
+        clearMessages();
+    }
 
-            if (
-                type ===
-                "call"
-            ) {
+    function openSupport() {
+        dropdownMenu.classList.remove("open");
+        document.getElementById("supportOverlay").classList.add("open");
+    }
 
-                supportIcon.textContent =
-                    "☎";
+    function closeSupport() {
+        document.getElementById("supportOverlay").classList.remove("open");
+    }
 
-                supportTitle.textContent =
-                    "تماس با پشتیبانی";
+    function clearMessages() {
+        document.querySelectorAll(".message").forEach(el => {
+            el.textContent = "";
+            el.className = "message";
+        });
+    }
 
-                supportDescription.textContent =
-                    "برای ارتباط با پشتیبانی می‌توانید با یکی از شماره‌های زیر تماس بگیرید.";
+    function showMessage(id, text, type = "error") {
+        const el = document.getElementById(id);
+        el.textContent = text;
+        el.className = "message " + type;
+    }
 
-                labels.forEach(
-                    function(item) {
-                        item.textContent =
-                            "تماس";
-                    }
-                );
+    function togglePassword(id, button) {
+        const input = document.getElementById(id);
+        input.type = input.type === "password" ? "text" : "password";
+        button.textContent = "◉";
+    }
 
-            } else {
+    // ورود کاربر
+    document.getElementById("loginForm").addEventListener("submit", async e => {
+        e.preventDefault();
 
-                supportIcon.textContent =
-                    "✉";
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
 
-                supportTitle.textContent =
-                    "پیام به پشتیبانی";
+        showMessage("loginMessage", "");
 
-                supportDescription.textContent =
-                    "برای ارسال پیام، یکی از شماره‌های زیر را انتخاب کنید.";
+        const { data, error } =
+            await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+            });
 
-                labels.forEach(
-                    function(item) {
-                        item.textContent =
-                            "پیام";
-                    }
-                );
-            }
-
-            supportPage.classList.add(
-                "show"
-            );
+        if (error) {
+            showMessage("loginMessage", error.message);
+            return;
         }
 
-        callSupportBtn.addEventListener(
-            "click",
-            function() {
-                openSupport("call");
-            }
-        );
-
-        messageSupportBtn.addEventListener(
-            "click",
-            function() {
-                openSupport("message");
-            }
-        );
-
-        backSupportBtn.addEventListener(
-            "click",
-            function() {
-
-                supportPage.classList.remove(
-                    "show"
-                );
-            }
-        );
-
-        /* USER LOGIN */
-
-        userLoginButton.addEventListener(
-            "click",
-            function() {
-
-                userAuthMode = "login";
-
-                userAuthTitle.textContent =
-                    "ورود";
-
-                userSubmitBtn.textContent =
-                    "ورود";
-
-                loginTab.classList.add(
-                    "active"
-                );
-
-                signupTab.classList.remove(
-                    "active"
-                );
-
-                userAuthMessage.textContent =
-                    "";
-
-                userAuthMessage.style.display =
-                    "none";
-
-                userAuthForm.reset();
-
-                userPassword.type =
-                    "password";
-
-                userEyeBtn.textContent =
-                    "👁";
-
-                userAuthModal.classList.add(
-                    "show"
-                );
-
-                document.body.classList.add(
-                    "modal-open"
-                );
-            }
-        );
-
-        closeUserAuth.addEventListener(
-            "click",
-            closeUserModal
-        );
-
-        userAuthModal.addEventListener(
-            "click",
-            function(event) {
-
-                if (
-                    event.target ===
-                    userAuthModal
-                ) {
-                    closeUserModal();
-                }
-            }
-        );
-
-        function closeUserModal() {
-
-            userAuthModal.classList.remove(
-                "show"
-            );
-
-            document.body.classList.remove(
-                "modal-open"
-            );
+        if (!data.session) {
+            showMessage("loginMessage", "ورود انجام نشد.");
+            return;
         }
 
-        /* USER EYE */
+        location.href = "user-dashboard.html";
+    });
 
-        userEyeBtn.addEventListener(
-            "click",
-            function() {
+    // ساخت حساب کاربر
+    document.getElementById("signupForm").addEventListener("submit", async e => {
+        e.preventDefault();
 
-                if (
-                    userPassword.type ===
-                    "password"
-                ) {
+        const firstName =
+            document.getElementById("signupFirstName").value.trim();
 
-                    userPassword.type =
-                        "text";
+        const lastName =
+            document.getElementById("signupLastName").value.trim();
 
-                    userEyeBtn.textContent =
-                        "🙈";
+        const phone =
+            document.getElementById("signupPhone").value.trim();
 
-                } else {
+        const email =
+            document.getElementById("signupEmail").value.trim();
 
-                    userPassword.type =
-                        "password";
+        const password =
+            document.getElementById("signupPassword").value;
 
-                    userEyeBtn.textContent =
-                        "👁";
-                }
-            }
-        );
+        const repeatPassword =
+            document.getElementById("signupPasswordRepeat").value;
 
-        /* USER TABS */
-
-        loginTab.addEventListener(
-            "click",
-            function() {
-
-                userAuthMode = "login";
-
-                userAuthTitle.textContent =
-                    "ورود";
-
-                userSubmitBtn.textContent =
-                    "ورود";
-
-                loginTab.classList.add(
-                    "active"
-                );
-
-                signupTab.classList.remove(
-                    "active"
-                );
-
-                userAuthMessage.style.display =
-                    "none";
-            }
-        );
-
-        signupTab.addEventListener(
-            "click",
-            function() {
-
-                userAuthMode = "signup";
-
-                userAuthTitle.textContent =
-                    "ساخت حساب";
-
-                userSubmitBtn.textContent =
-                    "ثبت‌نام";
-
-                signupTab.classList.add(
-                    "active"
-                );
-
-                loginTab.classList.remove(
-                    "active"
-                );
-
-                userAuthMessage.style.display =
-                    "none";
-            }
-        );
-
-        function showUserMessage(text) {
-
-            userAuthMessage.textContent =
-                text;
-
-            userAuthMessage.style.display =
-                "block";
+        if (
+            !firstName ||
+            !lastName ||
+            !phone ||
+            !email ||
+            !password ||
+            !repeatPassword
+        ) {
+            showMessage(
+                "signupMessage",
+                "لطفاً تمام اطلاعات را وارد کنید."
+            );
+            return;
         }
 
-        /* USER AUTH */
-
-        userAuthForm.addEventListener(
-            "submit",
-            async function(event) {
-
-                event.preventDefault();
-
-                const emailInput =
-                    document.getElementById(
-                        "userEmail"
-                    );
-
-                const email =
-                    emailInput.value.trim();
-
-                const password =
-                    userPassword.value;
-
-                if (
-                    !emailInput.validity.valid
-                ) {
-
-                    showUserMessage(
-                        "لطفاً یک ایمیل معتبر وارد کنید."
-                    );
-
-                    return;
-                }
-
-                if (
-                    password.length < 6
-                ) {
-
-                    showUserMessage(
-                        "رمز عبور باید حداقل ۶ کاراکتر باشد."
-                    );
-
-                    return;
-                }
-
-                userSubmitBtn.disabled =
-                    true;
-
-                try {
-
-                    if (
-                        userAuthMode ===
-                        "login"
-                    ) {
-
-                        const {
-                            data,
-                            error
-                        } =
-                            await supabaseClient
-                                .auth
-                                .signInWithPassword({
-                                    email,
-                                    password
-                                });
-
-                        if (error) {
-                            throw error;
-                        }
-
-                        if (
-                            !data.session
-                        ) {
-                            throw new Error(
-                                "ورود انجام نشد."
-                            );
-                        }
-
-                        if (
-                            data.user &&
-                            data.user.is_anonymous === true
-                        ) {
-
-                            await supabaseClient
-                                .auth
-                                .signOut();
-
-                            throw new Error(
-                                "این حساب قابل استفاده نیست."
-                            );
-                        }
-
-                        window.location.href =
-                            "user-dashboard.html";
-
-                        return;
-                    }
-
-                    const {
-                        data,
-                        error
-                    } =
-                        await supabaseClient
-                            .auth
-                            .signUp({
-                                email,
-                                password
-                            });
-
-                    if (error) {
-
-                        const msg =
-                            String(
-                                error.message
-                            ).toLowerCase();
-
-                        if (
-                            msg.includes(
-                                "already registered"
-                            ) ||
-                            msg.includes(
-                                "already been registered"
-                            ) ||
-                            msg.includes(
-                                "user already registered"
-                            )
-                        ) {
-
-                            throw new Error(
-                                "این ایمیل قبلاً ثبت‌نام کرده است. وارد شوید."
-                            );
-                        }
-
-                        throw error;
-                    }
-
-                    /*
-                     * برای ورود مستقیم پس از ثبت‌نام،
-                     * Confirm email باید در Supabase خاموش باشد.
-                     */
-
-                    if (
-                        !data.session
-                    ) {
-
-                        throw new Error(
-                            "ثبت‌نام انجام شد، اما ورود مستقیم انجام نشد. گزینه Confirm email را در Supabase خاموش کنید."
-                        );
-                    }
-
-                    window.location.href =
-                        "user-dashboard.html";
-
-                } catch (error) {
-
-                    console.error(
-                        "خطای کاربر:",
-                        error
-                    );
-
-                    showUserMessage(
-                        error.message ||
-                        "خطایی رخ داد. دوباره تلاش کنید."
-                    );
-
-                } finally {
-
-                    userSubmitBtn.disabled =
-                        false;
-                }
-            }
-        );
-
-        /* EMPLOYEE LOGIN */
-
-        employeeLoginButton.addEventListener(
-            "click",
-            function() {
-
-                employeeCode.value =
-                    "";
-
-                employeeMessage.textContent =
-                    "";
-
-                employeeMessage.style.display =
-                    "none";
-
-                employeeCode.type =
-                    "password";
-
-                employeeEyeBtn.textContent =
-                    "👁";
-
-                employeeModal.classList.add(
-                    "show"
-                );
-
-                document.body.classList.add(
-                    "modal-open"
-                );
-
-                setTimeout(
-                    function() {
-                        employeeCode.focus();
-                    },
-                    100
-                );
-            }
-        );
-
-        closeEmployeeModal.addEventListener(
-            "click",
-            closeEmployee
-        );
-
-        employeeModal.addEventListener(
-            "click",
-            function(event) {
-
-                if (
-                    event.target ===
-                    employeeModal
-                ) {
-                    closeEmployee();
-                }
-            }
-        );
-
-        function closeEmployee() {
-
-            employeeModal.classList.remove(
-                "show"
+        if (password !== repeatPassword) {
+            showMessage(
+                "signupMessage",
+                "رمز عبور و تکرار آن یکی نیست."
             );
-
-            document.body.classList.remove(
-                "modal-open"
-            );
+            return;
         }
 
-        /* EMPLOYEE EYE */
+        if (password.length < 6) {
+            showMessage(
+                "signupMessage",
+                "رمز عبور باید حداقل ۶ کاراکتر باشد."
+            );
+            return;
+        }
 
-        employeeEyeBtn.addEventListener(
-            "click",
-            function() {
-
-                if (
-                    employeeCode.type ===
-                    "password"
-                ) {
-
-                    employeeCode.type =
-                        "text";
-
-                    employeeEyeBtn.textContent =
-                        "🙈";
-
-                } else {
-
-                    employeeCode.type =
-                        "password";
-
-                    employeeEyeBtn.textContent =
-                        "👁";
+        const { data, error } =
+            await supabaseClient.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        first_name: firstName,
+                        last_name: lastName,
+                        phone: phone
+                    }
                 }
-            }
+            });
+
+        if (error) {
+            showMessage("signupMessage", error.message);
+            return;
+        }
+
+        if (!data.user) {
+            showMessage(
+                "signupMessage",
+                "ساخت حساب انجام نشد."
+            );
+            return;
+        }
+
+        if (!data.session) {
+            showMessage(
+                "signupMessage",
+                "حساب ساخته شد. ورود ایمیل را در تنظیمات Supabase بررسی کنید.",
+                "success"
+            );
+            return;
+        }
+
+        showMessage(
+            "signupMessage",
+            "حساب با موفقیت ساخته شد. در حال ورود...",
+            "success"
         );
 
-        /* EMPLOYEE AUTH */
+        setTimeout(() => {
+            location.href = "user-dashboard.html";
+        }, 500);
+    });
 
-        employeeForm.addEventListener(
-            "submit",
-            async function(event) {
+    // ورود کارمند
+    document.getElementById("employeeForm").addEventListener("submit", async e => {
+        e.preventDefault();
 
-                event.preventDefault();
+        const code =
+            document.getElementById("employeeCode").value;
 
-                const code =
-                    employeeCode.value;
+        showMessage("employeeMessage", "");
 
-                if (!code) {
-                    return;
+        const { error: signInError } =
+            await supabaseClient.auth.signInAnonymously();
+
+        if (signInError) {
+            showMessage(
+                "employeeMessage",
+                "ورود کارمند در Supabase فعال نشده است."
+            );
+            return;
+        }
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "authorize_employee",
+                {
+                    p_code: code
                 }
+            );
 
-                employeeSubmitBtn.disabled =
-                    true;
+        if (error || data !== true) {
+            await supabaseClient.auth.signOut();
 
-                employeeMessage.style.display =
-                    "none";
+            showMessage(
+                "employeeMessage",
+                "کد کارمند اشتباه است."
+            );
 
-                try {
+            return;
+        }
 
-                    /*
-                     * نشست ناشناس
-                     */
+        location.href = "employee_dashboard.html";
+    });
 
-                    const {
-                        data,
-                        error
-                    } =
-                        await supabaseClient
-                            .auth
-                            .signInAnonymously();
+    async function logout() {
+        await supabaseClient.auth.signOut();
+        location.href = "index.html";
+    }
 
-                    if (error) {
-                        throw error;
-                    }
+    document.getElementById("authOverlay").addEventListener("click", e => {
+        if (e.target.id === "authOverlay") {
+            closeAuth();
+        }
+    });
 
-                    if (!data.session) {
-                        throw new Error(
-                            "ورود کارمند انجام نشد."
-                        );
-                    }
-
-                    /*
-                     * بررسی کد در دیتابیس
-                     */
-
-                    const {
-                        data: authorized,
-                        error: authError
-                    } =
-                        await supabaseClient
-                            .rpc(
-                                "authorize_employee",
-                                {
-                                    p_code: code
-                                }
-                            );
-
-                    if (authError) {
-                        throw authError;
-                    }
-
-                    if (
-                        authorized !== true
-                    ) {
-
-                        await supabaseClient
-                            .auth
-                            .signOut();
-
-                        employeeMessage.textContent =
-                            "کد عبور اشتباه است.";
-
-                        employeeMessage.style.display =
-                            "block";
-
-                        employeeSubmitBtn.disabled =
-                            false;
-
-                        return;
-                    }
-
-                    window.location.href =
-                        "employee_dashboard.html";
-
-                } catch (error) {
-
-                    console.error(
-                        "خطای ورود کارمند:",
-                        error
-                    );
-
-                    employeeMessage.textContent =
-                        "خطایی در ورود رخ داد. دوباره تلاش کنید.";
-
-                    employeeMessage.style.display =
-                        "block";
-
-                    employeeSubmitBtn.disabled =
-                        false;
-                }
-            }
-        );
-
-    </script>
+    document.getElementById("supportOverlay").addEventListener("click", e => {
+        if (e.target.id === "supportOverlay") {
+            closeSupport();
+        }
+    });
+</script>
 
 </body>
 </html>
-```
