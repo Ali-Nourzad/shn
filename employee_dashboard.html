@@ -15,6 +15,22 @@
             padding: 0;
         }
 
+        :root {
+            --bg-1: #fffaf1;
+            --bg-2: #f4ecdf;
+            --surface: rgba(255,255,255,.72);
+            --surface-strong: rgba(255,255,255,.88);
+            --border: rgba(65,48,30,.08);
+            --text: #29231d;
+            --muted: #8a7d70;
+            --muted-2: #a09284;
+            --accent: #e3a21a;
+            --accent-soft: rgba(227,162,26,.12);
+            --dark: #292724;
+            --danger: #d94b43;
+            --danger-hover: #bd3932;
+        }
+
         html,
         body {
             width: 100%;
@@ -23,10 +39,25 @@
 
         body {
             font-family: Tahoma, sans-serif;
+
             background:
-                radial-gradient(circle at top right, rgba(255, 183, 0, .16), transparent 35%),
-                linear-gradient(135deg, #fffaf0, #f5eee1);
-            color: #29231d;
+                radial-gradient(
+                    circle at 90% 0%,
+                    rgba(255,190,45,.20),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 10% 90%,
+                    rgba(255,210,110,.10),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    135deg,
+                    var(--bg-1),
+                    var(--bg-2)
+                );
+
+            color: var(--text);
         }
 
         button,
@@ -46,54 +77,67 @@
             z-index: 1000;
 
             height: 76px;
-            padding: 0 28px;
+            padding: 0 30px;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            background: rgba(255, 255, 255, .72);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            background: rgba(255,255,255,.70);
 
-            border-bottom: 1px solid rgba(70, 50, 30, .08);
-            box-shadow: 0 8px 30px rgba(80, 50, 20, .06);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+
+            border-bottom: 1px solid var(--border);
+
+            box-shadow:
+                0 8px 35px rgba(70,45,20,.06);
         }
 
         .brand {
             font-size: 25px;
             font-weight: 900;
-            color: #29231d;
-            letter-spacing: -.5px;
+            color: var(--text);
+            letter-spacing: -.7px;
         }
 
         .menu-button {
             width: 46px;
             height: 46px;
 
-            border: none;
+            border: 1px solid rgba(255,255,255,.08);
             border-radius: 14px;
 
-            background: #2c2926;
+            background: var(--dark);
 
             display: flex;
             align-items: center;
             justify-content: center;
+
             gap: 4px;
 
-            transition: .2s ease;
+            transition:
+                transform .2s ease,
+                background .2s ease,
+                box-shadow .2s ease;
         }
 
         .menu-button:hover {
             transform: translateY(-2px);
+
             background: #1f1d1b;
+
+            box-shadow:
+                0 9px 20px rgba(30,25,20,.16);
         }
 
         .menu-button span {
             width: 5px;
             height: 5px;
+
             background: #fff;
             border-radius: 50%;
+
             display: block;
         }
 
@@ -101,24 +145,28 @@
 
         .dropdown {
             position: fixed;
+
             top: 86px;
             left: 25px;
 
-            width: 230px;
-
-            background: rgba(255, 255, 255, .94);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-
-            border: 1px solid rgba(50, 40, 30, .08);
-            border-radius: 18px;
+            width: 235px;
 
             padding: 8px;
 
-            box-shadow: 0 18px 50px rgba(50, 35, 20, .14);
+            background: rgba(255,255,255,.92);
+
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            box-shadow:
+                0 22px 60px rgba(55,38,20,.15);
 
             opacity: 0;
             visibility: hidden;
+
             transform: translateY(-8px);
 
             transition: .2s ease;
@@ -134,6 +182,7 @@
 
         .dropdown button {
             width: 100%;
+
             border: none;
             background: transparent;
 
@@ -142,6 +191,7 @@
             border-radius: 12px;
 
             text-align: right;
+
             font-size: 14px;
             color: #39332d;
 
@@ -149,7 +199,7 @@
         }
 
         .dropdown button:hover {
-            background: #f6efe5;
+            background: #f7f0e6;
         }
 
         /* ================= HOME ================= */
@@ -166,64 +216,102 @@
         }
 
         .home-title {
-            font-size: 34px;
+            font-size: 36px;
             font-weight: 900;
+
             margin-bottom: 12px;
+
+            letter-spacing: -.8px;
         }
 
         .home-subtitle {
-            color: #85796d;
+            color: var(--muted);
+
             font-size: 15px;
+
             margin-bottom: 42px;
         }
 
         .home-cards {
-            width: min(800px, 100%);
+            width: min(820px, 100%);
 
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
             gap: 22px;
         }
 
         .home-card {
-            min-height: 190px;
+            min-height: 200px;
 
-            border: 1px solid rgba(70, 50, 30, .08);
-            border-radius: 25px;
+            border: 1px solid var(--border);
+            border-radius: 27px;
 
-            background: rgba(255, 255, 255, .68);
-            backdrop-filter: blur(15px);
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.82),
+                    rgba(255,255,255,.56)
+                );
 
-            box-shadow: 0 15px 40px rgba(80, 50, 20, .07);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            box-shadow:
+                0 16px 45px rgba(80,50,20,.07);
 
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
 
-            gap: 13px;
+            gap: 14px;
 
-            transition: .25s ease;
+            color: var(--text);
+
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease,
+                border-color .25s ease;
         }
 
         .home-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 45px rgba(80, 50, 20, .11);
+            transform: translateY(-6px);
+
+            border-color:
+                rgba(227,162,26,.22);
+
+            box-shadow:
+                0 24px 55px rgba(80,50,20,.12);
         }
 
         .home-card-icon {
-            font-size: 38px;
+            width: 64px;
+            height: 64px;
+
+            border-radius: 19px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 31px;
+
+            background: var(--accent-soft);
         }
 
         .home-card-title {
             font-size: 19px;
-            font-weight: 800;
+            font-weight: 900;
         }
 
         /* ================= PANEL ================= */
 
         .panel-page {
             display: none;
+
             min-height: calc(100vh - 76px);
         }
 
@@ -232,20 +320,23 @@
         }
 
         .sidebar {
-            width: 230px;
-            min-width: 230px;
+            width: 235px;
+            min-width: 235px;
 
-            background: rgba(255, 255, 255, .58);
-            border-left: 1px solid rgba(60, 40, 20, .08);
+            background: rgba(255,255,255,.50);
 
-            padding: 25px 15px;
+            border-left:
+                1px solid var(--border);
+
+            padding: 28px 15px;
         }
 
         .sidebar-title {
             font-size: 15px;
             font-weight: 900;
 
-            padding: 10px 12px 17px;
+            padding:
+                10px 12px 18px;
 
             color: #51473d;
         }
@@ -257,11 +348,13 @@
             background: transparent;
 
             padding: 13px 14px;
+
             border-radius: 13px;
 
             text-align: right;
 
             color: #64594e;
+
             font-size: 14px;
 
             transition: .18s ease;
@@ -269,25 +362,33 @@
 
         .side-button:hover,
         .side-button.active {
-            background: rgba(255, 179, 0, .14);
-            color: #9a6800;
+            background:
+                rgba(227,162,26,.13);
+
+            color: #956500;
         }
 
         .content {
             flex: 1;
-            padding: 42px;
+
+            padding: 45px;
         }
 
         .content-title {
-            font-size: 25px;
+            font-size: 26px;
             font-weight: 900;
-            margin-bottom: 8px;
+
+            margin-bottom: 9px;
+
+            letter-spacing: -.4px;
         }
 
         .content-description {
-            color: #8a7d70;
+            color: var(--muted);
+
             font-size: 14px;
-            margin-bottom: 28px;
+
+            margin-bottom: 30px;
         }
 
         /* ================= USERS ================= */
@@ -296,40 +397,59 @@
             width: 100%;
             max-width: 950px;
 
-            background: rgba(255, 255, 255, .68);
+            background: var(--surface);
 
-            border: 1px solid rgba(70, 50, 30, .08);
-            border-radius: 22px;
+            border:
+                1px solid var(--border);
+
+            border-radius: 23px;
 
             overflow: hidden;
 
-            box-shadow: 0 15px 40px rgba(80, 50, 20, .06);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            box-shadow:
+                0 18px 45px rgba(80,50,20,.07);
         }
 
         .users-header {
-            padding: 17px 20px;
+            padding: 18px 21px;
 
-            border-bottom: 1px solid rgba(60, 40, 20, .07);
+            border-bottom:
+                1px solid rgba(60,40,20,.07);
 
             display: flex;
+
             justify-content: space-between;
             align-items: center;
         }
 
         .users-count {
-            color: #8a7d70;
+            color: var(--muted);
+
             font-size: 13px;
         }
 
         .user-row {
-            padding: 20px;
+            padding: 21px;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             gap: 20px;
 
-            border-bottom: 1px solid rgba(60, 40, 20, .07);
+            border-bottom:
+                1px solid rgba(60,40,20,.07);
+
+            transition:
+                background .18s ease;
+        }
+
+        .user-row:hover {
+            background:
+                rgba(255,255,255,.42);
         }
 
         .user-row:last-child {
@@ -344,20 +464,23 @@
         .user-name {
             font-size: 16px;
             font-weight: 900;
+
             margin-bottom: 10px;
         }
 
         .user-details {
             display: flex;
             flex-wrap: wrap;
+
             gap: 9px 25px;
 
             color: #776b60;
+
             font-size: 12px;
         }
 
         .user-details span {
-            color: #a09284;
+            color: var(--muted-2);
         }
 
         .delete-user-btn {
@@ -366,9 +489,9 @@
             border: none;
             border-radius: 11px;
 
-            padding: 10px 17px;
+            padding: 10px 18px;
 
-            background: #d94b43;
+            background: var(--danger);
             color: white;
 
             font-size: 12px;
@@ -377,81 +500,244 @@
         }
 
         .delete-user-btn:hover {
-            background: #bf3932;
+            background: var(--danger-hover);
+
+            transform: translateY(-1px);
         }
 
         .delete-user-btn:disabled {
             opacity: .6;
             cursor: wait;
+
+            transform: none;
         }
 
-        /* ================= EMPLOYEE CODES ================= */
+        /* ================= EMPLOYEES ================= */
 
         .codes-box {
+            width: 100%;
             max-width: 700px;
         }
 
-        .add-code {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+        .new-code-button {
+            border: none;
+
+            border-radius: 14px;
+
+            padding: 14px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #302d29,
+                    #1f1d1b
+                );
+
+            color: white;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            box-shadow:
+                0 10px 25px rgba(35,30,25,.12);
+
+            transition: .2s ease;
         }
 
-        .add-code input {
-            flex: 1;
+        .new-code-button:hover {
+            transform: translateY(-2px);
 
-            border: 1px solid #ded3c5;
-            background: rgba(255,255,255,.8);
+            box-shadow:
+                0 14px 30px rgba(35,30,25,.17);
+        }
+
+        /* ================= NEW CODE FORM ================= */
+
+        .new-code-form {
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 22px;
+
+            background:
+                rgba(255,255,255,.74);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 14px 35px rgba(80,50,20,.06);
+        }
+
+        .new-code-form.open {
+            display: block;
+        }
+
+        .form-title {
+            font-size: 15px;
+            font-weight: 900;
+
+            margin-bottom: 17px;
+        }
+
+        .form-field {
+            margin-bottom: 12px;
+        }
+
+        .form-field label {
+            display: block;
+
+            font-size: 12px;
+
+            color: #776b60;
+
+            margin-bottom: 7px;
+        }
+
+        .form-field input {
+            width: 100%;
+
+            border:
+                1px solid #ded3c5;
+
+            background:
+                rgba(255,255,255,.82);
 
             border-radius: 12px;
 
             padding: 13px 14px;
+
             outline: none;
+
+            direction: ltr;
+            text-align: left;
+
+            transition:
+                border-color .18s ease,
+                box-shadow .18s ease;
         }
 
-        .add-code input:focus {
+        .form-field input:focus {
             border-color: #d89b18;
+
+            box-shadow:
+                0 0 0 4px rgba(216,155,24,.09);
         }
 
-        .add-code button {
-            border: none;
-            border-radius: 12px;
+        .form-actions {
+            display: flex;
 
-            padding: 0 20px;
+            gap: 9px;
+
+            margin-top: 17px;
+        }
+
+        .submit-code {
+            border: none;
+
+            border-radius: 11px;
+
+            padding: 11px 18px;
 
             background: #2c2926;
+
             color: white;
+
+            font-size: 12px;
+
+            transition: .18s ease;
+        }
+
+        .submit-code:hover {
+            background: #1f1d1b;
+        }
+
+        .cancel-code {
+            border: 1px solid #ddd2c5;
+
+            border-radius: 11px;
+
+            padding: 11px 18px;
+
+            background: transparent;
+
+            color: #665b50;
+
+            font-size: 12px;
+        }
+
+        /* ================= CODE LIST ================= */
+
+        .code-list-wrapper {
+            margin-top: 22px;
+        }
+
+        .code-list-title {
+            font-size: 14px;
+            font-weight: 900;
+
+            margin-bottom: 12px;
         }
 
         .code-row {
             padding: 15px 17px;
 
             display: flex;
+
             justify-content: space-between;
             align-items: center;
 
-            background: rgba(255,255,255,.68);
+            background:
+                rgba(255,255,255,.70);
 
-            border: 1px solid rgba(60,40,20,.07);
+            border:
+                1px solid var(--border);
+
             border-radius: 14px;
 
             margin-bottom: 10px;
+
+            transition:
+                transform .18s ease,
+                box-shadow .18s ease;
+        }
+
+        .code-row:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 22px rgba(70,45,20,.06);
         }
 
         .code-value {
             direction: ltr;
             text-align: left;
+
             font-family: monospace;
+
+            font-size: 14px;
         }
 
         .delete-code {
             border: none;
-            background: #d94b43;
+
+            background: var(--danger);
             color: white;
 
             padding: 8px 13px;
+
             border-radius: 9px;
+
             font-size: 12px;
+
+            transition: .18s ease;
+        }
+
+        .delete-code:hover {
+            background: var(--danger-hover);
         }
 
         /* ================= STATES ================= */
@@ -459,8 +745,11 @@
         .loading,
         .empty-state {
             padding: 35px;
+
             text-align: center;
+
             color: #8b7e71;
+
             font-size: 14px;
         }
 
@@ -482,7 +771,7 @@
             }
 
             .home-title {
-                font-size: 27px;
+                font-size: 28px;
             }
 
             .home-cards {
@@ -498,7 +787,9 @@
                 min-width: 0;
 
                 border-left: none;
-                border-bottom: 1px solid rgba(60,40,20,.08);
+
+                border-bottom:
+                    1px solid var(--border);
 
                 padding: 10px;
             }
@@ -509,16 +800,23 @@
 
             .side-button {
                 width: auto;
+
                 display: inline-block;
+
                 margin-left: 5px;
             }
 
             .content {
-                padding: 25px 16px;
+                padding: 27px 16px;
+            }
+
+            .content-title {
+                font-size: 23px;
             }
 
             .user-row {
                 align-items: flex-start;
+
                 flex-direction: column;
             }
 
@@ -528,15 +826,21 @@
 
             .user-details {
                 flex-direction: column;
+
                 gap: 7px;
             }
 
-            .add-code {
+            .new-code-button {
+                width: 100%;
+            }
+
+            .form-actions {
                 flex-direction: column;
             }
 
-            .add-code button {
-                height: 45px;
+            .submit-code,
+            .cancel-code {
+                width: 100%;
             }
         }
     </style>
@@ -566,7 +870,7 @@
     </nav>
 
 
-    <!-- ================= DROPDOWN ================= -->
+    <!-- ================= MENU ================= -->
 
     <div
         class="dropdown"
@@ -603,6 +907,7 @@
                 type="button"
                 onclick="openSection('changes')"
             >
+
                 <div class="home-card-icon">
                     ⚙️
                 </div>
@@ -610,6 +915,7 @@
                 <div class="home-card-title">
                     تغییرات صفحه کاربر
                 </div>
+
             </button>
 
 
@@ -618,6 +924,7 @@
                 type="button"
                 onclick="openSection('people')"
             >
+
                 <div class="home-card-icon">
                     👥
                 </div>
@@ -625,6 +932,7 @@
                 <div class="home-card-title">
                     دیدن افراد
                 </div>
+
             </button>
 
         </div>
@@ -653,6 +961,7 @@
             </button>
 
         </aside>
+
 
         <div class="content">
 
@@ -684,7 +993,6 @@
 
             <button
                 class="side-button active"
-                id="users-side-button"
                 type="button"
                 onclick="showPeopleSection('users')"
             >
@@ -693,7 +1001,6 @@
 
             <button
                 class="side-button"
-                id="employees-side-button"
                 type="button"
                 onclick="showPeopleSection('employees')"
             >
@@ -718,6 +1025,7 @@
                 فهرست کاربران ثبت‌شده
             </p>
 
+
             <div class="users-box">
 
                 <div class="users-header">
@@ -734,6 +1042,7 @@
                     </span>
 
                 </div>
+
 
                 <div id="users-list">
 
@@ -764,30 +1073,99 @@
                 مدیریت کدهای ورود کارمندان
             </p>
 
+
             <div class="codes-box">
 
-                <div class="add-code">
+                <button
+                    type="button"
+                    class="new-code-button"
+                    onclick="openNewCodeForm()"
+                >
+                    + ساختن کد جدید
+                </button>
 
-                    <input
-                        id="new-code"
-                        type="text"
-                        placeholder="کد جدید کارمند"
-                        autocomplete="off"
-                    >
 
-                    <button
-                        type="button"
-                        onclick="addEmployeeCode()"
-                    >
-                        افزودن
-                    </button>
+                <!-- ================= NEW CODE FORM ================= -->
+
+                <div
+                    class="new-code-form"
+                    id="new-code-form"
+                >
+
+                    <div class="form-title">
+                        ثبت کد جدید کارمند
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="new-code">
+                            کد جدید
+                        </label>
+
+                        <input
+                            id="new-code"
+                            type="text"
+                            placeholder="کد کارمند را وارد کنید"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="repeat-code">
+                            تکرار کد
+                        </label>
+
+                        <input
+                            id="repeat-code"
+                            type="text"
+                            placeholder="کد را دوباره وارد کنید"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="button"
+                            class="submit-code"
+                            onclick="addEmployeeCode()"
+                        >
+                            ثبت کد
+                        </button>
+
+                        <button
+                            type="button"
+                            class="cancel-code"
+                            onclick="closeNewCodeForm()"
+                        >
+                            انصراف
+                        </button>
+
+                    </div>
 
                 </div>
 
-                <div id="codes-list">
 
-                    <div class="loading">
-                        در حال دریافت کدها...
+                <!-- ================= CODE LIST ================= -->
+
+                <div class="code-list-wrapper">
+
+                    <div class="code-list-title">
+                        کدهای فعلی
+                    </div>
+
+                    <div id="codes-list">
+
+                        <div class="loading">
+                            در حال دریافت کدها...
+                        </div>
+
                     </div>
 
                 </div>
@@ -819,10 +1197,15 @@
         /* ================= MENU ================= */
 
         const menuButton =
-            document.getElementById("menu-button");
+            document.getElementById(
+                "menu-button"
+            );
 
         const dropdown =
-            document.getElementById("dropdown");
+            document.getElementById(
+                "dropdown"
+            );
+
 
         menuButton.addEventListener(
             "click",
@@ -830,19 +1213,25 @@
 
                 event.stopPropagation();
 
-                dropdown.classList.toggle("open");
+                dropdown.classList.toggle(
+                    "open"
+                );
 
             }
         );
+
 
         document.addEventListener(
             "click",
             function () {
 
-                dropdown.classList.remove("open");
+                dropdown.classList.remove(
+                    "open"
+                );
 
             }
         );
+
 
         dropdown.addEventListener(
             "click",
@@ -862,29 +1251,40 @@
                 "home-page"
             ).style.display = "none";
 
+
             document.querySelectorAll(
                 ".panel-page"
             ).forEach(page => {
 
-                page.classList.remove("active");
+                page.classList.remove(
+                    "active"
+                );
 
             });
+
 
             if (section === "changes") {
 
                 document.getElementById(
                     "changes-page"
-                ).classList.add("active");
+                ).classList.add(
+                    "active"
+                );
 
             }
+
 
             if (section === "people") {
 
                 document.getElementById(
                     "people-page"
-                ).classList.add("active");
+                ).classList.add(
+                    "active"
+                );
 
-                showPeopleSection("users");
+                showPeopleSection(
+                    "users"
+                );
 
             }
 
@@ -905,14 +1305,9 @@
                     "employees-section"
                 );
 
-            const usersButton =
-                document.getElementById(
-                    "users-side-button"
-                );
-
-            const employeesButton =
-                document.getElementById(
-                    "employees-side-button"
+            const buttons =
+                document.querySelectorAll(
+                    "#people-page .side-button"
                 );
 
 
@@ -924,11 +1319,11 @@
                 employeesSection.style.display =
                     "none";
 
-                usersButton.classList.add(
+                buttons[0]?.classList.add(
                     "active"
                 );
 
-                employeesButton.classList.remove(
+                buttons[1]?.classList.remove(
                     "active"
                 );
 
@@ -945,11 +1340,11 @@
                 employeesSection.style.display =
                     "block";
 
-                usersButton.classList.remove(
+                buttons[0]?.classList.remove(
                     "active"
                 );
 
-                employeesButton.classList.add(
+                buttons[1]?.classList.add(
                     "active"
                 );
 
@@ -973,6 +1368,7 @@
                 document.getElementById(
                     "users-count"
                 );
+
 
             if (!container) return;
 
@@ -1140,7 +1536,6 @@
                             <button
                                 type="button"
                                 class="delete-user-btn"
-                                data-user-id="${escapeHtml(userId)}"
                             >
                                 حذف
                             </button>
@@ -1151,10 +1546,7 @@
                 }).join("");
 
 
-            /*
-             * شناسه حذف مستقیماً از همان دکمه گرفته می‌شود.
-             * بنابراین هر دکمه دقیقاً کاربر همان ردیف را حذف می‌کند.
-             */
+            /* ================= DELETE BUTTONS ================= */
 
             container
                 .querySelectorAll(
@@ -1166,9 +1558,18 @@
                         "click",
                         async function () {
 
+                            const row =
+                                button.closest(
+                                    ".user-row"
+                                );
+
+
+                            if (!row) return;
+
+
                             const userId =
                                 String(
-                                    button.dataset.userId ||
+                                    row.dataset.userId ||
                                     ""
                                 ).trim();
 
@@ -1219,85 +1620,135 @@
             if (!confirmed) return;
 
 
-            if (button) {
+            button.disabled = true;
 
-                button.disabled = true;
-
-                button.textContent =
-                    "در حال حذف...";
-
-            }
+            button.textContent =
+                "در حال حذف...";
 
 
-            try {
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient.functions.invoke(
-                        "manage-users",
-                        {
-                            body: {
-                                action: "delete",
-                                user_id: userId
-                            }
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.functions.invoke(
+                    "manage-users",
+                    {
+                        body: {
+                            action: "delete",
+                            user_id: userId
                         }
-                    );
+                    }
+                );
 
 
-                if (error) {
-
-                    console.error(
-                        "DELETE USER ERROR:",
-                        error
-                    );
-
-                    alert(
-                        "حذف کاربر انجام نشد."
-                    );
-
-                    await loadPeople();
-
-                    return;
-                }
-
-
-                if (!data?.success) {
-
-                    alert(
-                        data?.error ||
-                        "حذف کاربر انجام نشد."
-                    );
-
-                    await loadPeople();
-
-                    return;
-                }
-
-
-                await loadPeople();
-
-            }
-            catch (err) {
+            if (error) {
 
                 console.error(
-                    "DELETE USER EXCEPTION:",
-                    err
+                    "DELETE USER ERROR:",
+                    error
                 );
 
                 alert(
-                    "هنگام حذف کاربر خطایی رخ داد."
+                    "حذف کاربر انجام نشد."
                 );
 
                 await loadPeople();
 
+                return;
             }
+
+
+            if (!data?.success) {
+
+                alert(
+                    data?.error ||
+                    "حذف کاربر انجام نشد."
+                );
+
+                await loadPeople();
+
+                return;
+            }
+
+
+            await loadPeople();
 
         }
 
 
-        /* ================= EMPLOYEE CODES ================= */
+        /* ================= OPEN NEW CODE FORM ================= */
+
+        function openNewCodeForm() {
+
+            const form =
+                document.getElementById(
+                    "new-code-form"
+                );
+
+            const input =
+                document.getElementById(
+                    "new-code"
+                );
+
+            const repeatInput =
+                document.getElementById(
+                    "repeat-code"
+                );
+
+
+            if (!form) return;
+
+
+            form.classList.add(
+                "open"
+            );
+
+
+            if (input) {
+
+                input.value = "";
+
+            }
+
+
+            if (repeatInput) {
+
+                repeatInput.value = "";
+
+            }
+
+
+            setTimeout(
+                function () {
+
+                    input?.focus();
+
+                },
+                100
+            );
+
+        }
+
+
+        /* ================= CLOSE NEW CODE FORM ================= */
+
+        function closeNewCodeForm() {
+
+            const form =
+                document.getElementById(
+                    "new-code-form"
+                );
+
+            if (!form) return;
+
+            form.classList.remove(
+                "open"
+            );
+
+        }
+
+
+        /* ================= LOAD EMPLOYEE CODES ================= */
 
         async function loadEmployeeCodes() {
 
@@ -1305,6 +1756,7 @@
                 document.getElementById(
                     "codes-list"
                 );
+
 
             if (!container) return;
 
@@ -1363,14 +1815,10 @@
             container.innerHTML =
                 codes.map(code => {
 
-                    const codeId =
-                        Number(code.id);
-
-
                     return `
                         <div
                             class="code-row"
-                            data-code-id="${escapeHtml(codeId)}"
+                            data-code-id="${escapeHtml(code.id)}"
                         >
 
                             <span class="code-value">
@@ -1379,11 +1827,10 @@
                                 )}
                             </span>
 
-
                             <button
                                 type="button"
                                 class="delete-code"
-                                onclick="deleteEmployeeCode(${codeId})"
+                                onclick="deleteEmployeeCode(${Number(code.id)})"
                             >
                                 حذف
                             </button>
@@ -1396,7 +1843,7 @@
         }
 
 
-        /* ================= ADD CODE ================= */
+        /* ================= ADD EMPLOYEE CODE ================= */
 
         async function addEmployeeCode() {
 
@@ -1405,11 +1852,23 @@
                     "new-code"
                 );
 
-            if (!input) return;
+            const repeatInput =
+                document.getElementById(
+                    "repeat-code"
+                );
+
+
+            if (!input || !repeatInput) {
+                return;
+            }
 
 
             const code =
                 input.value.trim();
+
+
+            const repeatCode =
+                repeatInput.value.trim();
 
 
             if (!code) {
@@ -1417,6 +1876,44 @@
                 alert(
                     "کد کارمند را وارد کنید."
                 );
+
+                input.focus();
+
+                return;
+            }
+
+
+            if (!repeatCode) {
+
+                alert(
+                    "تکرار کد را وارد کنید."
+                );
+
+                repeatInput.focus();
+
+                return;
+            }
+
+
+            if (code !== repeatCode) {
+
+                alert(
+                    "کد و تکرار کد یکسان نیستند."
+                );
+
+                repeatInput.focus();
+
+                return;
+            }
+
+
+            if (code.length < 4) {
+
+                alert(
+                    "کد کارمند باید حداقل ۴ کاراکتر باشد."
+                );
+
+                input.focus();
 
                 return;
             }
@@ -1461,6 +1958,11 @@
 
 
             input.value = "";
+            repeatInput.value = "";
+
+
+            closeNewCodeForm();
+
 
             await loadEmployeeCodes();
 
@@ -1478,6 +1980,7 @@
                     "آیا این کد حذف شود؟"
                 )
             ) {
+
                 return;
             }
 
