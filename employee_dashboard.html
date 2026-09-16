@@ -565,6 +565,7 @@
 
     </nav>
 
+
     <!-- ================= DROPDOWN ================= -->
 
     <div
@@ -610,6 +611,7 @@
                     تغییرات صفحه کاربر
                 </div>
             </button>
+
 
             <button
                 class="home-card"
@@ -682,6 +684,7 @@
 
             <button
                 class="side-button active"
+                id="users-side-button"
                 type="button"
                 onclick="showPeopleSection('users')"
             >
@@ -690,6 +693,7 @@
 
             <button
                 class="side-button"
+                id="employees-side-button"
                 type="button"
                 onclick="showPeopleSection('employees')"
             >
@@ -699,7 +703,7 @@
         </aside>
 
 
-        <!-- USERS -->
+        <!-- ================= USERS ================= -->
 
         <div
             class="content"
@@ -744,7 +748,7 @@
         </div>
 
 
-        <!-- EMPLOYEES -->
+        <!-- ================= EMPLOYEES ================= -->
 
         <div
             class="content"
@@ -901,10 +905,16 @@
                     "employees-section"
                 );
 
-            const buttons =
-                document.querySelectorAll(
-                    "#people-page .side-button"
+            const usersButton =
+                document.getElementById(
+                    "users-side-button"
                 );
+
+            const employeesButton =
+                document.getElementById(
+                    "employees-side-button"
+                );
+
 
             if (section === "users") {
 
@@ -914,12 +924,18 @@
                 employeesSection.style.display =
                     "none";
 
-                buttons[0]?.classList.add("active");
-                buttons[1]?.classList.remove("active");
+                usersButton.classList.add(
+                    "active"
+                );
+
+                employeesButton.classList.remove(
+                    "active"
+                );
 
                 loadPeople();
 
             }
+
 
             if (section === "employees") {
 
@@ -929,8 +945,13 @@
                 employeesSection.style.display =
                     "block";
 
-                buttons[0]?.classList.remove("active");
-                buttons[1]?.classList.add("active");
+                usersButton.classList.remove(
+                    "active"
+                );
+
+                employeesButton.classList.add(
+                    "active"
+                );
 
                 loadEmployeeCodes();
 
@@ -955,11 +976,13 @@
 
             if (!container) return;
 
+
             container.innerHTML = `
                 <div class="loading">
                     در حال دریافت کاربران...
                 </div>
             `;
+
 
             if (countElement) {
 
@@ -967,6 +990,7 @@
                     "در حال دریافت...";
 
             }
+
 
             const {
                 data,
@@ -980,6 +1004,7 @@
                         }
                     }
                 );
+
 
             if (error) {
 
@@ -995,12 +1020,15 @@
                 `;
 
                 if (countElement) {
+
                     countElement.textContent =
                         "خطا";
+
                 }
 
                 return;
             }
+
 
             if (!data?.success) {
 
@@ -1014,17 +1042,21 @@
                 `;
 
                 if (countElement) {
+
                     countElement.textContent =
                         "خطا";
+
                 }
 
                 return;
             }
 
+
             const users =
                 Array.isArray(data.users)
                     ? data.users
                     : [];
+
 
             if (countElement) {
 
@@ -1032,6 +1064,7 @@
                     `${users.length} کاربر`;
 
             }
+
 
             if (users.length === 0) {
 
@@ -1044,6 +1077,7 @@
                 return;
             }
 
+
             container.innerHTML =
                 users.map(user => {
 
@@ -1051,6 +1085,7 @@
                         String(
                             user.id || ""
                         ).trim();
+
 
                     const fullName =
                         [
@@ -1062,13 +1097,16 @@
                         .trim() ||
                         "کاربر بدون نام";
 
+
                     const phone =
                         user.phone ||
                         "ثبت نشده";
 
+
                     const email =
                         user.email ||
                         "ثبت نشده";
+
 
                     return `
                         <div
@@ -1098,9 +1136,11 @@
 
                             </div>
 
+
                             <button
                                 type="button"
                                 class="delete-user-btn"
+                                data-user-id="${escapeHtml(userId)}"
                             >
                                 حذف
                             </button>
@@ -1112,10 +1152,8 @@
 
 
             /*
-             * مهم:
-             * شناسه هر کاربر مستقیماً از همان ردیف گرفته می‌شود.
-             * بنابراین دکمه حذف ردیف دوم یا سوم
-             * اشتباهاً شناسه ردیف اول را نمی‌فرستد.
+             * شناسه حذف مستقیماً از همان دکمه گرفته می‌شود.
+             * بنابراین هر دکمه دقیقاً کاربر همان ردیف را حذف می‌کند.
              */
 
             container
@@ -1128,18 +1166,12 @@
                         "click",
                         async function () {
 
-                            const row =
-                                button.closest(
-                                    ".user-row"
-                                );
-
-                            if (!row) return;
-
                             const userId =
                                 String(
-                                    row.dataset.userId ||
+                                    button.dataset.userId ||
                                     ""
                                 ).trim();
+
 
                             await deleteUserAccount(
                                 userId,
@@ -1166,6 +1198,7 @@
                     userId || ""
                 ).trim();
 
+
             if (!userId) {
 
                 alert(
@@ -1175,61 +1208,91 @@
                 return;
             }
 
+
             const confirmed =
                 confirm(
                     "آیا این کاربر حذف شود؟\n" +
                     "این عملیات حساب کاربری را نیز حذف می‌کند."
                 );
 
+
             if (!confirmed) return;
 
-            button.disabled = true;
-            button.textContent =
-                "در حال حذف...";
 
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.functions.invoke(
-                    "manage-users",
-                    {
-                        body: {
-                            action: "delete",
-                            user_id: userId
+            if (button) {
+
+                button.disabled = true;
+
+                button.textContent =
+                    "در حال حذف...";
+
+            }
+
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.functions.invoke(
+                        "manage-users",
+                        {
+                            body: {
+                                action: "delete",
+                                user_id: userId
+                            }
                         }
-                    }
-                );
+                    );
 
-            if (error) {
+
+                if (error) {
+
+                    console.error(
+                        "DELETE USER ERROR:",
+                        error
+                    );
+
+                    alert(
+                        "حذف کاربر انجام نشد."
+                    );
+
+                    await loadPeople();
+
+                    return;
+                }
+
+
+                if (!data?.success) {
+
+                    alert(
+                        data?.error ||
+                        "حذف کاربر انجام نشد."
+                    );
+
+                    await loadPeople();
+
+                    return;
+                }
+
+
+                await loadPeople();
+
+            }
+            catch (err) {
 
                 console.error(
-                    "DELETE USER ERROR:",
-                    error
+                    "DELETE USER EXCEPTION:",
+                    err
                 );
 
                 alert(
-                    "حذف کاربر انجام نشد."
+                    "هنگام حذف کاربر خطایی رخ داد."
                 );
 
                 await loadPeople();
 
-                return;
             }
-
-            if (!data?.success) {
-
-                alert(
-                    data?.error ||
-                    "حذف کاربر انجام نشد."
-                );
-
-                await loadPeople();
-
-                return;
-            }
-
-            await loadPeople();
 
         }
 
@@ -1245,11 +1308,13 @@
 
             if (!container) return;
 
+
             container.innerHTML = `
                 <div class="loading">
                     در حال دریافت کدها...
                 </div>
             `;
+
 
             const {
                 data,
@@ -1258,6 +1323,7 @@
                 await supabaseClient.rpc(
                     "list_employee_codes"
                 );
+
 
             if (error) {
 
@@ -1275,10 +1341,12 @@
                 return;
             }
 
+
             const codes =
                 Array.isArray(data)
                     ? data
                     : [];
+
 
             if (codes.length === 0) {
 
@@ -1291,13 +1359,18 @@
                 return;
             }
 
+
             container.innerHTML =
                 codes.map(code => {
+
+                    const codeId =
+                        Number(code.id);
+
 
                     return `
                         <div
                             class="code-row"
-                            data-code-id="${escapeHtml(code.id)}"
+                            data-code-id="${escapeHtml(codeId)}"
                         >
 
                             <span class="code-value">
@@ -1306,10 +1379,11 @@
                                 )}
                             </span>
 
+
                             <button
                                 type="button"
                                 class="delete-code"
-                                onclick="deleteEmployeeCode(${Number(code.id)})"
+                                onclick="deleteEmployeeCode(${codeId})"
                             >
                                 حذف
                             </button>
@@ -1333,8 +1407,10 @@
 
             if (!input) return;
 
+
             const code =
                 input.value.trim();
+
 
             if (!code) {
 
@@ -1344,6 +1420,7 @@
 
                 return;
             }
+
 
             const {
                 data,
@@ -1355,6 +1432,7 @@
                         p_code: code
                     }
                 );
+
 
             if (error) {
 
@@ -1370,6 +1448,7 @@
                 return;
             }
 
+
             if (!data?.success) {
 
                 alert(
@@ -1379,6 +1458,7 @@
 
                 return;
             }
+
 
             input.value = "";
 
@@ -1401,6 +1481,7 @@
                 return;
             }
 
+
             const {
                 data,
                 error
@@ -1411,6 +1492,7 @@
                         p_id: id
                     }
                 );
+
 
             if (error) {
 
@@ -1426,6 +1508,7 @@
                 return;
             }
 
+
             if (!data?.success) {
 
                 alert(
@@ -1435,6 +1518,7 @@
 
                 return;
             }
+
 
             await loadEmployeeCodes();
 
@@ -1495,6 +1579,7 @@
                 } =
                     await supabaseClient.auth.getSession();
 
+
                 if (!data?.session) {
 
                     window.location.href =
@@ -1503,6 +1588,7 @@
                     return;
                 }
 
+
                 const {
                     data: authorized,
                     error
@@ -1510,6 +1596,7 @@
                     await supabaseClient.rpc(
                         "is_employee_authorized"
                     );
+
 
                 if (
                     error ||
