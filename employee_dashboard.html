@@ -1,197 +1,1724 @@
-<script>
-async function loadPeople() {
-    const container = document.getElementById("users-list");
-    const countElement = document.getElementById("users-count");
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    if (!container) return;
+    <title>پنل کارمند | س.ح.ن</title>
 
-    container.innerHTML = `
-        <div class="loading">
-            در حال دریافت کاربران...
-        </div>
-    `;
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    const { data, error } =
-        await supabaseClient.functions.invoke("manage-users", {
-            body: {
-                action: "list"
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Tahoma, sans-serif;
+            background:
+                radial-gradient(circle at top right, rgba(255, 185, 0, 0.10), transparent 35%),
+                radial-gradient(circle at bottom left, rgba(255, 140, 0, 0.08), transparent 35%),
+                #f5f1e8;
+            color: #2b241b;
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 78px;
+            margin: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 12px 35px rgba(53, 39, 20, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px 0 14px;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 900;
+            color: #3d2f20;
+            letter-spacing: -0.5px;
+        }
+
+        .menu-wrap {
+            position: relative;
+        }
+
+        .menu-button {
+            width: 48px;
+            height: 48px;
+            border: 0;
+            border-radius: 15px;
+            background: #2e2923;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: 0.2s ease;
+            box-shadow: 0 8px 20px rgba(46, 41, 35, 0.18);
+        }
+
+        .menu-button:hover {
+            transform: translateY(-1px);
+            background: #24201c;
+        }
+
+        .menu-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            left: 0;
+            top: 58px;
+            width: 190px;
+            padding: 8px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 18px 45px rgba(49, 35, 17, 0.15);
+        }
+
+        .dropdown-menu button {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            padding: 12px 13px;
+            border-radius: 12px;
+            text-align: right;
+            font-size: 14px;
+            color: #3a3025;
+            transition: 0.18s ease;
+        }
+
+        .dropdown-menu button:hover {
+            background: #f3ede3;
+        }
+
+        .dropdown-menu .logout {
+            color: #ba2d2d;
+        }
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+            width: min(1180px, calc(100% - 28px));
+            margin: 34px auto 50px;
+        }
+
+        .hero {
+            margin-bottom: 28px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 13px;
+            border-radius: 999px;
+            background: rgba(255, 179, 0, 0.14);
+            color: #946700;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .hero h1 {
+            font-size: clamp(28px, 4vw, 42px);
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #75695b;
+            line-height: 1.9;
+            font-size: 15px;
+        }
+
+        /* =========================
+           HOME CARDS
+        ========================= */
+
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .home-card {
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 26px;
+            padding: 30px;
+            min-height: 230px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 18px 45px rgba(55, 39, 17, 0.07);
+            transition: 0.22s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-card::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255, 179, 0, 0.08);
+            left: -40px;
+            bottom: -60px;
+            pointer-events: none;
+        }
+
+        .home-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 22px 52px rgba(55, 39, 17, 0.11);
+        }
+
+        .card-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            background: linear-gradient(145deg, #fff1c4, #ffe09b);
+            margin-bottom: 22px;
+        }
+
+        .home-card h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .home-card p {
+            color: #74685a;
+            line-height: 1.9;
+            font-size: 14px;
+        }
+
+        /* =========================
+           PANEL
+        ========================= */
+
+        .panel-view {
+            animation: fadeIn 0.22s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
             }
-        });
 
-    if (error) {
-        console.error(error);
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        container.innerHTML = `
-            <div class="empty-state">
-                دریافت کاربران انجام نشد.
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h2 {
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .panel-header p {
+            color: #7d7164;
+            font-size: 14px;
+        }
+
+        .back-button {
+            border: 1px solid #ddd2c2;
+            background: rgba(255, 255, 255, 0.7);
+            color: #45392c;
+            padding: 11px 17px;
+            border-radius: 13px;
+            font-size: 13px;
+        }
+
+        .back-button:hover {
+            background: #fff;
+        }
+
+        /* =========================
+           USERS
+        ========================= */
+
+        .users-box {
+            display: grid;
+            gap: 14px;
+        }
+
+        .person-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 18px;
+            align-items: center;
+            padding: 20px;
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.88);
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 12px 30px rgba(55, 39, 17, 0.06);
+        }
+
+        .person-info {
+            min-width: 0;
+        }
+
+        .person-name {
+            font-size: 18px;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .person-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .detail-chip {
+            background: #f4eee4;
+            color: #625649;
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+
+        .detail-chip.ltr {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .delete-user-btn {
+            border: 0;
+            background: #ba3131;
+            color: white;
+            border-radius: 13px;
+            padding: 11px 17px;
+            font-size: 13px;
+            font-weight: 700;
+            min-width: 90px;
+            transition: 0.18s ease;
+        }
+
+        .delete-user-btn:hover {
+            background: #9f2323;
+        }
+
+        .delete-user-btn:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
+        .empty-state {
+            padding: 35px 20px;
+            text-align: center;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.65);
+            color: #7d7164;
+            border: 1px dashed #d8ccbb;
+        }
+
+        .loading-state {
+            padding: 35px 20px;
+            text-align: center;
+            color: #817567;
+        }
+
+        .users-count {
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #7e7163;
+        }
+
+        /* =========================
+           EMPLOYEE CODES
+        ========================= */
+
+        .codes-layout {
+            display: grid;
+            grid-template-columns: 320px minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+        }
+
+        .box {
+            background: rgba(255,255,255,0.72);
+            border: 1px solid rgba(255,255,255,0.9);
+            border-radius: 22px;
+            padding: 20px;
+            box-shadow: 0 14px 35px rgba(55,39,17,0.06);
+        }
+
+        .box h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 7px;
+            color: #62564a;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 46px;
+            border-radius: 12px;
+            border: 1px solid #ddd3c3;
+            background: #fffdf9;
+            padding: 0 13px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            border-color: #e8a900;
+            box-shadow: 0 0 0 3px rgba(232,169,0,0.10);
+        }
+
+        .primary-button {
+            width: 100%;
+            border: 0;
+            border-radius: 13px;
+            padding: 12px;
+            background: linear-gradient(135deg, #ffbd18, #f39b00);
+            color: #3d2c12;
+            font-size: 14px;
+            font-weight: 900;
+            box-shadow: 0 10px 24px rgba(237, 164, 0, 0.18);
+        }
+
+        .primary-button:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
+        .codes-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .code-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 14px;
+            border-radius: 15px;
+            background: #f7f2e9;
+        }
+
+        .code-value {
+            direction: ltr;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 700;
+            word-break: break-all;
+        }
+
+        .delete-code-btn {
+            border: 0;
+            background: #ead9d9;
+            color: #a52b2b;
+            border-radius: 10px;
+            padding: 8px 11px;
+            font-size: 12px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 780px) {
+            .navbar {
+                height: 70px;
+                margin: 10px;
+                border-radius: 18px;
+            }
+
+            .brand {
+                font-size: 21px;
+            }
+
+            .menu-button {
+                width: 44px;
+                height: 44px;
+                border-radius: 13px;
+            }
+
+            .page {
+                width: min(100% - 20px, 1180px);
+                margin-top: 25px;
+            }
+
+            .home-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .home-card {
+                min-height: 190px;
+                padding: 24px;
+            }
+
+            .panel-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .person-card {
+                grid-template-columns: 1fr;
+            }
+
+            .delete-user-btn {
+                width: 100%;
+            }
+
+            .codes-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <header class="navbar">
+
+        <div class="brand">
+            س.ح.ن
+        </div>
+
+        <div class="menu-wrap">
+
+            <button
+                type="button"
+                class="menu-button"
+                id="menu-button"
+                aria-label="منو"
+            >
+                <span class="menu-dot"></span>
+                <span class="menu-dot"></span>
+                <span class="menu-dot"></span>
+            </button>
+
+            <div
+                class="dropdown-menu hidden"
+                id="dropdown-menu"
+            >
+                <button
+                    type="button"
+                    class="logout"
+                    id="logout-button"
+                >
+                    ↩ خروج از پنل
+                </button>
             </div>
-        `;
 
-        return;
-    }
+        </div>
 
-    if (!data?.success) {
-        container.innerHTML = `
-            <div class="empty-state">
-                ${data?.error || "دریافت کاربران انجام نشد."}
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="page">
+
+        <!-- خانه -->
+
+        <section id="home-view">
+
+            <div class="hero">
+
+                <div class="hero-badge">
+                    پنل مدیریت
+                </div>
+
+                <h1>
+                    پنل کارمند
+                </h1>
+
+                <p>
+                    از این بخش می‌توانید کاربران و کدهای دسترسی کارمندان را مدیریت کنید.
+                </p>
+
             </div>
-        `;
 
-        return;
-    }
+            <div class="home-grid">
 
-    const users = Array.isArray(data.users)
-        ? data.users
-        : [];
+                <article
+                    class="home-card"
+                    id="open-user-management"
+                >
+                    <div class="card-icon">
+                        👤
+                    </div>
 
-    if (countElement) {
-        countElement.textContent =
-            `تعداد نفرات: ${users.length}`;
-    }
+                    <h2>
+                        تغییرات صفحه کاربر
+                    </h2>
 
-    if (users.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                هیچ کاربری وجود ندارد.
+                    <p>
+                        مشاهده و مدیریت کاربران ثبت‌شده در سایت.
+                    </p>
+                </article>
+
+
+                <article
+                    class="home-card"
+                    id="open-people"
+                >
+                    <div class="card-icon">
+                        👥
+                    </div>
+
+                    <h2>
+                        دیدن افراد
+                    </h2>
+
+                    <p>
+                        مشاهده فهرست کاربران و مدیریت حساب‌های آن‌ها.
+                    </p>
+                </article>
+
             </div>
-        `;
 
-        return;
-    }
+        </section>
 
-    container.innerHTML = users.map((user) => {
 
-        const fullName =
-            [
-                user.first_name,
-                user.last_name
-            ]
-            .filter(Boolean)
-            .join(" ")
-            .trim() || "کاربر بدون نام";
+        <!-- =========================
+             USER MANAGEMENT
+        ========================= -->
 
-        const phone =
-            user.phone || "ثبت نشده";
+        <section
+            id="user-management-view"
+            class="panel-view hidden"
+        >
 
-        const email =
-            user.email || "ثبت نشده";
+            <div class="panel-header">
 
-        const userId =
-            String(user.id || "");
+                <div>
+                    <h2>
+                        تغییرات صفحه کاربر
+                    </h2>
 
-        return `
-            <div class="person-card">
-
-                <div class="person-info">
-
-                    <div class="person-name">
-                        ${escapeHtml(fullName)}
-                    </div>
-
-                    <div class="person-row">
-                        <span>📱</span>
-                        <span>${escapeHtml(phone)}</span>
-                    </div>
-
-                    <div class="person-row">
-                        <span>✉️</span>
-                        <span>${escapeHtml(email)}</span>
-                    </div>
-
-                    <div class="person-row">
-                        <span>🔐</span>
-                        <span>••••••••</span>
-                    </div>
-
+                    <p>
+                        مدیریت حساب‌های کاربری
+                    </p>
                 </div>
 
                 <button
                     type="button"
-                    class="delete-user-btn"
-                    data-user-id="${escapeHtml(userId)}"
-                    onclick="deleteUserAccount(this.dataset.userId)"
+                    class="back-button"
+                    data-back-home
                 >
-                    حذف
+                    ← برگشت
                 </button>
 
             </div>
-        `;
-    }).join("");
-}
+
+            <div class="box">
+                در این بخش امکانات مدیریت کاربران قرار می‌گیرد.
+            </div>
+
+        </section>
 
 
-async function deleteUserAccount(userId) {
+        <!-- =========================
+             PEOPLE
+        ========================= -->
 
-    userId = String(userId || "").trim();
+        <section
+            id="people-view"
+            class="panel-view hidden"
+        >
 
-    if (!userId) {
-        alert("شناسه کاربر مشخص نیست.");
-        return;
-    }
+            <div class="panel-header">
 
-    const confirmed =
-        confirm("این حساب کاربری حذف شود؟");
+                <div>
+                    <h2>
+                        دیدن افراد
+                    </h2>
 
-    if (!confirmed) {
-        return;
-    }
+                    <p>
+                        فهرست کاربران ثبت‌شده
+                    </p>
+                </div>
 
-    const buttons =
-        document.querySelectorAll(
-            ".delete-user-btn"
-        );
+                <button
+                    type="button"
+                    class="back-button"
+                    data-back-home
+                >
+                    ← برگشت
+                </button>
 
-    buttons.forEach(button => {
-        if (
-            button.dataset.userId === userId
-        ) {
-            button.disabled = true;
-            button.textContent = "در حال حذف...";
+            </div>
+
+
+            <div class="users-count" id="users-count">
+                در حال دریافت کاربران...
+            </div>
+
+            <div
+                class="users-box"
+                id="users-list"
+            >
+                <div class="loading-state">
+                    در حال دریافت کاربران...
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             EMPLOYEE CODES
+        ========================= -->
+
+        <section
+            id="employee-view"
+            class="panel-view hidden"
+        >
+
+            <div class="panel-header">
+
+                <div>
+                    <h2>
+                        کدهای کارمند
+                    </h2>
+
+                    <p>
+                        مدیریت کدهای ورود کارمندان
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="back-button"
+                    data-back-home
+                >
+                    ← برگشت
+                </button>
+
+            </div>
+
+
+            <div class="codes-layout">
+
+                <div class="box">
+
+                    <h3>
+                        افزودن کد جدید
+                    </h3>
+
+                    <div class="form-group">
+
+                        <label for="new-employee-code">
+                            کد کارمند
+                        </label>
+
+                        <input
+                            id="new-employee-code"
+                            type="text"
+                            autocomplete="off"
+                            placeholder="کد جدید"
+                        >
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="primary-button"
+                        id="add-code-button"
+                    >
+                        افزودن کد
+                    </button>
+
+                </div>
+
+
+                <div class="box">
+
+                    <h3>
+                        کدهای فعال
+                    </h3>
+
+                    <div
+                        class="codes-list"
+                        id="codes-list"
+                    >
+                        <div class="loading-state">
+                            در حال دریافت کدها...
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        /* =========================================================
+           SUPABASE
+        ========================================================= */
+
+        const SUPABASE_URL =
+            "https://zyziyyhzxsnwzrsubulu.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
+
+        const supabaseClient =
+            supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+
+        /* =========================================================
+           ELEMENTS
+        ========================================================= */
+
+        const homeView =
+            document.getElementById("home-view");
+
+        const userManagementView =
+            document.getElementById("user-management-view");
+
+        const peopleView =
+            document.getElementById("people-view");
+
+        const employeeView =
+            document.getElementById("employee-view");
+
+        const menuButton =
+            document.getElementById("menu-button");
+
+        const dropdownMenu =
+            document.getElementById("dropdown-menu");
+
+        const usersList =
+            document.getElementById("users-list");
+
+        const usersCount =
+            document.getElementById("users-count");
+
+        const codesList =
+            document.getElementById("codes-list");
+
+
+        /* =========================================================
+           VIEW
+        ========================================================= */
+
+        function hideAllViews() {
+
+            homeView.classList.add("hidden");
+            userManagementView.classList.add("hidden");
+            peopleView.classList.add("hidden");
+            employeeView.classList.add("hidden");
+
         }
-    });
 
-    const { data, error } =
-        await supabaseClient.functions.invoke(
-            "manage-users",
-            {
-                body: {
-                    action: "delete",
-                    user_id: userId
-                }
+
+        function showHome() {
+
+            hideAllViews();
+
+            homeView.classList.remove("hidden");
+
+        }
+
+
+        function showUserManagement() {
+
+            hideAllViews();
+
+            userManagementView.classList.remove("hidden");
+
+        }
+
+
+        async function showPeople() {
+
+            hideAllViews();
+
+            peopleView.classList.remove("hidden");
+
+            await loadPeople();
+
+        }
+
+
+        async function showEmployees() {
+
+            hideAllViews();
+
+            employeeView.classList.remove("hidden");
+
+            await loadEmployeeCodes();
+
+        }
+
+
+        /* =========================================================
+           MENU
+        ========================================================= */
+
+        menuButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                dropdownMenu.classList.toggle("hidden");
+
             }
         );
 
-    if (error) {
-        console.error(error);
 
-        alert(
-            "حذف انجام نشد."
+        document.addEventListener(
+            "click",
+            function () {
+
+                dropdownMenu.classList.add("hidden");
+
+            }
         );
 
-        await loadPeople();
-        return;
-    }
 
-    if (!data?.success) {
-        alert(
-            data?.error ||
-            "حذف انجام نشد."
+        dropdownMenu.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+            }
         );
 
-        await loadPeople();
-        return;
-    }
 
-    await loadPeople();
-}
+        /* =========================================================
+           HOME BUTTONS
+        ========================================================= */
+
+        document
+            .getElementById("open-user-management")
+            .addEventListener(
+                "click",
+                showUserManagement
+            );
 
 
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-</script>
+        document
+            .getElementById("open-people")
+            .addEventListener(
+                "click",
+                showPeople
+            );
+
+
+        /* =========================================================
+           BACK BUTTONS
+        ========================================================= */
+
+        document
+            .querySelectorAll("[data-back-home]")
+            .forEach(
+                button => {
+
+                    button.addEventListener(
+                        "click",
+                        showHome
+                    );
+
+                }
+            );
+
+
+        /* =========================================================
+           ESCAPE HTML
+        ========================================================= */
+
+        function escapeHtml(value) {
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* =========================================================
+           LOAD USERS
+        ========================================================= */
+
+        async function loadPeople() {
+
+            usersList.innerHTML = `
+                <div class="loading-state">
+                    در حال دریافت کاربران...
+                </div>
+            `;
+
+            usersCount.textContent =
+                "در حال دریافت کاربران...";
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.functions.invoke(
+                    "manage-users",
+                    {
+                        body: {
+                            action: "list"
+                        }
+                    }
+                );
+
+
+            if (error) {
+
+                console.error(
+                    "LOAD USERS ERROR:",
+                    error
+                );
+
+                usersCount.textContent =
+                    "خطا در دریافت کاربران";
+
+                usersList.innerHTML = `
+                    <div class="empty-state">
+                        دریافت فهرست کاربران انجام نشد.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            if (!data?.success) {
+
+                usersCount.textContent =
+                    "خطا در دریافت کاربران";
+
+                usersList.innerHTML = `
+                    <div class="empty-state">
+                        ${escapeHtml(
+                            data?.error ||
+                            "دریافت کاربران انجام نشد."
+                        )}
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            const users =
+                Array.isArray(data.users)
+                    ? data.users
+                    : [];
+
+
+            usersCount.textContent =
+                `${users.length} کاربر`;
+
+
+            if (users.length === 0) {
+
+                usersList.innerHTML = `
+                    <div class="empty-state">
+                        هنوز کاربری ثبت نشده است.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            usersList.innerHTML =
+                users.map(
+                    user => {
+
+                        const fullName =
+                            [
+                                user.first_name,
+                                user.last_name
+                            ]
+                                .filter(Boolean)
+                                .join(" ")
+                                .trim()
+                            ||
+                            "کاربر بدون نام";
+
+
+                        const phone =
+                            user.phone ||
+                            "ثبت نشده";
+
+
+                        const email =
+                            user.email ||
+                            "ثبت نشده";
+
+
+                        const userId =
+                            String(
+                                user.id || ""
+                            ).trim();
+
+
+                        return `
+                            <article
+                                class="person-card"
+                                data-user-id="${escapeHtml(userId)}"
+                            >
+
+                                <div class="person-info">
+
+                                    <div class="person-name">
+                                        ${escapeHtml(fullName)}
+                                    </div>
+
+                                    <div class="person-details">
+
+                                        <div class="detail-chip">
+                                            تلفن:
+                                            ${escapeHtml(phone)}
+                                        </div>
+
+                                        <div class="detail-chip ltr">
+                                            ${escapeHtml(email)}
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <button
+                                    type="button"
+                                    class="delete-user-btn"
+                                >
+                                    حذف
+                                </button>
+
+                            </article>
+                        `;
+
+                    }
+                ).join("");
+
+
+            /* =====================================================
+               DELETE BUTTONS
+            ===================================================== */
+
+            usersList
+                .querySelectorAll(".delete-user-btn")
+                .forEach(
+                    button => {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const card =
+                                    button.closest(
+                                        ".person-card"
+                                    );
+
+
+                                if (!card) {
+                                    return;
+                                }
+
+
+                                const userId =
+                                    String(
+                                        card.dataset.userId || ""
+                                    ).trim();
+
+
+                                deleteUserAccount(
+                                    userId,
+                                    button
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+        }
+
+
+        /* =========================================================
+           DELETE USER
+        ========================================================= */
+
+        async function deleteUserAccount(
+            userId,
+            button
+        ) {
+
+            userId =
+                String(
+                    userId || ""
+                ).trim();
+
+
+            if (!userId) {
+
+                alert(
+                    "شناسه کاربر مشخص نیست."
+                );
+
+                return;
+            }
+
+
+            const confirmed =
+                confirm(
+                    "این حساب کاربری حذف شود؟\n\nاین عملیات قابل بازگشت نیست."
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            if (button) {
+
+                button.disabled = true;
+                button.textContent =
+                    "در حال حذف...";
+
+            }
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.functions.invoke(
+                    "manage-users",
+                    {
+                        body: {
+                            action: "delete",
+                            user_id: userId
+                        }
+                    }
+                );
+
+
+            if (error) {
+
+                console.error(
+                    "DELETE USER ERROR:",
+                    error
+                );
+
+                alert(
+                    "حذف کاربر انجام نشد."
+                );
+
+                await loadPeople();
+
+                return;
+            }
+
+
+            if (!data?.success) {
+
+                alert(
+                    data?.error ||
+                    "حذف کاربر انجام نشد."
+                );
+
+                await loadPeople();
+
+                return;
+            }
+
+
+            alert(
+                "کاربر با موفقیت حذف شد."
+            );
+
+
+            await loadPeople();
+
+        }
+
+
+        /* =========================================================
+           LOAD EMPLOYEE CODES
+        ========================================================= */
+
+        async function loadEmployeeCodes() {
+
+            codesList.innerHTML = `
+                <div class="loading-state">
+                    در حال دریافت کدها...
+                </div>
+            `;
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.rpc(
+                    "list_employee_codes"
+                );
+
+
+            if (error) {
+
+                console.error(
+                    "LOAD CODES ERROR:",
+                    error
+                );
+
+                codesList.innerHTML = `
+                    <div class="empty-state">
+                        دریافت کدهای کارمند انجام نشد.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            const codes =
+                Array.isArray(data)
+                    ? data
+                    : [];
+
+
+            if (codes.length === 0) {
+
+                codesList.innerHTML = `
+                    <div class="empty-state">
+                        هیچ کد فعالی وجود ندارد.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            codesList.innerHTML =
+                codes.map(
+                    item => {
+
+                        return `
+                            <div
+                                class="code-item"
+                                data-code-id="${escapeHtml(item.id)}"
+                            >
+
+                                <div class="code-value">
+                                    ${escapeHtml(item.code)}
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="delete-code-btn"
+                                >
+                                    حذف
+                                </button>
+
+                            </div>
+                        `;
+
+                    }
+                ).join("");
+
+
+            codesList
+                .querySelectorAll(".delete-code-btn")
+                .forEach(
+                    button => {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const item =
+                                    button.closest(
+                                        ".code-item"
+                                    );
+
+
+                                if (!item) {
+                                    return;
+                                }
+
+
+                                const id =
+                                    Number(
+                                        item.dataset.codeId
+                                    );
+
+
+                                deleteEmployeeCode(
+                                    id,
+                                    button
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+        }
+
+
+        /* =========================================================
+           ADD EMPLOYEE CODE
+        ========================================================= */
+
+        document
+            .getElementById("add-code-button")
+            .addEventListener(
+                "click",
+                async function () {
+
+                    const input =
+                        document.getElementById(
+                            "new-employee-code"
+                        );
+
+                    const button =
+                        document.getElementById(
+                            "add-code-button"
+                        );
+
+
+                    const code =
+                        String(
+                            input.value || ""
+                        ).trim();
+
+
+                    if (!code) {
+
+                        alert(
+                            "کد کارمند را وارد کنید."
+                        );
+
+                        return;
+                    }
+
+
+                    button.disabled = true;
+                    button.textContent =
+                        "در حال افزودن...";
+
+
+                    const {
+                        data,
+                        error
+                    } =
+                        await supabaseClient.rpc(
+                            "add_employee_code",
+                            {
+                                p_code: code
+                            }
+                        );
+
+
+                    button.disabled = false;
+                    button.textContent =
+                        "افزودن کد";
+
+
+                    if (error) {
+
+                        console.error(
+                            "ADD CODE ERROR:",
+                            error
+                        );
+
+                        alert(
+                            "افزودن کد انجام نشد."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!data?.success) {
+
+                        alert(
+                            data?.error ||
+                            "افزودن کد انجام نشد."
+                        );
+
+                        return;
+                    }
+
+
+                    input.value = "";
+
+                    await loadEmployeeCodes();
+
+                }
+            );
+
+
+        /* =========================================================
+           DELETE EMPLOYEE CODE
+        ========================================================= */
+
+        async function deleteEmployeeCode(
+            id,
+            button
+        ) {
+
+            if (!Number.isFinite(id)) {
+                return;
+            }
+
+
+            const confirmed =
+                confirm(
+                    "این کد کارمند حذف شود؟"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            button.disabled = true;
+            button.textContent =
+                "حذف...";
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.rpc(
+                    "delete_employee_code",
+                    {
+                        p_id: id
+                    }
+                );
+
+
+            if (error) {
+
+                console.error(
+                    "DELETE CODE ERROR:",
+                    error
+                );
+
+                alert(
+                    "حذف کد انجام نشد."
+                );
+
+                await loadEmployeeCodes();
+
+                return;
+            }
+
+
+            if (!data?.success) {
+
+                alert(
+                    data?.error ||
+                    "حذف کد انجام نشد."
+                );
+
+                await loadEmployeeCodes();
+
+                return;
+            }
+
+
+            await loadEmployeeCodes();
+
+        }
+
+
+        /* =========================================================
+           LOGOUT
+        ========================================================= */
+
+        document
+            .getElementById("logout-button")
+            .addEventListener(
+                "click",
+                async function () {
+
+                    await supabaseClient.auth.signOut();
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+
+        /* =========================================================
+           CHECK EMPLOYEE ACCESS
+        ========================================================= */
+
+        async function checkEmployeeAccess() {
+
+            const {
+                data: {
+                    user
+                },
+                error: userError
+            } =
+                await supabaseClient.auth.getUser();
+
+
+            if (
+                userError ||
+                !user
+            ) {
+
+                window.location.href =
+                    "index.html";
+
+                return false;
+            }
+
+
+            const {
+                data: authorized,
+                error: authorizedError
+            } =
+                await supabaseClient.rpc(
+                    "is_employee_authorized"
+                );
+
+
+            if (
+                authorizedError ||
+                authorized !== true
+            ) {
+
+                await supabaseClient.auth.signOut();
+
+                window.location.href =
+                    "index.html";
+
+                return false;
+            }
+
+
+            return true;
+
+        }
+
+
+        /* =========================================================
+           INITIALIZE
+        ========================================================= */
+
+        (async function init() {
+
+            const authorized =
+                await checkEmployeeAccess();
+
+
+            if (!authorized) {
+                return;
+            }
+
+
+            showHome();
+
+        })();
+
+    </script>
+
+</body>
+</html>
