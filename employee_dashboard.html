@@ -15,24 +15,44 @@
             padding: 0;
         }
 
+        :root {
+            --bg: #f5f1e8;
+            --surface: rgba(255, 255, 255, 0.72);
+            --surface-solid: #fffdf8;
+            --border: rgba(255, 255, 255, 0.88);
+            --text: #2f2922;
+            --muted: #827568;
+            --accent: #f5ad00;
+            --accent-dark: #d99000;
+            --danger: #b82e2e;
+            --danger-dark: #962222;
+            --shadow: 0 18px 45px rgba(63, 44, 20, 0.08);
+        }
+
         html {
-            scroll-behavior: smooth;
+            min-height: 100%;
         }
 
         body {
-            font-family: Tahoma, sans-serif;
-            background:
-                radial-gradient(circle at top right, rgba(255, 185, 0, 0.10), transparent 35%),
-                radial-gradient(circle at bottom left, rgba(255, 140, 0, 0.08), transparent 35%),
-                #f5f1e8;
-            color: #2b241b;
             min-height: 100vh;
+            font-family: Tahoma, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(
+                    circle at 90% 5%,
+                    rgba(255, 188, 0, 0.12),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 10% 90%,
+                    rgba(255, 155, 0, 0.07),
+                    transparent 28%
+                ),
+                var(--bg);
         }
 
         button,
-        input,
-        textarea,
-        select {
+        input {
             font-family: inherit;
         }
 
@@ -52,28 +72,35 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            height: 78px;
-            margin: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 22px;
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            box-shadow: 0 12px 35px rgba(53, 39, 20, 0.08);
+            width: calc(100% - 28px);
+            height: 76px;
+            margin: 14px auto 0;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 18px 0 14px;
+
+            padding: 0 16px 0 12px;
+
+            background: rgba(255, 255, 255, 0.66);
+            border: 1px solid rgba(255, 255, 255, 0.92);
+            border-radius: 22px;
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            box-shadow:
+                0 12px 35px rgba(46, 35, 20, 0.07);
         }
 
         .brand {
             font-size: 25px;
             font-weight: 900;
-            color: #3d2f20;
             letter-spacing: -0.5px;
+            color: #3c3127;
         }
 
-        .menu-wrap {
+        .menu-area {
             position: relative;
         }
 
@@ -82,69 +109,91 @@
             height: 48px;
             border: 0;
             border-radius: 15px;
-            background: #2e2923;
+
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 4px;
-            transition: 0.2s ease;
-            box-shadow: 0 8px 20px rgba(46, 41, 35, 0.18);
+
+            background: #2f2a25;
+            box-shadow:
+                0 9px 22px rgba(40, 34, 29, 0.17);
+
+            transition:
+                transform 0.18s ease,
+                background 0.18s ease;
         }
 
         .menu-button:hover {
             transform: translateY(-1px);
-            background: #24201c;
+            background: #26221e;
         }
 
         .menu-dot {
             width: 5px;
             height: 5px;
             border-radius: 50%;
-            background: white;
+            background: #fff;
         }
 
-        .dropdown-menu {
+        .menu-dropdown {
             position: absolute;
             left: 0;
             top: 58px;
             width: 190px;
+
             padding: 8px;
-            border-radius: 18px;
+
+            border-radius: 17px;
+            border: 1px solid rgba(255, 255, 255, 0.92);
             background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 18px 45px rgba(49, 35, 17, 0.15);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            box-shadow:
+                0 20px 45px rgba(47, 35, 20, 0.15);
         }
 
-        .dropdown-menu button {
+        .menu-item {
             width: 100%;
             border: 0;
             background: transparent;
+
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
             padding: 12px 13px;
-            border-radius: 12px;
-            text-align: right;
+            border-radius: 11px;
+
+            color: #43372c;
             font-size: 14px;
-            color: #3a3025;
-            transition: 0.18s ease;
+            text-align: right;
+
+            transition: background 0.18s ease;
         }
 
-        .dropdown-menu button:hover {
+        .menu-item:hover {
             background: #f3ede3;
         }
 
-        .dropdown-menu .logout {
-            color: #ba2d2d;
+        .logout-item {
+            color: var(--danger);
         }
 
         /* =========================
-           PAGE
+           MAIN
         ========================= */
 
         .page {
             width: min(1180px, calc(100% - 28px));
-            margin: 34px auto 50px;
+            margin: 34px auto 55px;
         }
+
+        /* =========================
+           HOME
+        ========================= */
 
         .hero {
             margin-bottom: 28px;
@@ -153,346 +202,557 @@
         .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
+
             padding: 8px 13px;
+
             border-radius: 999px;
-            background: rgba(255, 179, 0, 0.14);
-            color: #946700;
+            background: rgba(245, 173, 0, 0.13);
+
+            color: #986a00;
             font-size: 13px;
             font-weight: 700;
-            margin-bottom: 14px;
+
+            margin-bottom: 13px;
         }
 
-        .hero h1 {
-            font-size: clamp(28px, 4vw, 42px);
-            line-height: 1.3;
-            margin-bottom: 10px;
+        .hero-title {
+            font-size: clamp(28px, 4vw, 40px);
+            line-height: 1.35;
+            margin-bottom: 9px;
         }
 
-        .hero p {
-            color: #75695b;
-            line-height: 1.9;
-            font-size: 15px;
+        .hero-description {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 2;
         }
 
-        /* =========================
-           HOME CARDS
-        ========================= */
-
-        .home-grid {
+        .main-cards {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 20px;
         }
 
-        .home-card {
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            border-radius: 26px;
-            padding: 30px;
-            min-height: 230px;
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: 0 18px 45px rgba(55, 39, 17, 0.07);
-            transition: 0.22s ease;
-            cursor: pointer;
+        .main-card {
+            min-height: 240px;
             position: relative;
             overflow: hidden;
+
+            padding: 28px;
+
+            border-radius: 26px;
+            border: 1px solid var(--border);
+
+            background: var(--surface);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            box-shadow: var(--shadow);
+
+            transition:
+                transform 0.22s ease,
+                box-shadow 0.22s ease;
         }
 
-        .home-card::after {
+        .main-card::after {
             content: "";
             position: absolute;
-            width: 150px;
-            height: 150px;
+
+            width: 170px;
+            height: 170px;
+
+            left: -65px;
+            bottom: -75px;
+
             border-radius: 50%;
-            background: rgba(255, 179, 0, 0.08);
-            left: -40px;
-            bottom: -60px;
+
+            background: rgba(245, 173, 0, 0.07);
+
             pointer-events: none;
         }
 
-        .home-card:hover {
+        .main-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 22px 52px rgba(55, 39, 17, 0.11);
+            box-shadow:
+                0 22px 52px rgba(63, 44, 20, 0.12);
         }
 
         .card-icon {
             width: 58px;
             height: 58px;
-            border-radius: 18px;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #fff1c3,
+                    #ffdf91
+                );
+
             font-size: 27px;
-            background: linear-gradient(145deg, #fff1c4, #ffe09b);
-            margin-bottom: 22px;
+
+            margin-bottom: 21px;
         }
 
-        .home-card h2 {
+        .main-card h2 {
             font-size: 22px;
             margin-bottom: 10px;
         }
 
-        .home-card p {
-            color: #74685a;
-            line-height: 1.9;
+        .main-card p {
+            max-width: 440px;
+            color: var(--muted);
             font-size: 14px;
+            line-height: 2;
         }
 
         /* =========================
-           PANEL
+           PEOPLE PAGE
         ========================= */
 
-        .panel-view {
-            animation: fadeIn 0.22s ease;
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 175px minmax(0, 1fr);
+            gap: 22px;
+            align-items: start;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
+        .side-panel {
+            position: sticky;
+            top: 104px;
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            padding: 10px;
+
+            border-radius: 20px;
+            border: 1px solid var(--border);
+
+            background: var(--surface);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            box-shadow: var(--shadow);
         }
 
-        .panel-header {
+        .side-title {
+            padding: 8px 10px 11px;
+            color: #948779;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .side-button {
+            width: 100%;
+            border: 0;
+
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            justify-content: flex-start;
+
+            padding: 12px 11px;
+            margin-bottom: 5px;
+
+            border-radius: 12px;
+
+            background: transparent;
+            color: #57493c;
+
+            font-size: 13px;
+            text-align: right;
+
+            transition:
+                background 0.18s ease,
+                color 0.18s ease;
         }
 
-        .panel-header h2 {
+        .side-button:hover {
+            background: #f1ebe2;
+        }
+
+        .side-button.active {
+            color: #765200;
+            background: rgba(245, 173, 0, 0.14);
+            font-weight: 700;
+        }
+
+        .content-panel {
+            min-width: 0;
+        }
+
+        .panel-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 18px;
+
+            margin-bottom: 18px;
+        }
+
+        .panel-top h2 {
             font-size: 28px;
             margin-bottom: 7px;
         }
 
-        .panel-header p {
-            color: #7d7164;
-            font-size: 14px;
+        .panel-top p {
+            color: var(--muted);
+            font-size: 13px;
         }
 
         .back-button {
-            border: 1px solid #ddd2c2;
-            background: rgba(255, 255, 255, 0.7);
-            color: #45392c;
-            padding: 11px 17px;
-            border-radius: 13px;
+            flex-shrink: 0;
+
+            border: 1px solid #ddd4c8;
+            background: rgba(255, 255, 255, 0.72);
+
+            padding: 10px 15px;
+
+            border-radius: 12px;
+
+            color: #584a3c;
             font-size: 13px;
+
+            transition:
+                background 0.18s ease,
+                transform 0.18s ease;
         }
 
         .back-button:hover {
             background: #fff;
+            transform: translateY(-1px);
+        }
+
+        .count-label {
+            color: #897b6c;
+            font-size: 12px;
+            margin-bottom: 11px;
         }
 
         /* =========================
-           USERS
+           USER CARDS
         ========================= */
 
-        .users-box {
+        .users-list {
             display: grid;
-            gap: 14px;
+            gap: 13px;
         }
 
-        .person-card {
+        .user-card {
+            position: relative;
+
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto;
+
             gap: 18px;
             align-items: center;
-            padding: 20px;
-            border-radius: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.88);
+
+            padding: 19px;
+
+            border-radius: 21px;
+            border: 1px solid var(--border);
+
             background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            box-shadow: 0 12px 30px rgba(55, 39, 17, 0.06);
+
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+
+            box-shadow:
+                0 11px 29px rgba(54, 40, 22, 0.055);
         }
 
-        .person-info {
+        .user-main {
             min-width: 0;
         }
 
-        .person-name {
-            font-size: 18px;
+        .user-name {
+            font-size: 17px;
             font-weight: 900;
+
             margin-bottom: 12px;
         }
 
-        .person-details {
-            display: flex;
-            flex-wrap: wrap;
+        .user-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 8px;
         }
 
-        .detail-chip {
-            background: #f4eee4;
-            color: #625649;
+        .info-item {
+            min-width: 0;
+
+            padding: 9px 11px;
+
             border-radius: 10px;
-            padding: 8px 10px;
+
+            background: #f6f0e7;
+
+            color: #66594d;
+
             font-size: 12px;
+            line-height: 1.7;
         }
 
-        .detail-chip.ltr {
+        .info-label {
+            display: block;
+
+            color: #948576;
+
+            font-size: 10px;
+
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            display: block;
+            overflow-wrap: anywhere;
+        }
+
+        .ltr {
             direction: ltr;
             text-align: left;
         }
 
-        .delete-user-btn {
+        .password-value {
+            font-family: monospace;
+            letter-spacing: 0.2px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .delete-button {
             border: 0;
-            background: #ba3131;
-            color: white;
-            border-radius: 13px;
-            padding: 11px 17px;
-            font-size: 13px;
-            font-weight: 700;
+
             min-width: 90px;
-            transition: 0.18s ease;
+
+            padding: 11px 15px;
+
+            border-radius: 12px;
+
+            background: var(--danger);
+            color: #fff;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition:
+                background 0.18s ease,
+                transform 0.18s ease;
         }
 
-        .delete-user-btn:hover {
-            background: #9f2323;
+        .delete-button:hover {
+            background: var(--danger-dark);
+            transform: translateY(-1px);
         }
 
-        .delete-user-btn:disabled {
+        .delete-button:disabled {
             opacity: 0.55;
             cursor: wait;
+            transform: none;
         }
 
-        .empty-state {
-            padding: 35px 20px;
-            text-align: center;
+        .state-box {
+            padding: 30px 20px;
+
             border-radius: 20px;
-            background: rgba(255,255,255,0.65);
-            color: #7d7164;
-            border: 1px dashed #d8ccbb;
-        }
 
-        .loading-state {
-            padding: 35px 20px;
+            border: 1px dashed #d8cebf;
+
+            background: rgba(255, 255, 255, 0.56);
+
+            color: #8a7c6d;
+
             text-align: center;
-            color: #817567;
-        }
 
-        .users-count {
-            margin-bottom: 15px;
             font-size: 13px;
-            color: #7e7163;
+            line-height: 2;
         }
 
         /* =========================
-           EMPLOYEE CODES
+           EMPLOYEE PAGE
         ========================= */
 
-        .codes-layout {
+        .employee-layout {
             display: grid;
-            grid-template-columns: 320px minmax(0, 1fr);
+            grid-template-columns: 300px minmax(0, 1fr);
             gap: 18px;
             align-items: start;
         }
 
         .box {
-            background: rgba(255,255,255,0.72);
-            border: 1px solid rgba(255,255,255,0.9);
+            border: 1px solid var(--border);
             border-radius: 22px;
+
+            background: rgba(255,255,255,0.72);
+
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+
+            box-shadow:
+                0 13px 34px rgba(52, 39, 20, 0.06);
+
             padding: 20px;
-            box-shadow: 0 14px 35px rgba(55,39,17,0.06);
         }
 
-        .box h3 {
-            font-size: 18px;
+        .box-title {
+            font-size: 17px;
             margin-bottom: 15px;
         }
 
-        .form-group {
-            margin-bottom: 14px;
+        .field {
+            margin-bottom: 12px;
         }
 
-        .form-group label {
+        .field label {
             display: block;
-            font-size: 13px;
+
+            color: #6c5e51;
+
+            font-size: 12px;
+
             margin-bottom: 7px;
-            color: #62564a;
         }
 
-        .form-group input {
+        .field input {
             width: 100%;
-            height: 46px;
-            border-radius: 12px;
+            height: 45px;
+
+            padding: 0 12px;
+
             border: 1px solid #ddd3c3;
+            border-radius: 11px;
+
             background: #fffdf9;
-            padding: 0 13px;
+
             outline: none;
-            font-size: 14px;
+
+            color: #322a23;
+            font-size: 13px;
         }
 
-        .form-group input:focus {
-            border-color: #e8a900;
-            box-shadow: 0 0 0 3px rgba(232,169,0,0.10);
+        .field input:focus {
+            border-color: #e4a400;
+
+            box-shadow:
+                0 0 0 3px rgba(228,164,0,0.10);
         }
 
-        .primary-button {
+        .add-code-button {
             width: 100%;
+
             border: 0;
-            border-radius: 13px;
+            border-radius: 12px;
+
             padding: 12px;
-            background: linear-gradient(135deg, #ffbd18, #f39b00);
-            color: #3d2c12;
-            font-size: 14px;
-            font-weight: 900;
-            box-shadow: 0 10px 24px rgba(237, 164, 0, 0.18);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffc226,
+                    #eda000
+                );
+
+            color: #45330e;
+
+            font-size: 13px;
+            font-weight: 800;
         }
 
-        .primary-button:disabled {
+        .add-code-button:disabled {
             opacity: 0.55;
             cursor: wait;
         }
 
         .codes-list {
             display: grid;
-            gap: 10px;
+            gap: 9px;
         }
 
         .code-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             gap: 10px;
-            padding: 14px;
-            border-radius: 15px;
-            background: #f7f2e9;
+
+            padding: 12px;
+
+            border-radius: 13px;
+
+            background: #f6f1e8;
         }
 
-        .code-value {
+        .code-text {
             direction: ltr;
             text-align: left;
-            font-size: 14px;
+
+            font-family: monospace;
+            font-size: 13px;
             font-weight: 700;
-            word-break: break-all;
+
+            overflow-wrap: anywhere;
         }
 
-        .delete-code-btn {
+        .code-delete {
+            flex-shrink: 0;
+
             border: 0;
-            background: #ead9d9;
-            color: #a52b2b;
-            border-radius: 10px;
-            padding: 8px 11px;
-            font-size: 12px;
+            border-radius: 9px;
+
+            padding: 8px 10px;
+
+            background: #ecdddd;
+            color: #a52d2d;
+
+            font-size: 11px;
         }
 
         /* =========================
-           MOBILE
+           RESPONSIVE
         ========================= */
 
-        @media (max-width: 780px) {
+        @media (max-width: 820px) {
+
+            .main-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .side-panel {
+                position: static;
+
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 6px;
+            }
+
+            .side-title {
+                grid-column: 1 / -1;
+            }
+
+            .employee-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 620px) {
+
             .navbar {
+                width: calc(100% - 20px);
                 height: 70px;
-                margin: 10px;
+                margin-top: 10px;
                 border-radius: 18px;
             }
 
@@ -507,34 +767,41 @@
             }
 
             .page {
-                width: min(100% - 20px, 1180px);
-                margin-top: 25px;
+                width: calc(100% - 20px);
+                margin-top: 24px;
             }
 
-            .home-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .home-card {
-                min-height: 190px;
+            .main-card {
+                min-height: 205px;
                 padding: 24px;
             }
 
-            .panel-header {
-                align-items: flex-start;
+            .panel-top {
                 flex-direction: column;
             }
 
-            .person-card {
+            .user-card {
                 grid-template-columns: 1fr;
             }
 
-            .delete-user-btn {
+            .user-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-actions {
                 width: 100%;
             }
 
-            .codes-layout {
+            .delete-button {
+                width: 100%;
+            }
+
+            .side-panel {
                 grid-template-columns: 1fr;
+            }
+
+            .side-title {
+                grid-column: auto;
             }
         }
     </style>
@@ -552,7 +819,7 @@
             س.ح.ن
         </div>
 
-        <div class="menu-wrap">
+        <div class="menu-area">
 
             <button
                 type="button"
@@ -566,12 +833,12 @@
             </button>
 
             <div
-                class="dropdown-menu hidden"
-                id="dropdown-menu"
+                id="menu-dropdown"
+                class="menu-dropdown hidden"
             >
                 <button
                     type="button"
-                    class="logout"
+                    class="menu-item logout-item"
                     id="logout-button"
                 >
                     ↩ خروج از پنل
@@ -583,40 +850,40 @@
     </header>
 
 
-    <!-- =========================
-         MAIN
-    ========================= -->
-
     <main class="page">
 
-        <!-- خانه -->
+        <!-- =========================
+             HOME
+        ========================= -->
 
-        <section id="home-view">
+        <section id="home-page">
 
             <div class="hero">
 
                 <div class="hero-badge">
-                    پنل مدیریت
+                    ✦ پنل کارمند
                 </div>
 
-                <h1>
-                    پنل کارمند
+                <h1 class="hero-title">
+                    پنل مدیریت س.ح.ن
                 </h1>
 
-                <p>
-                    از این بخش می‌توانید کاربران و کدهای دسترسی کارمندان را مدیریت کنید.
+                <p class="hero-description">
+                    بخش‌های موردنیاز مدیریت کاربران و کارمندان از اینجا در دسترس است.
                 </p>
 
             </div>
 
-            <div class="home-grid">
+
+            <div class="main-cards">
 
                 <article
-                    class="home-card"
-                    id="open-user-management"
+                    class="main-card"
+                    id="user-management-card"
                 >
+
                     <div class="card-icon">
-                        👤
+                        ⚙️
                     </div>
 
                     <h2>
@@ -624,15 +891,17 @@
                     </h2>
 
                     <p>
-                        مشاهده و مدیریت کاربران ثبت‌شده در سایت.
+                        مدیریت بخش‌های مربوط به صفحه کاربر و اطلاعات نمایش داده‌شده برای کاربران.
                     </p>
+
                 </article>
 
 
                 <article
-                    class="home-card"
-                    id="open-people"
+                    class="main-card"
+                    id="people-card"
                 >
+
                     <div class="card-icon">
                         👥
                     </div>
@@ -642,8 +911,9 @@
                     </h2>
 
                     <p>
-                        مشاهده فهرست کاربران و مدیریت حساب‌های آن‌ها.
+                        مشاهده اطلاعات کاربران و مدیریت حساب‌های ثبت‌شده در سایت.
                     </p>
+
                 </article>
 
             </div>
@@ -652,15 +922,15 @@
 
 
         <!-- =========================
-             USER MANAGEMENT
+             USER MANAGEMENT PAGE
         ========================= -->
 
         <section
-            id="user-management-view"
-            class="panel-view hidden"
+            id="user-management-page"
+            class="hidden"
         >
 
-            <div class="panel-header">
+            <div class="panel-top">
 
                 <div>
                     <h2>
@@ -668,155 +938,217 @@
                     </h2>
 
                     <p>
-                        مدیریت حساب‌های کاربری
+                        مدیریت امکانات صفحه کاربر
                     </p>
                 </div>
 
                 <button
                     type="button"
                     class="back-button"
-                    data-back-home
+                    data-home-button
                 >
                     ← برگشت
                 </button>
 
             </div>
+
 
             <div class="box">
-                در این بخش امکانات مدیریت کاربران قرار می‌گیرد.
+
+                <div class="box-title">
+                    مدیریت صفحه کاربر
+                </div>
+
+                <p
+                    style="
+                        color:#837667;
+                        font-size:13px;
+                        line-height:2;
+                    "
+                >
+                    امکانات مربوط به تغییرات صفحه کاربر در این بخش قرار می‌گیرد.
+                </p>
+
             </div>
 
         </section>
 
 
         <!-- =========================
-             PEOPLE
+             PEOPLE PAGE
         ========================= -->
 
         <section
-            id="people-view"
-            class="panel-view hidden"
+            id="people-page"
+            class="hidden"
         >
 
-            <div class="panel-header">
+            <div class="dashboard-layout">
 
-                <div>
-                    <h2>
-                        دیدن افراد
-                    </h2>
+                <!-- SIDE -->
 
-                    <p>
-                        فهرست کاربران ثبت‌شده
-                    </p>
-                </div>
+                <aside class="side-panel">
 
-                <button
-                    type="button"
-                    class="back-button"
-                    data-back-home
-                >
-                    ← برگشت
-                </button>
-
-            </div>
-
-
-            <div class="users-count" id="users-count">
-                در حال دریافت کاربران...
-            </div>
-
-            <div
-                class="users-box"
-                id="users-list"
-            >
-                <div class="loading-state">
-                    در حال دریافت کاربران...
-                </div>
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             EMPLOYEE CODES
-        ========================= -->
-
-        <section
-            id="employee-view"
-            class="panel-view hidden"
-        >
-
-            <div class="panel-header">
-
-                <div>
-                    <h2>
-                        کدهای کارمند
-                    </h2>
-
-                    <p>
-                        مدیریت کدهای ورود کارمندان
-                    </p>
-                </div>
-
-                <button
-                    type="button"
-                    class="back-button"
-                    data-back-home
-                >
-                    ← برگشت
-                </button>
-
-            </div>
-
-
-            <div class="codes-layout">
-
-                <div class="box">
-
-                    <h3>
-                        افزودن کد جدید
-                    </h3>
-
-                    <div class="form-group">
-
-                        <label for="new-employee-code">
-                            کد کارمند
-                        </label>
-
-                        <input
-                            id="new-employee-code"
-                            type="text"
-                            autocomplete="off"
-                            placeholder="کد جدید"
-                        >
-
+                    <div class="side-title">
+                        افراد
                     </div>
 
                     <button
                         type="button"
-                        class="primary-button"
-                        id="add-code-button"
+                        class="side-button active"
+                        id="side-users"
                     >
-                        افزودن کد
+                        کاربر
                     </button>
 
-                </div>
-
-
-                <div class="box">
-
-                    <h3>
-                        کدهای فعال
-                    </h3>
-
-                    <div
-                        class="codes-list"
-                        id="codes-list"
+                    <button
+                        type="button"
+                        class="side-button"
+                        id="side-employees"
                     >
-                        <div class="loading-state">
-                            در حال دریافت کدها...
+                        کارمند
+                    </button>
+
+                </aside>
+
+
+                <!-- CONTENT -->
+
+                <div class="content-panel">
+
+                    <!-- USERS -->
+
+                    <section id="users-section">
+
+                        <div class="panel-top">
+
+                            <div>
+                                <h2>
+                                    کاربران
+                                </h2>
+
+                                <p>
+                                    اطلاعات کاربران ثبت‌شده
+                                </p>
+                            </div>
+
+                            <button
+                                type="button"
+                                class="back-button"
+                                data-home-button
+                            >
+                                ← برگشت
+                            </button>
+
                         </div>
-                    </div>
+
+
+                        <div
+                            id="users-count"
+                            class="count-label"
+                        >
+                            در حال دریافت کاربران...
+                        </div>
+
+
+                        <div
+                            id="users-list"
+                            class="users-list"
+                        >
+
+                            <div class="state-box">
+                                در حال دریافت کاربران...
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- EMPLOYEES -->
+
+                    <section
+                        id="employees-section"
+                        class="hidden"
+                    >
+
+                        <div class="panel-top">
+
+                            <div>
+                                <h2>
+                                    کارمندان
+                                </h2>
+
+                                <p>
+                                    مدیریت کدهای ورود کارمندان
+                                </p>
+                            </div>
+
+                            <button
+                                type="button"
+                                class="back-button"
+                                data-home-button
+                            >
+                                ← برگشت
+                            </button>
+
+                        </div>
+
+
+                        <div class="employee-layout">
+
+                            <div class="box">
+
+                                <div class="box-title">
+                                    افزودن کد کارمند
+                                </div>
+
+                                <div class="field">
+
+                                    <label for="new-code">
+                                        کد ورود
+                                    </label>
+
+                                    <input
+                                        id="new-code"
+                                        type="text"
+                                        autocomplete="off"
+                                        placeholder="کد جدید"
+                                    >
+
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="add-code-button"
+                                    id="add-code-button"
+                                >
+                                    افزودن کد
+                                </button>
+
+                            </div>
+
+
+                            <div class="box">
+
+                                <div class="box-title">
+                                    کدهای فعال
+                                </div>
+
+                                <div
+                                    id="codes-list"
+                                    class="codes-list"
+                                >
+                                    <div class="state-box">
+                                        در حال دریافت کدها...
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
 
                 </div>
 
@@ -836,13 +1168,13 @@
         const SUPABASE_URL =
             "https://zyziyyhzxsnwzrsubulu.supabase.co";
 
-        const SUPABASE_PUBLISHABLE_KEY =
+        const SUPABASE_KEY =
             "sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
 
         const supabaseClient =
-            supabase.createClient(
+            window.supabase.createClient(
                 SUPABASE_URL,
-                SUPABASE_PUBLISHABLE_KEY
+                SUPABASE_KEY
             );
 
 
@@ -850,23 +1182,24 @@
            ELEMENTS
         ========================================================= */
 
-        const homeView =
-            document.getElementById("home-view");
+        const homePage =
+            document.getElementById("home-page");
 
-        const userManagementView =
-            document.getElementById("user-management-view");
+        const userManagementPage =
+            document.getElementById(
+                "user-management-page"
+            );
 
-        const peopleView =
-            document.getElementById("people-view");
+        const peoplePage =
+            document.getElementById("people-page");
 
-        const employeeView =
-            document.getElementById("employee-view");
+        const usersSection =
+            document.getElementById("users-section");
 
-        const menuButton =
-            document.getElementById("menu-button");
-
-        const dropdownMenu =
-            document.getElementById("dropdown-menu");
+        const employeesSection =
+            document.getElementById(
+                "employees-section"
+            );
 
         const usersList =
             document.getElementById("users-list");
@@ -877,95 +1210,75 @@
         const codesList =
             document.getElementById("codes-list");
 
+        const menuButton =
+            document.getElementById("menu-button");
+
+        const menuDropdown =
+            document.getElementById("menu-dropdown");
+
 
         /* =========================================================
-           VIEW
+           ESCAPE HTML
         ========================================================= */
 
-        function hideAllViews() {
+        function escapeHTML(value) {
 
-            homeView.classList.add("hidden");
-            userManagementView.classList.add("hidden");
-            peopleView.classList.add("hidden");
-            employeeView.classList.add("hidden");
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* =========================================================
+           VIEWS
+        ========================================================= */
+
+        function hidePages() {
+
+            homePage.classList.add("hidden");
+            userManagementPage.classList.add("hidden");
+            peoplePage.classList.add("hidden");
 
         }
 
 
         function showHome() {
 
-            hideAllViews();
+            hidePages();
 
-            homeView.classList.remove("hidden");
+            homePage.classList.remove("hidden");
 
         }
 
 
         function showUserManagement() {
 
-            hideAllViews();
+            hidePages();
 
-            userManagementView.classList.remove("hidden");
+            userManagementPage.classList.remove(
+                "hidden"
+            );
 
         }
 
 
         async function showPeople() {
 
-            hideAllViews();
+            hidePages();
 
-            peopleView.classList.remove("hidden");
+            peoplePage.classList.remove(
+                "hidden"
+            );
 
-            await loadPeople();
+            showUsersTab();
 
-        }
-
-
-        async function showEmployees() {
-
-            hideAllViews();
-
-            employeeView.classList.remove("hidden");
-
-            await loadEmployeeCodes();
+            await loadUsers();
 
         }
-
-
-        /* =========================================================
-           MENU
-        ========================================================= */
-
-        menuButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                dropdownMenu.classList.toggle("hidden");
-
-            }
-        );
-
-
-        document.addEventListener(
-            "click",
-            function () {
-
-                dropdownMenu.classList.add("hidden");
-
-            }
-        );
-
-
-        dropdownMenu.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-            }
-        );
 
 
         /* =========================================================
@@ -973,7 +1286,7 @@
         ========================================================= */
 
         document
-            .getElementById("open-user-management")
+            .getElementById("user-management-card")
             .addEventListener(
                 "click",
                 showUserManagement
@@ -981,19 +1294,15 @@
 
 
         document
-            .getElementById("open-people")
+            .getElementById("people-card")
             .addEventListener(
                 "click",
                 showPeople
             );
 
 
-        /* =========================================================
-           BACK BUTTONS
-        ========================================================= */
-
         document
-            .querySelectorAll("[data-back-home]")
+            .querySelectorAll("[data-home-button]")
             .forEach(
                 button => {
 
@@ -1007,35 +1316,149 @@
 
 
         /* =========================================================
-           ESCAPE HTML
+           MENU
         ========================================================= */
 
-        function escapeHtml(value) {
+        menuButton.addEventListener(
+            "click",
+            function (event) {
 
-            return String(value ?? "")
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
+                event.stopPropagation();
+
+                menuDropdown.classList.toggle(
+                    "hidden"
+                );
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            function () {
+
+                menuDropdown.classList.add(
+                    "hidden"
+                );
+
+            }
+        );
+
+
+        menuDropdown.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+            }
+        );
+
+
+        /* =========================================================
+           LOGOUT
+        ========================================================= */
+
+        document
+            .getElementById("logout-button")
+            .addEventListener(
+                "click",
+                async function () {
+
+                    await supabaseClient.auth.signOut();
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+
+        /* =========================================================
+           TABS
+        ========================================================= */
+
+        function showUsersTab() {
+
+            usersSection.classList.remove(
+                "hidden"
+            );
+
+            employeesSection.classList.add(
+                "hidden"
+            );
+
+            document
+                .getElementById("side-users")
+                .classList.add("active");
+
+            document
+                .getElementById("side-employees")
+                .classList.remove("active");
 
         }
+
+
+        async function showEmployeesTab() {
+
+            usersSection.classList.add(
+                "hidden"
+            );
+
+            employeesSection.classList.remove(
+                "hidden"
+            );
+
+            document
+                .getElementById("side-users")
+                .classList.remove("active");
+
+            document
+                .getElementById("side-employees")
+                .classList.add("active");
+
+            await loadEmployeeCodes();
+
+        }
+
+
+        document
+            .getElementById("side-users")
+            .addEventListener(
+                "click",
+                async function () {
+
+                    showUsersTab();
+
+                    await loadUsers();
+
+                }
+            );
+
+
+        document
+            .getElementById("side-employees")
+            .addEventListener(
+                "click",
+                showEmployeesTab
+            );
 
 
         /* =========================================================
            LOAD USERS
         ========================================================= */
 
-        async function loadPeople() {
-
-            usersList.innerHTML = `
-                <div class="loading-state">
-                    در حال دریافت کاربران...
-                </div>
-            `;
+        async function loadUsers() {
 
             usersCount.textContent =
                 "در حال دریافت کاربران...";
+
+
+            usersList.innerHTML = `
+                <div class="state-box">
+                    در حال دریافت کاربران...
+                </div>
+            `;
 
 
             const {
@@ -1055,7 +1478,7 @@
             if (error) {
 
                 console.error(
-                    "LOAD USERS ERROR:",
+                    "LIST USERS ERROR:",
                     error
                 );
 
@@ -1063,7 +1486,7 @@
                     "خطا در دریافت کاربران";
 
                 usersList.innerHTML = `
-                    <div class="empty-state">
+                    <div class="state-box">
                         دریافت فهرست کاربران انجام نشد.
                     </div>
                 `;
@@ -1078,8 +1501,8 @@
                     "خطا در دریافت کاربران";
 
                 usersList.innerHTML = `
-                    <div class="empty-state">
-                        ${escapeHtml(
+                    <div class="state-box">
+                        ${escapeHTML(
                             data?.error ||
                             "دریافت کاربران انجام نشد."
                         )}
@@ -1103,8 +1526,8 @@
             if (users.length === 0) {
 
                 usersList.innerHTML = `
-                    <div class="empty-state">
-                        هنوز کاربری ثبت نشده است.
+                    <div class="state-box">
+                        کاربری برای نمایش وجود ندارد.
                     </div>
                 `;
 
@@ -1116,14 +1539,28 @@
                 users.map(
                     user => {
 
+                        const id =
+                            String(
+                                user.id || ""
+                            ).trim();
+
+
+                        const firstName =
+                            String(
+                                user.first_name || ""
+                            ).trim();
+
+
+                        const lastName =
+                            String(
+                                user.last_name || ""
+                            ).trim();
+
+
                         const fullName =
-                            [
-                                user.first_name,
-                                user.last_name
-                            ]
+                            [firstName, lastName]
                                 .filter(Boolean)
                                 .join(" ")
-                                .trim()
                             ||
                             "کاربر بدون نام";
 
@@ -1138,33 +1575,74 @@
                             "ثبت نشده";
 
 
-                        const userId =
-                            String(
-                                user.id || ""
-                            ).trim();
+                        /*
+                         * توجه:
+                         * password فقط در صورتی نمایش داده می‌شود
+                         * که بک‌اند آن را واقعاً برگرداند.
+                         */
+                        const password =
+                            user.password ??
+                            "ذخیره نشده";
 
 
                         return `
                             <article
-                                class="person-card"
-                                data-user-id="${escapeHtml(userId)}"
+                                class="user-card"
+                                data-user-id="${escapeHTML(id)}"
                             >
 
-                                <div class="person-info">
+                                <div class="user-main">
 
-                                    <div class="person-name">
-                                        ${escapeHtml(fullName)}
+                                    <div class="user-name">
+                                        ${escapeHTML(
+                                            fullName
+                                        )}
                                     </div>
 
-                                    <div class="person-details">
+                                    <div class="user-info-grid">
 
-                                        <div class="detail-chip">
-                                            تلفن:
-                                            ${escapeHtml(phone)}
+                                        <div class="info-item">
+
+                                            <span class="info-label">
+                                                شماره تلفن
+                                            </span>
+
+                                            <span class="info-value ltr">
+                                                ${escapeHTML(
+                                                    phone
+                                                )}
+                                            </span>
+
                                         </div>
 
-                                        <div class="detail-chip ltr">
-                                            ${escapeHtml(email)}
+
+                                        <div class="info-item">
+
+                                            <span class="info-label">
+                                                ایمیل
+                                            </span>
+
+                                            <span class="info-value ltr">
+                                                ${escapeHTML(
+                                                    email
+                                                )}
+                                            </span>
+
+                                        </div>
+
+
+                                        <div class="info-item">
+
+                                            <span class="info-label">
+                                                رمز عبور
+                                            </span>
+
+                                            <span class="info-value password-value ltr">
+                                                ${escapeHTML(
+                                                    password
+                                                )}
+                                            </span>
+
                                         </div>
 
                                     </div>
@@ -1172,12 +1650,17 @@
                                 </div>
 
 
-                                <button
-                                    type="button"
-                                    class="delete-user-btn"
-                                >
-                                    حذف
-                                </button>
+                                <div class="user-actions">
+
+                                    <button
+                                        type="button"
+                                        class="delete-button"
+                                        data-action="delete-user"
+                                    >
+                                        حذف
+                                    </button>
+
+                                </div>
 
                             </article>
                         `;
@@ -1186,12 +1669,16 @@
                 ).join("");
 
 
-            /* =====================================================
-               DELETE BUTTONS
-            ===================================================== */
+            /*
+             * مهم:
+             * اینجا دیگر id را از index آرایه یا متغیر مشترک
+             * نمی‌گیریم. هر کارت شناسه خودش را دارد.
+             */
 
             usersList
-                .querySelectorAll(".delete-user-btn")
+                .querySelectorAll(
+                    '[data-action="delete-user"]'
+                )
                 .forEach(
                     button => {
 
@@ -1201,7 +1688,7 @@
 
                                 const card =
                                     button.closest(
-                                        ".person-card"
+                                        ".user-card"
                                     );
 
 
@@ -1212,7 +1699,8 @@
 
                                 const userId =
                                     String(
-                                        card.dataset.userId || ""
+                                        card.dataset.userId ||
+                                        ""
                                     ).trim();
 
 
@@ -1257,7 +1745,7 @@
 
             const confirmed =
                 confirm(
-                    "این حساب کاربری حذف شود؟\n\nاین عملیات قابل بازگشت نیست."
+                    "آیا این کاربر حذف شود؟\n\nاین عملیات حساب کاربری را نیز حذف می‌کند."
                 );
 
 
@@ -1266,66 +1754,81 @@
             }
 
 
-            if (button) {
+            button.disabled = true;
 
-                button.disabled = true;
-                button.textContent =
-                    "در حال حذف...";
-
-            }
+            button.textContent =
+                "در حال حذف...";
 
 
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.functions.invoke(
-                    "manage-users",
-                    {
-                        body: {
-                            action: "delete",
-                            user_id: userId
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.functions.invoke(
+                        "manage-users",
+                        {
+                            body: {
+                                action: "delete",
+                                user_id: userId
+                            }
                         }
-                    }
+                    );
+
+
+                if (error) {
+
+                    console.error(
+                        "DELETE USER ERROR:",
+                        error
+                    );
+
+                    alert(
+                        "حذف کاربر انجام نشد."
+                    );
+
+                    await loadUsers();
+
+                    return;
+                }
+
+
+                if (!data?.success) {
+
+                    alert(
+                        data?.error ||
+                        "حذف کاربر انجام نشد."
+                    );
+
+                    await loadUsers();
+
+                    return;
+                }
+
+
+                alert(
+                    "کاربر با موفقیت حذف شد."
                 );
 
 
-            if (error) {
+                await loadUsers();
+
+            }
+            catch (error) {
 
                 console.error(
-                    "DELETE USER ERROR:",
+                    "DELETE USER EXCEPTION:",
                     error
                 );
 
                 alert(
-                    "حذف کاربر انجام نشد."
+                    "خطایی هنگام حذف کاربر رخ داد."
                 );
 
-                await loadPeople();
+                await loadUsers();
 
-                return;
             }
-
-
-            if (!data?.success) {
-
-                alert(
-                    data?.error ||
-                    "حذف کاربر انجام نشد."
-                );
-
-                await loadPeople();
-
-                return;
-            }
-
-
-            alert(
-                "کاربر با موفقیت حذف شد."
-            );
-
-
-            await loadPeople();
 
         }
 
@@ -1337,7 +1840,7 @@
         async function loadEmployeeCodes() {
 
             codesList.innerHTML = `
-                <div class="loading-state">
+                <div class="state-box">
                     در حال دریافت کدها...
                 </div>
             `;
@@ -1355,12 +1858,12 @@
             if (error) {
 
                 console.error(
-                    "LOAD CODES ERROR:",
+                    "LIST EMPLOYEE CODES ERROR:",
                     error
                 );
 
                 codesList.innerHTML = `
-                    <div class="empty-state">
+                    <div class="state-box">
                         دریافت کدهای کارمند انجام نشد.
                     </div>
                 `;
@@ -1378,8 +1881,8 @@
             if (codes.length === 0) {
 
                 codesList.innerHTML = `
-                    <div class="empty-state">
-                        هیچ کد فعالی وجود ندارد.
+                    <div class="state-box">
+                        هنوز کدی ثبت نشده است.
                     </div>
                 `;
 
@@ -1391,19 +1894,26 @@
                 codes.map(
                     item => {
 
+                        const id =
+                            Number(item.id);
+
+
                         return `
                             <div
                                 class="code-item"
-                                data-code-id="${escapeHtml(item.id)}"
+                                data-code-id="${escapeHTML(id)}"
                             >
 
-                                <div class="code-value">
-                                    ${escapeHtml(item.code)}
+                                <div class="code-text">
+                                    ${escapeHTML(
+                                        item.code
+                                    )}
                                 </div>
 
                                 <button
                                     type="button"
-                                    class="delete-code-btn"
+                                    class="code-delete"
+                                    data-action="delete-code"
                                 >
                                     حذف
                                 </button>
@@ -1416,13 +1926,15 @@
 
 
             codesList
-                .querySelectorAll(".delete-code-btn")
+                .querySelectorAll(
+                    '[data-action="delete-code"]'
+                )
                 .forEach(
                     button => {
 
                         button.addEventListener(
                             "click",
-                            function () {
+                            async function () {
 
                                 const item =
                                     button.closest(
@@ -1441,7 +1953,7 @@
                                     );
 
 
-                                deleteEmployeeCode(
+                                await deleteEmployeeCode(
                                     id,
                                     button
                                 );
@@ -1467,8 +1979,9 @@
 
                     const input =
                         document.getElementById(
-                            "new-employee-code"
+                            "new-code"
                         );
+
 
                     const button =
                         document.getElementById(
@@ -1492,7 +2005,18 @@
                     }
 
 
+                    if (code.length < 4) {
+
+                        alert(
+                            "کد کارمند باید حداقل ۴ کاراکتر باشد."
+                        );
+
+                        return;
+                    }
+
+
                     button.disabled = true;
+
                     button.textContent =
                         "در حال افزودن...";
 
@@ -1510,6 +2034,7 @@
 
 
                     button.disabled = false;
+
                     button.textContent =
                         "افزودن کد";
 
@@ -1574,6 +2099,7 @@
 
 
             button.disabled = true;
+
             button.textContent =
                 "حذف...";
 
@@ -1626,26 +2152,7 @@
 
 
         /* =========================================================
-           LOGOUT
-        ========================================================= */
-
-        document
-            .getElementById("logout-button")
-            .addEventListener(
-                "click",
-                async function () {
-
-                    await supabaseClient.auth.signOut();
-
-                    window.location.href =
-                        "index.html";
-
-                }
-            );
-
-
-        /* =========================================================
-           CHECK EMPLOYEE ACCESS
+           CHECK EMPLOYEE
         ========================================================= */
 
         async function checkEmployeeAccess() {
@@ -1654,13 +2161,13 @@
                 data: {
                     user
                 },
-                error: userError
+                error
             } =
                 await supabaseClient.auth.getUser();
 
 
             if (
-                userError ||
+                error ||
                 !user
             ) {
 
@@ -1700,7 +2207,7 @@
 
 
         /* =========================================================
-           INITIALIZE
+           INIT
         ========================================================= */
 
         (async function init() {
