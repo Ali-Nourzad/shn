@@ -3,2121 +3,1237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>پنل کارمند | س.ح.ن</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <style>
+        :root {
+            --bg: #fbf6ef;
+            --surface: rgba(255, 255, 255, .88);
+            --surface-solid: #fff;
+            --text: #392f29;
+            --muted: #89786d;
+            --primary: #d9824b;
+            --primary-dark: #b96331;
+            --border: #eee2d6;
+            --soft: #fff0e3;
+            --danger: #c94d4d;
+            --success: #378660;
+            --shadow: 0 12px 35px rgba(90, 61, 40, .08);
+            --radius: 22px;
+        }
+
         * {
             box-sizing: border-box;
+        }
+
+        body {
             margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --bg-1: #fffaf1;
-            --bg-2: #f4ecdf;
-            --surface: rgba(255,255,255,.72);
-            --surface-strong: rgba(255,255,255,.88);
-            --border: rgba(65,48,30,.08);
-            --text: #29231d;
-            --muted: #8a7d70;
-            --muted-2: #a09284;
-            --accent: #e3a21a;
-            --accent-soft: rgba(227,162,26,.12);
-            --dark: #292724;
-            --danger: #d94b43;
-            --danger-hover: #bd3932;
-        }
-
-        html,
-        body {
-            width: 100%;
-            min-height: 100%;
-        }
-
-        body {
-            font-family: Tahoma, sans-serif;
-
+            min-height: 100vh;
             background:
-                radial-gradient(
-                    circle at 90% 0%,
-                    rgba(255,190,45,.20),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at 10% 90%,
-                    rgba(255,210,110,.10),
-                    transparent 28%
-                ),
-                linear-gradient(
-                    135deg,
-                    var(--bg-1),
-                    var(--bg-2)
-                );
-
+                radial-gradient(ellipse at 5% 0%, #f9e8d5 0, transparent 35%),
+                radial-gradient(ellipse at 95% 30%, #f8eadc 0, transparent 30%),
+                var(--bg);
             color: var(--text);
+            font-family: Tahoma, sans-serif;
         }
 
-        button,
-        input {
-            font-family: inherit;
+        button, input, textarea, select {
+            font: inherit;
         }
 
         button {
             cursor: pointer;
         }
 
-        /* ================= NAVBAR ================= */
+        button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
 
         .navbar {
             position: sticky;
             top: 0;
-            z-index: 1000;
-
-            height: 76px;
-            padding: 0 30px;
-
+            z-index: 20;
             display: flex;
             align-items: center;
             justify-content: space-between;
-
-            background: rgba(255,255,255,.70);
-
-            backdrop-filter: blur(22px);
-            -webkit-backdrop-filter: blur(22px);
-
-            border-bottom: 1px solid var(--border);
-
-            box-shadow:
-                0 8px 35px rgba(70,45,20,.06);
+            gap: 16px;
+            padding: 14px 5%;
+            background: rgba(255, 255, 255, .76);
+            border-bottom: 1px solid rgba(238, 226, 214, .85);
+            backdrop-filter: blur(16px);
         }
 
         .brand {
-            font-size: 25px;
-            font-weight: 900;
-            color: var(--text);
-            letter-spacing: -.7px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .brand-icon {
+            display: grid;
+            place-items: center;
+            width: 43px;
+            height: 43px;
+            border-radius: 15px;
+            color: white;
+            background: linear-gradient(135deg, #e8a06d, #c87540);
+            box-shadow: 0 5px 15px #d9824b30;
+        }
+
+        .brand small {
+            display: block;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: normal;
+        }
+
+        .menu-wrap {
+            position: relative;
         }
 
         .menu-button {
-            width: 46px;
-            height: 46px;
-
-            border: 1px solid rgba(255,255,255,.08);
-            border-radius: 14px;
-
-            background: var(--dark);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
+            display: grid;
+            place-items: center;
             gap: 4px;
-
-            transition:
-                transform .2s ease,
-                background .2s ease,
-                box-shadow .2s ease;
-        }
-
-        .menu-button:hover {
-            transform: translateY(-2px);
-
-            background: #1f1d1b;
-
-            box-shadow:
-                0 9px 20px rgba(30,25,20,.16);
+            width: 43px;
+            height: 43px;
+            padding: 10px;
+            border: 0;
+            border-radius: 13px;
+            background: #342c27;
         }
 
         .menu-button span {
-            width: 5px;
-            height: 5px;
+            display: block;
+            width: 19px;
+            height: 2px;
+            border-radius: 2px;
+            background: white;
+        }
 
-            background: #fff;
-            border-radius: 50%;
+        .menu {
+            position: absolute;
+            top: 52px;
+            left: 0;
+            display: none;
+            min-width: 170px;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: white;
+            box-shadow: var(--shadow);
+        }
 
+        .menu.open {
             display: block;
         }
 
-        /* ================= MENU ================= */
-
-        .dropdown {
-            position: fixed;
-
-            top: 86px;
-            left: 25px;
-
-            width: 235px;
-
-            padding: 8px;
-
-            background: rgba(255,255,255,.92);
-
-            backdrop-filter: blur(22px);
-            -webkit-backdrop-filter: blur(22px);
-
-            border: 1px solid var(--border);
-            border-radius: 18px;
-
-            box-shadow:
-                0 22px 60px rgba(55,38,20,.15);
-
-            opacity: 0;
-            visibility: hidden;
-
-            transform: translateY(-8px);
-
-            transition: .2s ease;
-
-            z-index: 999;
-        }
-
-        .dropdown.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown button {
+        .menu button {
             width: 100%;
-
-            border: none;
+            padding: 12px;
+            border: 0;
+            border-radius: 10px;
             background: transparent;
-
-            padding: 13px 14px;
-
-            border-radius: 12px;
-
+            color: var(--text);
             text-align: right;
-
-            font-size: 14px;
-            color: #39332d;
-
-            transition: .18s ease;
         }
 
-        .dropdown button:hover {
-            background: #f7f0e6;
+        .menu button:hover {
+            background: var(--soft);
         }
 
-        /* ================= HOME ================= */
-
-        .home {
-            min-height: calc(100vh - 76px);
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-
-            padding: 45px 20px;
+        .menu .logout {
+            color: var(--danger);
         }
 
-        .home-title {
-            font-size: 36px;
-            font-weight: 900;
-
-            margin-bottom: 12px;
-
-            letter-spacing: -.8px;
+        main {
+            width: min(1180px, 92%);
+            margin: 0 auto;
+            padding: 36px 0 55px;
         }
 
-        .home-subtitle {
+        .welcome {
+            margin-bottom: 28px;
+        }
+
+        .welcome h1 {
+            margin: 0 0 10px;
+            font-size: clamp(23px, 4vw, 31px);
+        }
+
+        .welcome p {
+            margin: 0;
             color: var(--muted);
-
-            font-size: 15px;
-
-            margin-bottom: 42px;
+            font-size: 14px;
+            line-height: 2;
         }
 
         .home-cards {
-            width: min(820px, 100%);
-
             display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 22px;
         }
 
         .home-card {
-            min-height: 200px;
-
-            border: 1px solid var(--border);
-            border-radius: 27px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(255,255,255,.82),
-                    rgba(255,255,255,.56)
-                );
-
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-
-            box-shadow:
-                0 16px 45px rgba(80,50,20,.07);
-
+            position: relative;
             display: flex;
-            align-items: center;
-            justify-content: center;
             flex-direction: column;
-
-            gap: 14px;
-
-            color: var(--text);
-
-            transition:
-                transform .25s ease,
-                box-shadow .25s ease,
-                border-color .25s ease;
+            align-items: flex-start;
+            min-height: 205px;
+            padding: 25px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            text-align: right;
+            transition: transform .2s, box-shadow .2s;
         }
 
         .home-card:hover {
-            transform: translateY(-6px);
-
-            border-color:
-                rgba(227,162,26,.22);
-
-            box-shadow:
-                0 24px 55px rgba(80,50,20,.12);
+            transform: translateY(-4px);
+            box-shadow: 0 18px 42px rgba(90, 61, 40, .12);
         }
 
-        .home-card-icon {
-            width: 64px;
-            height: 64px;
-
-            border-radius: 19px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 31px;
-
-            background: var(--accent-soft);
+        .card-icon {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            margin-bottom: 20px;
+            border-radius: 17px;
+            background: var(--soft);
+            color: var(--primary-dark);
+            font-size: 24px;
         }
 
-        .home-card-title {
-            font-size: 19px;
-            font-weight: 900;
+        .home-card h2 {
+            margin: 0 0 10px;
+            font-size: 18px;
         }
 
-        /* ================= PANEL ================= */
+        .home-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 2;
+        }
 
-        .panel-page {
+        .home-card .arrow {
+            position: absolute;
+            left: 23px;
+            bottom: 23px;
+            color: var(--primary-dark);
+            font-size: 22px;
+        }
+
+        .view {
             display: none;
-
-            min-height: calc(100vh - 76px);
         }
 
-        .panel-page.active {
-            display: flex;
+        .view.active {
+            display: block;
         }
 
-        .sidebar {
-            width: 235px;
-            min-width: 235px;
-
-            background: rgba(255,255,255,.50);
-
-            border-left:
-                1px solid var(--border);
-
-            padding: 28px 15px;
+        .back-button {
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: white;
+            color: var(--text);
         }
 
-        .sidebar-title {
-            font-size: 15px;
-            font-weight: 900;
-
-            padding:
-                10px 12px 18px;
-
-            color: #51473d;
+        .page-heading {
+            margin: 0 0 22px;
+            font-size: 23px;
         }
 
-        .side-button {
-            width: 100%;
-
-            border: none;
-            background: transparent;
-
-            padding: 13px 14px;
-
-            border-radius: 13px;
-
-            text-align: right;
-
-            color: #64594e;
-
-            font-size: 14px;
-
-            transition: .18s ease;
-        }
-
-        .side-button:hover,
-        .side-button.active {
-            background:
-                rgba(227,162,26,.13);
-
-            color: #956500;
-        }
-
-        .content {
-            flex: 1;
-
-            padding: 45px;
-        }
-
-        .content-title {
-            font-size: 26px;
-            font-weight: 900;
-
-            margin-bottom: 9px;
-
-            letter-spacing: -.4px;
-        }
-
-        .content-description {
-            color: var(--muted);
-
-            font-size: 14px;
-
-            margin-bottom: 30px;
-        }
-
-        /* ================= USERS ================= */
-
-        .users-box {
-            width: 100%;
-            max-width: 950px;
-
+        .panel {
+            padding: 24px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             background: var(--surface);
-
-            border:
-                1px solid var(--border);
-
-            border-radius: 23px;
-
-            overflow: hidden;
-
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-
-            box-shadow:
-                0 18px 45px rgba(80,50,20,.07);
+            box-shadow: var(--shadow);
         }
 
-        .users-header {
-            padding: 18px 21px;
-
-            border-bottom:
-                1px solid rgba(60,40,20,.07);
-
-            display: flex;
-
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .users-count {
+        .panel p.description {
             color: var(--muted);
+            font-size: 13px;
+            line-height: 2;
+        }
 
+        .empty-workspace {
+            display: grid;
+            place-items: center;
+            min-height: 220px;
+            padding: 24px;
+            border: 2px dashed #e8d6c5;
+            border-radius: 17px;
+            background: rgba(255, 250, 245, .7);
+            text-align: center;
+        }
+
+        .empty-workspace .workspace-icon {
+            margin-bottom: 12px;
+            color: var(--primary-dark);
+            font-size: 34px;
+        }
+
+        .empty-workspace h3 {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+
+        .empty-workspace p {
+            max-width: 450px;
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 2;
+        }
+
+        .people-layout {
+            display: grid;
+            grid-template-columns: 190px minmax(0, 1fr);
+            gap: 20px;
+        }
+
+        .side-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-self: start;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: white;
+        }
+
+        .side-menu button {
+            padding: 13px;
+            border: 0;
+            border-radius: 11px;
+            background: transparent;
+            color: var(--text);
+            text-align: right;
+        }
+
+        .side-menu button.active {
+            background: var(--soft);
+            color: var(--primary-dark);
+            font-weight: bold;
+        }
+
+        .subview {
+            display: none;
+        }
+
+        .subview.active {
+            display: block;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .section-title h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .primary-button,
+        .secondary-button,
+        .danger-button {
+            padding: 11px 15px;
+            border: 0;
+            border-radius: 11px;
             font-size: 13px;
         }
 
-        .user-row {
-            padding: 21px;
+        .primary-button {
+            background: var(--primary);
+            color: white;
+        }
 
+        .primary-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .secondary-button {
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text);
+        }
+
+        .danger-button {
+            background: #fff0ef;
+            color: var(--danger);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .field {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 20px;
-
-            border-bottom:
-                1px solid rgba(60,40,20,.07);
-
-            transition:
-                background .18s ease;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .user-row:hover {
-            background:
-                rgba(255,255,255,.42);
+        .field.full {
+            grid-column: 1 / -1;
         }
 
-        .user-row:last-child {
-            border-bottom: none;
+        .field label {
+            font-size: 13px;
+            font-weight: bold;
         }
 
-        .user-info {
-            min-width: 0;
-            flex: 1;
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+            min-height: 44px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            outline: none;
+            background: white;
+            color: var(--text);
         }
 
-        .user-name {
-            font-size: 16px;
-            font-weight: 900;
-
-            margin-bottom: 10px;
+        .field textarea {
+            min-height: 110px;
+            resize: vertical;
         }
 
-        .user-details {
+        .field input:focus,
+        .field textarea:focus,
+        .field select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px #d9824b18;
+        }
+
+        .form-actions {
             display: flex;
             flex-wrap: wrap;
-
-            gap: 9px 25px;
-
-            color: #776b60;
-
-            font-size: 12px;
+            gap: 10px;
+            margin-top: 18px;
         }
 
-        .user-details span {
-            color: var(--muted-2);
-        }
-
-        .delete-user-btn {
-            flex-shrink: 0;
-
-            border: none;
-            border-radius: 11px;
-
-            padding: 10px 18px;
-
-            background: var(--danger);
-            color: white;
-
-            font-size: 12px;
-
-            transition: .18s ease;
-        }
-
-        .delete-user-btn:hover {
-            background: var(--danger-hover);
-
-            transform: translateY(-1px);
-        }
-
-        .delete-user-btn:disabled {
-            opacity: .6;
-            cursor: wait;
-
-            transform: none;
-        }
-
-        /* ================= EMPLOYEES ================= */
-
-        .codes-box {
-            width: 100%;
-            max-width: 700px;
-        }
-
-        .new-code-button {
-            border: none;
-
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border);
             border-radius: 14px;
+            background: white;
+        }
 
-            padding: 14px 20px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+        }
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #302d29,
-                    #1f1d1b
-                );
+        th, td {
+            padding: 14px 13px;
+            border-bottom: 1px solid #f1e8df;
+            font-size: 12px;
+            text-align: right;
+        }
 
-            color: white;
+        th {
+            background: #fff8f1;
+            color: #715a49;
+        }
 
+        tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .status-message {
+            display: none;
+            margin: 15px 0;
+            padding: 12px 14px;
+            border-radius: 11px;
             font-size: 13px;
-            font-weight: 700;
-
-            box-shadow:
-                0 10px 25px rgba(35,30,25,.12);
-
-            transition: .2s ease;
+            line-height: 1.9;
+            overflow-wrap: anywhere;
         }
 
-        .new-code-button:hover {
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 14px 30px rgba(35,30,25,.17);
+        .status-message.show {
+            display: block;
         }
 
-        /* ================= NEW CODE FORM ================= */
+        .status-message.error {
+            background: #fff0ef;
+            color: #a83333;
+        }
+
+        .status-message.success {
+            background: #edf9f1;
+            color: #276b46;
+        }
 
         .new-code-form {
             display: none;
-
-            margin-top: 18px;
-
-            padding: 22px;
-
-            background:
-                rgba(255,255,255,.74);
-
-            border:
-                1px solid var(--border);
-
-            border-radius: 20px;
-
-            box-shadow:
-                0 14px 35px rgba(80,50,20,.06);
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: #fffaf5;
         }
 
         .new-code-form.open {
             display: block;
         }
 
-        .form-title {
-            font-size: 15px;
-            font-weight: 900;
-
-            margin-bottom: 17px;
-        }
-
-        .form-field {
-            margin-bottom: 12px;
-        }
-
-        .form-field label {
-            display: block;
-
-            font-size: 12px;
-
-            color: #776b60;
-
-            margin-bottom: 7px;
-        }
-
-        .form-field input {
-            width: 100%;
-
-            border:
-                1px solid #ded3c5;
-
-            background:
-                rgba(255,255,255,.82);
-
-            border-radius: 12px;
-
-            padding: 13px 14px;
-
-            outline: none;
-
-            direction: ltr;
-            text-align: left;
-
-            transition:
-                border-color .18s ease,
-                box-shadow .18s ease;
-        }
-
-        .form-field input:focus {
-            border-color: #d89b18;
-
-            box-shadow:
-                0 0 0 4px rgba(216,155,24,.09);
-        }
-
-        .form-actions {
-            display: flex;
-
-            gap: 9px;
-
-            margin-top: 17px;
-        }
-
-        .submit-code {
-            border: none;
-
-            border-radius: 11px;
-
-            padding: 11px 18px;
-
-            background: #2c2926;
-
-            color: white;
-
-            font-size: 12px;
-
-            transition: .18s ease;
-        }
-
-        .submit-code:hover {
-            background: #1f1d1b;
-        }
-
-        .cancel-code {
-            border: 1px solid #ddd2c5;
-
-            border-radius: 11px;
-
-            padding: 11px 18px;
-
-            background: transparent;
-
-            color: #665b50;
-
-            font-size: 12px;
-        }
-
-        /* ================= CODE LIST ================= */
-
-        .code-list-wrapper {
-            margin-top: 22px;
-        }
-
-        .code-list-title {
-            font-size: 14px;
-            font-weight: 900;
-
-            margin-bottom: 12px;
-        }
-
-        .code-row {
-            padding: 15px 17px;
-
-            display: flex;
-
-            justify-content: space-between;
-            align-items: center;
-
-            background:
-                rgba(255,255,255,.70);
-
-            border:
-                1px solid var(--border);
-
-            border-radius: 14px;
-
-            margin-bottom: 10px;
-
-            transition:
-                transform .18s ease,
-                box-shadow .18s ease;
-        }
-
-        .code-row:hover {
-            transform: translateY(-1px);
-
-            box-shadow:
-                0 8px 22px rgba(70,45,20,.06);
-        }
-
-        .code-value {
-            direction: ltr;
-            text-align: left;
-
-            font-family: monospace;
-
-            font-size: 14px;
-        }
-
-        .delete-code {
-            border: none;
-
-            background: var(--danger);
-            color: white;
-
-            padding: 8px 13px;
-
-            border-radius: 9px;
-
-            font-size: 12px;
-
-            transition: .18s ease;
-        }
-
-        .delete-code:hover {
-            background: var(--danger-hover);
-        }
-
-        /* ================= STATES ================= */
-
-        .loading,
-        .empty-state {
-            padding: 35px;
-
+        .loading {
+            padding: 22px;
+            color: var(--muted);
             text-align: center;
-
-            color: #8b7e71;
-
-            font-size: 14px;
+            font-size: 13px;
         }
-
-        /* ================= MOBILE ================= */
 
         @media (max-width: 700px) {
-
             .navbar {
-                padding: 0 17px;
-                height: 68px;
+                padding: 12px 4%;
             }
 
-            .brand {
-                font-size: 21px;
-            }
-
-            .home {
-                min-height: calc(100vh - 68px);
-            }
-
-            .home-title {
-                font-size: 28px;
+            main {
+                width: 92%;
+                padding-top: 25px;
             }
 
             .home-cards {
                 grid-template-columns: 1fr;
             }
 
-            .panel-page.active {
-                flex-direction: column;
+            .home-card {
+                min-height: 175px;
             }
 
-            .sidebar {
-                width: 100%;
-                min-width: 0;
-
-                border-left: none;
-
-                border-bottom:
-                    1px solid var(--border);
-
-                padding: 10px;
+            .people-layout {
+                grid-template-columns: 1fr;
             }
 
-            .sidebar-title {
-                display: none;
+            .side-menu {
+                flex-direction: row;
             }
 
-            .side-button {
-                width: auto;
-
-                display: inline-block;
-
-                margin-left: 5px;
+            .side-menu button {
+                flex: 1;
+                text-align: center;
             }
 
-            .content {
-                padding: 27px 16px;
+            .panel {
+                padding: 17px;
             }
 
-            .content-title {
-                font-size: 23px;
+            .form-grid {
+                grid-template-columns: 1fr;
             }
 
-            .user-row {
-                align-items: flex-start;
-
-                flex-direction: column;
-            }
-
-            .delete-user-btn {
-                width: 100%;
-            }
-
-            .user-details {
-                flex-direction: column;
-
-                gap: 7px;
-            }
-
-            .new-code-button {
-                width: 100%;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
-
-            .submit-code,
-            .cancel-code {
-                width: 100%;
+            .field.full {
+                grid-column: auto;
             }
         }
     </style>
 </head>
 
 <body>
-
-    <!-- ================= NAVBAR ================= -->
-
-    <nav class="navbar">
-
+    <header class="navbar">
         <div class="brand">
-            س.ح.ن
+            <div class="brand-icon">س</div>
+            <div>
+                پنل کارمند
+                <small>سامانه س.ح.ن</small>
+            </div>
         </div>
 
-        <button
-            class="menu-button"
-            id="menu-button"
-            type="button"
-            aria-label="منو"
-        >
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-    </nav>
-
-
-    <!-- ================= MENU ================= -->
-
-    <div
-        class="dropdown"
-        id="dropdown"
-    >
-        <button
-            type="button"
-            onclick="logout()"
-        >
-            ↩ خروج از پنل
-        </button>
-    </div>
-
-
-    <!-- ================= HOME ================= -->
-
-    <main
-        class="home"
-        id="home-page"
-    >
-
-        <h1 class="home-title">
-            پنل کارمند
-        </h1>
-
-        <p class="home-subtitle">
-            مدیریت بخش‌های مختلف سایت
-        </p>
-
-        <div class="home-cards">
-
-            <button
-                class="home-card"
-                type="button"
-                onclick="openSection('changes')"
-            >
-
-                <div class="home-card-icon">
-                    ⚙️
-                </div>
-
-                <div class="home-card-title">
-                    تغییرات صفحه کاربر
-                </div>
-
+        <div class="menu-wrap">
+            <button class="menu-button" id="menuButton"
+                    aria-label="باز کردن منو" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
 
-
-            <button
-                class="home-card"
-                type="button"
-                onclick="openSection('people')"
-            >
-
-                <div class="home-card-icon">
-                    👥
-                </div>
-
-                <div class="home-card-title">
-                    دیدن افراد
-                </div>
-
-            </button>
-
+            <div class="menu" id="menu">
+                <button class="logout" id="logoutButton">خروج از حساب</button>
+            </div>
         </div>
+    </header>
 
-    </main>
-
-
-    <!-- ================= CHANGES ================= -->
-
-    <section
-        class="panel-page"
-        id="changes-page"
-    >
-
-        <aside class="sidebar">
-
-            <div class="sidebar-title">
-                تغییرات صفحه کاربر
+    <main>
+        <section class="view active" id="homeView">
+            <div class="welcome">
+                <h1>خوش آمدید 👋</h1>
+                <p>از این بخش می‌توانید تغییرات صفحه کاربر و اطلاعات کاربران را مدیریت کنید.</p>
             </div>
 
-            <button
-                class="side-button active"
-                type="button"
-            >
-                صفحه کاربر
-            </button>
-
-        </aside>
-
-
-        <div class="content">
-
-            <h2 class="content-title">
-                تغییرات صفحه کاربر
-            </h2>
-
-            <p class="content-description">
-                تنظیمات و تغییرات صفحه کاربر
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= PEOPLE ================= -->
-
-    <section
-        class="panel-page"
-        id="people-page"
-    >
-
-        <aside class="sidebar">
-
-            <div class="sidebar-title">
-                افراد
-            </div>
-
-            <button
-                class="side-button active"
-                type="button"
-                onclick="showPeopleSection('users')"
-            >
-                کاربر
-            </button>
-
-            <button
-                class="side-button"
-                type="button"
-                onclick="showPeopleSection('employees')"
-            >
-                کارمند
-            </button>
-
-        </aside>
-
-
-        <!-- ================= USERS ================= -->
-
-        <div
-            class="content"
-            id="users-section"
-        >
-
-            <h2 class="content-title">
-                کاربران
-            </h2>
-
-            <p class="content-description">
-                فهرست کاربران ثبت‌شده
-            </p>
-
-
-            <div class="users-box">
-
-                <div class="users-header">
-
-                    <strong>
-                        کاربران
-                    </strong>
-
-                    <span
-                        class="users-count"
-                        id="users-count"
-                    >
-                        در حال دریافت...
-                    </span>
-
-                </div>
-
-
-                <div id="users-list">
-
-                    <div class="loading">
-                        در حال دریافت کاربران...
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- ================= EMPLOYEES ================= -->
-
-        <div
-            class="content"
-            id="employees-section"
-            style="display:none;"
-        >
-
-            <h2 class="content-title">
-                کارمندان
-            </h2>
-
-            <p class="content-description">
-                مدیریت کدهای ورود کارمندان
-            </p>
-
-
-            <div class="codes-box">
-
-                <button
-                    type="button"
-                    class="new-code-button"
-                    onclick="openNewCodeForm()"
-                >
-                    + ساختن کد جدید
+            <div class="home-cards">
+                <button class="home-card" data-open="changesView">
+                    <div class="card-icon">✎</div>
+                    <h2>تغییرات صفحه کاربر</h2>
+                    <p>بخش ویرایش صفحه کاربر را باز کنید.</p>
+                    <span class="arrow">←</span>
                 </button>
 
-
-                <!-- ================= NEW CODE FORM ================= -->
-
-                <div
-                    class="new-code-form"
-                    id="new-code-form"
-                >
-
-                    <div class="form-title">
-                        ثبت کد جدید کارمند
-                    </div>
-
-
-                    <div class="form-field">
-
-                        <label for="new-code">
-                            کد جدید
-                        </label>
-
-                        <input
-                            id="new-code"
-                            type="text"
-                            placeholder="کد کارمند را وارد کنید"
-                            autocomplete="off"
-                        >
-
-                    </div>
-
-
-                    <div class="form-field">
-
-                        <label for="repeat-code">
-                            تکرار کد
-                        </label>
-
-                        <input
-                            id="repeat-code"
-                            type="text"
-                            placeholder="کد را دوباره وارد کنید"
-                            autocomplete="off"
-                        >
-
-                    </div>
-
-
-                    <div class="form-actions">
-
-                        <button
-                            type="button"
-                            class="submit-code"
-                            onclick="addEmployeeCode()"
-                        >
-                            ثبت کد
-                        </button>
-
-                        <button
-                            type="button"
-                            class="cancel-code"
-                            onclick="closeNewCodeForm()"
-                        >
-                            انصراف
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ================= CODE LIST ================= -->
-
-                <div class="code-list-wrapper">
-
-                    <div class="code-list-title">
-                        کدهای فعلی
-                    </div>
-
-                    <div id="codes-list">
-
-                        <div class="loading">
-                            در حال دریافت کدها...
-                        </div>
-
-                    </div>
-
-                </div>
-
+                <button class="home-card" data-open="peopleView">
+                    <div class="card-icon">♙</div>
+                    <h2>دیدن افراد</h2>
+                    <p>مدیریت کاربران و کدهای ورود کارمندان.</p>
+                    <span class="arrow">←</span>
+                </button>
             </div>
-
-        </div>
-
-    </section>
-
-
-    <script>
-
-        /* ================= SUPABASE ================= */
-
-        const SUPABASE_URL =
-            "https://zyziyyhzxsnwzrsubulu.supabase.co";
-
-        const SUPABASE_ANON_KEY =
-            "sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
-
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
-
-
-        /* ================= MENU ================= */
-
-        const menuButton =
-            document.getElementById(
-                "menu-button"
-            );
-
-        const dropdown =
-            document.getElementById(
-                "dropdown"
-            );
-
-
-        menuButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                dropdown.classList.toggle(
-                    "open"
-                );
-
-            }
-        );
-
-
-        document.addEventListener(
-            "click",
-            function () {
-
-                dropdown.classList.remove(
-                    "open"
-                );
-
-            }
-        );
-
-
-        dropdown.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-            }
-        );
-
-
-        /* ================= NAVIGATION ================= */
-
-        function openSection(section) {
-
-            document.getElementById(
-                "home-page"
-            ).style.display = "none";
-
-
-            document.querySelectorAll(
-                ".panel-page"
-            ).forEach(page => {
-
-                page.classList.remove(
-                    "active"
-                );
-
-            });
-
-
-            if (section === "changes") {
-
-                document.getElementById(
-                    "changes-page"
-                ).classList.add(
-                    "active"
-                );
-
-            }
-
-
-            if (section === "people") {
-
-                document.getElementById(
-                    "people-page"
-                ).classList.add(
-                    "active"
-                );
-
-                showPeopleSection(
-                    "users"
-                );
-
-            }
-
-        }
-
-
-        /* ================= PEOPLE SECTIONS ================= */
-
-        function showPeopleSection(section) {
-
-            const usersSection =
-                document.getElementById(
-                    "users-section"
-                );
-
-            const employeesSection =
-                document.getElementById(
-                    "employees-section"
-                );
-
-            const buttons =
-                document.querySelectorAll(
-                    "#people-page .side-button"
-                );
-
-
-            if (section === "users") {
-
-                usersSection.style.display =
-                    "block";
-
-                employeesSection.style.display =
-                    "none";
-
-                buttons[0]?.classList.add(
-                    "active"
-                );
-
-                buttons[1]?.classList.remove(
-                    "active"
-                );
-
-                loadPeople();
-
-            }
-
-
-            if (section === "employees") {
-
-                usersSection.style.display =
-                    "none";
-
-                employeesSection.style.display =
-                    "block";
-
-                buttons[0]?.classList.remove(
-                    "active"
-                );
-
-                buttons[1]?.classList.add(
-                    "active"
-                );
-
-                loadEmployeeCodes();
-
-            }
-
-        }
-
-
-        /* ================= LOAD USERS ================= */
-
-        async function loadPeople() {
-
-            const container =
-                document.getElementById(
-                    "users-list"
-                );
-
-            const countElement =
-                document.getElementById(
-                    "users-count"
-                );
-
-
-            if (!container) return;
-
-
-            container.innerHTML = `
-                <div class="loading">
-                    در حال دریافت کاربران...
+        </section>
+
+        <section class="view" id="changesView">
+            <button class="back-button" data-home>← بازگشت به خانه</button>
+            <h2 class="page-heading">تغییرات صفحه کاربر</h2>
+
+            <div class="panel">
+                <div class="empty-workspace">
+                    <div>
+                        <div class="workspace-icon">✎</div>
+                        <h3>بخش ویرایش صفحه کاربر</h3>
+                        <p>
+                            فضای این بخش آماده است تا کد ویرایش صفحه کاربر
+                            که قرار است جایگزین شود، در همین قسمت قرار بگیرد.
+                        </p>
+                    </div>
                 </div>
-            `;
+            </div>
+        </section>
 
+        <section class="view" id="peopleView">
+            <button class="back-button" data-home>← بازگشت به خانه</button>
+            <h2 class="page-heading">دیدن افراد</h2>
 
-            if (countElement) {
+            <div class="people-layout">
+                <nav class="side-menu" aria-label="دسته‌بندی افراد">
+                    <button class="active" data-subview="usersSubview">کاربر</button>
+                    <button data-subview="employeesSubview">کارمند</button>
+                </nav>
 
-                countElement.textContent =
-                    "در حال دریافت...";
-
-            }
-
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.functions.invoke(
-                    "manage-users",
-                    {
-                        body: {
-                            action: "list"
-                        }
-                    }
-                );
-
-
-            if (error) {
-
-                console.error(
-                    "LOAD USERS ERROR:",
-                    error
-                );
-
-                container.innerHTML = `
-                    <div class="empty-state">
-                        خطا در دریافت کاربران
-                    </div>
-                `;
-
-                if (countElement) {
-
-                    countElement.textContent =
-                        "خطا";
-
-                }
-
-                return;
-            }
-
-
-            if (!data?.success) {
-
-                container.innerHTML = `
-                    <div class="empty-state">
-                        ${escapeHtml(
-                            data?.error ||
-                            "دریافت کاربران انجام نشد."
-                        )}
-                    </div>
-                `;
-
-                if (countElement) {
-
-                    countElement.textContent =
-                        "خطا";
-
-                }
-
-                return;
-            }
-
-
-            const users =
-                Array.isArray(data.users)
-                    ? data.users
-                    : [];
-
-
-            if (countElement) {
-
-                countElement.textContent =
-                    `${users.length} کاربر`;
-
-            }
-
-
-            if (users.length === 0) {
-
-                container.innerHTML = `
-                    <div class="empty-state">
-                        هنوز کاربری ثبت نشده است.
-                    </div>
-                `;
-
-                return;
-            }
-
-
-            container.innerHTML =
-                users.map(user => {
-
-                    const userId =
-                        String(
-                            user.id || ""
-                        ).trim();
-
-
-                    const fullName =
-                        [
-                            user.first_name,
-                            user.last_name
-                        ]
-                        .filter(Boolean)
-                        .join(" ")
-                        .trim() ||
-                        "کاربر بدون نام";
-
-
-                    const phone =
-                        user.phone ||
-                        "ثبت نشده";
-
-
-                    const email =
-                        user.email ||
-                        "ثبت نشده";
-
-
-                    return `
-                        <div
-                            class="user-row"
-                            data-user-id="${escapeHtml(userId)}"
-                        >
-
-                            <div class="user-info">
-
-                                <div class="user-name">
-                                    ${escapeHtml(fullName)}
-                                </div>
-
-                                <div class="user-details">
-
-                                    <div>
-                                        <span>شماره:</span>
-                                        ${escapeHtml(phone)}
-                                    </div>
-
-                                    <div>
-                                        <span>ایمیل:</span>
-                                        ${escapeHtml(email)}
-                                    </div>
-
-                                </div>
-
+                <div>
+                    <section class="subview active" id="usersSubview">
+                        <div class="panel">
+                            <div class="section-title">
+                                <h3>کاربران ثبت‌شده</h3>
+                                <button class="secondary-button" id="refreshUsers">
+                                    ↻ به‌روزرسانی
+                                </button>
                             </div>
 
-
-                            <button
-                                type="button"
-                                class="delete-user-btn"
-                            >
-                                حذف
-                            </button>
-
+                            <div id="usersMessage" class="status-message"></div>
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>نام</th>
+                                            <th>نام خانوادگی</th>
+                                            <th>شماره تماس</th>
+                                            <th>ایمیل</th>
+                                            <th>تاریخ ثبت</th>
+                                            <th>عملیات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usersTable">
+                                        <tr><td colspan="6" class="loading">در حال دریافت اطلاعات...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    `;
-
-                }).join("");
-
-
-            /* ================= DELETE BUTTONS ================= */
-
-            container
-                .querySelectorAll(
-                    ".delete-user-btn"
-                )
-                .forEach(button => {
-
-                    button.addEventListener(
-                        "click",
-                        async function () {
-
-                            const row =
-                                button.closest(
-                                    ".user-row"
-                                );
-
-
-                            if (!row) return;
-
-
-                            const userId =
-                                String(
-                                    row.dataset.userId ||
-                                    ""
-                                ).trim();
-
-
-                            await deleteUserAccount(
-                                userId,
-                                button
-                            );
-
-                        }
-                    );
-
-                });
-
-        }
-
-
-        /* ================= DELETE USER ================= */
-
-        async function deleteUserAccount(
-            userId,
-            button
-        ) {
-
-            userId =
-                String(
-                    userId || ""
-                ).trim();
-
-
-            if (!userId) {
-
-                alert(
-                    "شناسه کاربر مشخص نیست."
-                );
-
-                return;
-            }
-
-
-            const confirmed =
-                confirm(
-                    "آیا این کاربر حذف شود؟\n" +
-                    "این عملیات حساب کاربری را نیز حذف می‌کند."
-                );
-
-
-            if (!confirmed) return;
-
-
-            button.disabled = true;
-
-            button.textContent =
-                "در حال حذف...";
-
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.functions.invoke(
-                    "manage-users",
-                    {
-                        body: {
-                            action: "delete",
-                            user_id: userId
-                        }
-                    }
-                );
-
-
-            if (error) {
-
-                console.error(
-                    "DELETE USER ERROR:",
-                    error
-                );
-
-                alert(
-                    "حذف کاربر انجام نشد."
-                );
-
-                await loadPeople();
-
-                return;
-            }
-
-
-            if (!data?.success) {
-
-                alert(
-                    data?.error ||
-                    "حذف کاربر انجام نشد."
-                );
-
-                await loadPeople();
-
-                return;
-            }
-
-
-            await loadPeople();
-
-        }
-
-
-        /* ================= OPEN NEW CODE FORM ================= */
-
-        function openNewCodeForm() {
-
-            const form =
-                document.getElementById(
-                    "new-code-form"
-                );
-
-            const input =
-                document.getElementById(
-                    "new-code"
-                );
-
-            const repeatInput =
-                document.getElementById(
-                    "repeat-code"
-                );
-
-
-            if (!form) return;
-
-
-            form.classList.add(
-                "open"
-            );
-
-
-            if (input) {
-
-                input.value = "";
-
-            }
-
-
-            if (repeatInput) {
-
-                repeatInput.value = "";
-
-            }
-
-
-            setTimeout(
-                function () {
-
-                    input?.focus();
-
-                },
-                100
-            );
-
-        }
-
-
-        /* ================= CLOSE NEW CODE FORM ================= */
-
-        function closeNewCodeForm() {
-
-            const form =
-                document.getElementById(
-                    "new-code-form"
-                );
-
-            if (!form) return;
-
-            form.classList.remove(
-                "open"
-            );
-
-        }
-
-
-        /* ================= LOAD EMPLOYEE CODES ================= */
-
-        async function loadEmployeeCodes() {
-
-            const container =
-                document.getElementById(
-                    "codes-list"
-                );
-
-
-            if (!container) return;
-
-
-            container.innerHTML = `
-                <div class="loading">
-                    در حال دریافت کدها...
+                    </section>
+
+                    <section class="subview" id="employeesSubview">
+                        <div class="panel">
+                            <div class="section-title">
+                                <h3>کدهای ورود کارمندان</h3>
+                                <button class="primary-button" id="openCodeForm">
+                                    + ساختن کد جدید
+                                </button>
+                            </div>
+
+                            <div id="codesMessage" class="status-message"></div>
+
+                            <div class="new-code-form" id="newCodeForm">
+                                <h3 style="margin-top:0">ساخت کد کارمند</h3>
+
+                                <form id="addCodeForm">
+                                    <div class="form-grid">
+                                        <div class="field">
+                                            <label for="newCode">کد جدید</label>
+                                            <input id="newCode" type="text"
+                                                   minlength="4" autocomplete="off"
+                                                   required placeholder="کد ورود را وارد کنید">
+                                        </div>
+
+                                        <div class="field">
+                                            <label for="repeatCode">تکرار کد جدید</label>
+                                            <input id="repeatCode" type="text"
+                                                   minlength="4" autocomplete="off"
+                                                   required placeholder="کد را دوباره وارد کنید">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-actions">
+                                        <button class="primary-button" type="submit" id="submitCode">
+                                            ثبت کد
+                                        </button>
+                                        <button class="secondary-button" type="button" id="cancelCode">
+                                            انصراف
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ردیف</th>
+                                            <th>کد ورود</th>
+                                            <th>تاریخ ایجاد</th>
+                                            <th>عملیات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="codesTable">
+                                        <tr><td colspan="4" class="loading">در حال دریافت اطلاعات...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-            `;
-
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.rpc(
-                    "list_employee_codes"
-                );
-
-
-            if (error) {
-
-                console.error(
-                    "LOAD CODES ERROR:",
-                    error
-                );
-
-                container.innerHTML = `
-                    <div class="empty-state">
-                        خطا در دریافت کدها
-                    </div>
-                `;
-
-                return;
-            }
-
-
-            const codes =
-                Array.isArray(data)
-                    ? data
-                    : [];
-
-
-            if (codes.length === 0) {
-
-                container.innerHTML = `
-                    <div class="empty-state">
-                        هنوز کدی ثبت نشده است.
-                    </div>
-                `;
-
-                return;
-            }
-
-
-            container.innerHTML =
-                codes.map(code => {
-
-                    return `
-                        <div
-                            class="code-row"
-                            data-code-id="${escapeHtml(code.id)}"
-                        >
-
-                            <span class="code-value">
-                                ${escapeHtml(
-                                    code.code || ""
-                                )}
-                            </span>
-
-                            <button
-                                type="button"
-                                class="delete-code"
-                                onclick="deleteEmployeeCode(${Number(code.id)})"
-                            >
-                                حذف
-                            </button>
-
-                        </div>
-                    `;
-
-                }).join("");
-
-        }
-
-
-        /* ================= ADD EMPLOYEE CODE ================= */
-
-        async function addEmployeeCode() {
-
-            const input =
-                document.getElementById(
-                    "new-code"
-                );
-
-            const repeatInput =
-                document.getElementById(
-                    "repeat-code"
-                );
-
-
-            if (!input || !repeatInput) {
-                return;
-            }
-
-
-            const code =
-                input.value.trim();
-
-
-            const repeatCode =
-                repeatInput.value.trim();
-
-
-            if (!code) {
-
-                alert(
-                    "کد کارمند را وارد کنید."
-                );
-
-                input.focus();
-
-                return;
-            }
-
-
-            if (!repeatCode) {
-
-                alert(
-                    "تکرار کد را وارد کنید."
-                );
-
-                repeatInput.focus();
-
-                return;
-            }
-
-
-            if (code !== repeatCode) {
-
-                alert(
-                    "کد و تکرار کد یکسان نیستند."
-                );
-
-                repeatInput.focus();
-
-                return;
-            }
-
-
-            if (code.length < 4) {
-
-                alert(
-                    "کد کارمند باید حداقل ۴ کاراکتر باشد."
-                );
-
-                input.focus();
-
-                return;
-            }
-
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.rpc(
-                    "add_employee_code",
-                    {
-                        p_code: code
-                    }
-                );
-
-
-            if (error) {
-
-                console.error(
-                    "ADD CODE ERROR:",
-                    error
-                );
-
-                alert(
-                    "افزودن کد انجام نشد."
-                );
-
-                return;
-            }
-
-
-            if (!data?.success) {
-
-                alert(
-                    data?.error ||
-                    "افزودن کد انجام نشد."
-                );
-
-                return;
-            }
-
-
-            input.value = "";
-            repeatInput.value = "";
-
-
-            closeNewCodeForm();
-
-
-            await loadEmployeeCodes();
-
-        }
-
-
-        /* ================= DELETE CODE ================= */
-
-        async function deleteEmployeeCode(
-            id
-        ) {
-
-            if (
-                !confirm(
-                    "آیا این کد حذف شود؟"
-                )
-            ) {
-
-                return;
-            }
-
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.rpc(
-                    "delete_employee_code",
-                    {
-                        p_id: id
-                    }
-                );
-
-
-            if (error) {
-
-                console.error(
-                    "DELETE CODE ERROR:",
-                    error
-                );
-
-                alert(
-                    "حذف کد انجام نشد."
-                );
-
-                return;
-            }
-
-
-            if (!data?.success) {
-
-                alert(
-                    data?.error ||
-                    "حذف کد انجام نشد."
-                );
-
-                return;
-            }
-
-
-            await loadEmployeeCodes();
-
-        }
-
-
-        /* ================= LOGOUT ================= */
-
-        async function logout() {
-
-            await supabaseClient.auth.signOut();
-
-            window.location.href =
-                "index.html";
-
-        }
-
-
-        /* ================= ESCAPE HTML ================= */
-
-        function escapeHtml(value) {
-
-            return String(
-                value ?? ""
-            )
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-            .replace(
-                /</g,
-                "&lt;"
-            )
-            .replace(
-                />/g,
-                "&gt;"
-            )
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-            .replace(
-                /'/g,
-                "&#039;"
-            );
-
-        }
-
-
-        /* ================= START ================= */
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            async function () {
-
-                const {
-                    data
-                } =
-                    await supabaseClient.auth.getSession();
-
-
-                if (!data?.session) {
-
-                    window.location.href =
-                        "index.html";
-
-                    return;
-                }
-
-
-                const {
-                    data: authorized,
-                    error
-                } =
-                    await supabaseClient.rpc(
-                        "is_employee_authorized"
-                    );
-
-
-                if (
-                    error ||
-                    authorized !== true
-                ) {
-
-                    await supabaseClient.auth.signOut();
-
-                    window.location.href =
-                        "index.html";
-
-                    return;
-                }
-
-            }
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        /*
+         * تنظیمات پروژه Supabase
+         */
+        const SUPABASE_URL = "https://zyziyyhzxsnwzrsubulu.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
+
+        const db = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
         );
 
-    </script>
+        /*
+         * آدرس Edge Function مدیریت کاربران
+         */
+        const MANAGE_USERS_URL =
+            SUPABASE_URL + "/functions/v1/manage-users";
 
+        const $ = (id) => document.getElementById(id);
+
+        let currentUser = null;
+        let usersLoaded = false;
+        let codesLoaded = false;
+
+        function showMessage(elementId, message, type = "error") {
+            const element = $(elementId);
+            element.textContent = message;
+            element.className = "status-message show " + type;
+        }
+
+        function hideMessage(elementId) {
+            const element = $(elementId);
+            element.textContent = "";
+            element.className = "status-message";
+        }
+
+        function friendlyError(error) {
+            return error?.message || "خطایی رخ داد. دوباره تلاش کنید.";
+        }
+
+        function formatDate(value) {
+            if (!value) return "—";
+
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return "—";
+
+            return new Intl.DateTimeFormat("fa-IR", {
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            }).format(date);
+        }
+
+        function escapeHTML(value) {
+            return String(value ?? "").replace(/[&<>"']/g, char => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[char]);
+        }
+
+        async function getAccessToken() {
+            const { data, error } = await db.auth.getSession();
+
+            if (error) throw error;
+
+            const token = data?.session?.access_token;
+
+            if (!token) {
+                throw new Error("نشست ورود معتبر نیست. دوباره وارد شوید.");
+            }
+
+            return token;
+        }
+
+        async function manageUsers(action, payload = {}) {
+            const token = await getAccessToken();
+
+            const response = await fetch(MANAGE_USERS_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token,
+                    "apikey": SUPABASE_KEY
+                },
+                body: JSON.stringify({
+                    action,
+                    ...payload
+                })
+            });
+
+            let result;
+
+            try {
+                result = await response.json();
+            } catch {
+                throw new Error("پاسخ سرور قابل خواندن نیست.");
+            }
+
+            if (!response.ok || result?.success === false) {
+                throw new Error(
+                    result?.error || "عملیات در سرور انجام نشد."
+                );
+            }
+
+            return result;
+        }
+
+        function showView(viewId) {
+            document.querySelectorAll(".view").forEach(view => {
+                view.classList.toggle("active", view.id === viewId);
+            });
+
+            $("menu").classList.remove("open");
+            $("menuButton").setAttribute("aria-expanded", "false");
+
+            if (viewId === "usersSubview") loadUsers();
+            if (viewId === "employeesSubview") loadCodes();
+        }
+
+        document.querySelectorAll("[data-open]").forEach(button => {
+            button.addEventListener("click", () => {
+                const viewId = button.dataset.open;
+                showView(viewId);
+
+                if (viewId === "peopleView") {
+                    loadUsers();
+                }
+            });
+        });
+
+        document.querySelectorAll("[data-home]").forEach(button => {
+            button.addEventListener("click", () => showView("homeView"));
+        });
+
+        $("menuButton").addEventListener("click", () => {
+            const opened = $("menu").classList.toggle("open");
+            $("menuButton").setAttribute("aria-expanded", String(opened));
+        });
+
+        document.addEventListener("click", event => {
+            if (!event.target.closest(".menu-wrap")) {
+                $("menu").classList.remove("open");
+                $("menuButton").setAttribute("aria-expanded", "false");
+            }
+        });
+
+        document.querySelectorAll("[data-subview]").forEach(button => {
+            button.addEventListener("click", () => {
+                document.querySelectorAll("[data-subview]").forEach(item => {
+                    item.classList.toggle("active", item === button);
+                });
+
+                document.querySelectorAll(".subview").forEach(item => {
+                    item.classList.toggle("active", item.id === button.dataset.subview);
+                });
+
+                if (button.dataset.subview === "usersSubview") {
+                    loadUsers();
+                } else {
+                    loadCodes();
+                }
+            });
+        });
+
+        /*
+         * خروج از حساب
+         */
+        $("logoutButton").addEventListener("click", async () => {
+            $("logoutButton").disabled = true;
+
+            try {
+                const { error } = await db.auth.signOut();
+                if (error) throw error;
+
+                window.location.replace("index.html");
+            } catch (error) {
+                alert("خروج انجام نشد: " + friendlyError(error));
+                $("logoutButton").disabled = false;
+            }
+        });
+
+        /*
+         * دریافت کاربران از Edge Function
+         */
+        async function loadUsers() {
+            const table = $("usersTable");
+            table.innerHTML =
+                '<tr><td colspan="6" class="loading">در حال دریافت اطلاعات...</td></tr>';
+
+            hideMessage("usersMessage");
+
+            try {
+                const result = await manageUsers("list");
+                const users = Array.isArray(result.users) ? result.users : [];
+
+                if (!users.length) {
+                    table.innerHTML =
+                        '<tr><td colspan="6" class="loading">کاربری برای نمایش وجود ندارد.</td></tr>';
+                    usersLoaded = true;
+                    return;
+                }
+
+                table.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${escapeHTML(user.first_name || "—")}</td>
+                        <td>${escapeHTML(user.last_name || "—")}</td>
+                        <td>${escapeHTML(user.phone || "—")}</td>
+                        <td>${escapeHTML(user.email || "—")}</td>
+                        <td>${escapeHTML(formatDate(user.created_at))}</td>
+                        <td>
+                            <button class="danger-button"
+                                    data-delete-user="${escapeHTML(user.id)}">
+                                حذف کاربر
+                            </button>
+                        </td>
+                    </tr>
+                `).join("");
+
+                usersLoaded = true;
+            } catch (error) {
+                table.innerHTML =
+                    '<tr><td colspan="6" class="loading">دریافت اطلاعات ناموفق بود.</td></tr>';
+
+                showMessage(
+                    "usersMessage",
+                    friendlyError(error),
+                    "error"
+                );
+            }
+        }
+
+        $("usersTable").addEventListener("click", async event => {
+            const button = event.target.closest("[data-delete-user]");
+            if (!button) return;
+
+            const userId = button.dataset.deleteUser;
+
+            if (!confirm("آیا از حذف این کاربر مطمئن هستید؟ این عملیات قابل بازگشت نیست.")) {
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = "در حال حذف...";
+
+            try {
+                await manageUsers("delete", {
+                    user_id: userId
+                });
+
+                showMessage(
+                    "usersMessage",
+                    "کاربر با موفقیت حذف شد.",
+                    "success"
+                );
+
+                await loadUsers();
+            } catch (error) {
+                showMessage(
+                    "usersMessage",
+                    friendlyError(error),
+                    "error"
+                );
+
+                button.disabled = false;
+                button.textContent = "حذف کاربر";
+            }
+        });
+
+        $("refreshUsers").addEventListener("click", loadUsers);
+
+        /*
+         * باز و بسته کردن فرم ایجاد کد کارمند
+         */
+        $("openCodeForm").addEventListener("click", () => {
+            $("newCodeForm").classList.add("open");
+            $("newCode").focus();
+        });
+
+        function closeCodeForm() {
+            $("newCodeForm").classList.remove("open");
+            $("addCodeForm").reset();
+        }
+
+        $("cancelCode").addEventListener("click", closeCodeForm);
+
+        /*
+         * فهرست کدهای کارمندان
+         */
+        async function loadCodes() {
+            const table = $("codesTable");
+
+            table.innerHTML =
+                '<tr><td colspan="4" class="loading">در حال دریافت کدها...</td></tr>';
+
+            hideMessage("codesMessage");
+
+            try {
+                const { data, error } = await db.rpc("list_employee_codes");
+
+                if (error) throw error;
+
+                const codes = Array.isArray(data) ? data : [];
+
+                if (!codes.length) {
+                    table.innerHTML =
+                        '<tr><td colspan="4" class="loading">هنوز کدی ثبت نشده است.</td></tr>';
+                    codesLoaded = true;
+                    return;
+                }
+
+                table.innerHTML = codes.map((item, index) => `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${escapeHTML(item.code || "—")}</td>
+                        <td>${escapeHTML(formatDate(item.created_at))}</td>
+                        <td>
+                            <button class="danger-button"
+                                    data-delete-code="${escapeHTML(item.id)}">
+                                حذف کد
+                            </button>
+                        </td>
+                    </tr>
+                `).join("");
+
+                codesLoaded = true;
+            } catch (error) {
+                table.innerHTML =
+                    '<tr><td colspan="4" class="loading">دریافت کدها ناموفق بود.</td></tr>';
+
+                showMessage(
+                    "codesMessage",
+                    friendlyError(error),
+                    "error"
+                );
+            }
+        }
+
+        /*
+         * ایجاد کد با تأیید تکرار کد
+         */
+        $("addCodeForm").addEventListener("submit", async event => {
+            event.preventDefault();
+
+            hideMessage("codesMessage");
+
+            const code = $("newCode").value.trim();
+            const repeatedCode = $("repeatCode").value.trim();
+
+            if (code.length < 4) {
+                showMessage(
+                    "codesMessage",
+                    "کد کارمند باید حداقل ۴ کاراکتر داشته باشد.",
+                    "error"
+                );
+                return;
+            }
+
+            if (code !== repeatedCode) {
+                showMessage(
+                    "codesMessage",
+                    "کد و تکرار کد با هم مطابقت ندارند.",
+                    "error"
+                );
+                return;
+            }
+
+            const submitButton = $("submitCode");
+            submitButton.disabled = true;
+            submitButton.textContent = "در حال ثبت...";
+
+            try {
+                const { data, error } = await db.rpc("add_employee_code", {
+                    p_code: code
+                });
+
+                if (error) throw error;
+
+                if (data?.success === false) {
+                    throw new Error(data.error || "ثبت کد انجام نشد.");
+                }
+
+                closeCodeForm();
+
+                showMessage(
+                    "codesMessage",
+                    "کد کارمند با موفقیت ثبت شد.",
+                    "success"
+                );
+
+                await loadCodes();
+            } catch (error) {
+                showMessage(
+                    "codesMessage",
+                    friendlyError(error),
+                    "error"
+                );
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "ثبت کد";
+            }
+        });
+
+        /*
+         * حذف کد کارمند
+         */
+        $("codesTable").addEventListener("click", async event => {
+            const button = event.target.closest("[data-delete-code]");
+            if (!button) return;
+
+            const id = Number(button.dataset.deleteCode);
+
+            if (!Number.isSafeInteger(id) || id <= 0) {
+                showMessage("codesMessage", "شناسه کد معتبر نیست.", "error");
+                return;
+            }
+
+            if (!confirm("آیا از حذف این کد ورود مطمئن هستید؟")) {
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = "در حال حذف...";
+
+            try {
+                const { data, error } = await db.rpc("delete_employee_code", {
+                    p_id: id
+                });
+
+                if (error) throw error;
+
+                if (data?.success === false) {
+                    throw new Error(data.error || "حذف کد انجام نشد.");
+                }
+
+                showMessage(
+                    "codesMessage",
+                    "کد با موفقیت حذف شد.",
+                    "success"
+                );
+
+                await loadCodes();
+            } catch (error) {
+                showMessage(
+                    "codesMessage",
+                    friendlyError(error),
+                    "error"
+                );
+
+                button.disabled = false;
+                button.textContent = "حذف کد";
+            }
+        });
+
+        /*
+         * بررسی نشست و مجوز کارمند
+         */
+        async function initializeDashboard() {
+            try {
+                const {
+                    data: { session },
+                    error: sessionError
+                } = await db.auth.getSession();
+
+                if (sessionError) throw sessionError;
+
+                if (!session) {
+                    window.location.replace("index.html");
+                    return;
+                }
+
+                currentUser = session.user;
+
+                const { data: authorized, error: authError } =
+                    await db.rpc("is_employee_authorized");
+
+                if (authError) throw authError;
+
+                if (authorized !== true) {
+                    await db.auth.signOut();
+                    window.location.replace("index.html");
+                    return;
+                }
+
+                /*
+                 * اطلاعات فقط هنگام بازکردن بخش مربوطه دریافت می‌شوند.
+                 */
+            } catch (error) {
+                console.error("Dashboard initialization error:", error);
+
+                alert(
+                    "بررسی دسترسی کارمند ناموفق بود: " +
+                    friendlyError(error)
+                );
+
+                window.location.replace("index.html");
+            }
+        }
+
+        initializeDashboard();
+    </script>
 </body>
 </html>
