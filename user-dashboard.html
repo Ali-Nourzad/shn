@@ -1,1661 +1,333 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>پنل کاربر | س.ح.ن</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
-
-        :root {
-            --bg: #f5f1e8;
-            --surface: rgba(255,252,245,.82);
-            --text: #292722;
-            --muted: #777268;
-            --accent-dark: #a9531c;
-            --dark: #292824;
-            --border: rgba(67,58,47,.12);
-            --shadow: 0 20px 50px rgba(54,44,31,.10);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            min-height: 100vh;
-
-            font-family: "Vazirmatn", Tahoma, sans-serif;
-            color: var(--text);
-
-            background:
-                radial-gradient(
-                    circle at 10% 10%,
-                    rgba(215,123,50,.12),
-                    transparent 25%
-                ),
-                radial-gradient(
-                    circle at 90% 80%,
-                    rgba(167,130,87,.12),
-                    transparent 28%
-                ),
-                var(--bg);
-        }
-
-        button {
-            font-family: inherit;
-        }
-
-        /* NAVBAR */
-
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-
-            height: 82px;
-            padding: 0 6%;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            background: rgba(255,252,245,.82);
-
-            border-bottom: 1px solid var(--border);
-
-            box-shadow:
-                0 8px 25px rgba(54,44,31,.08);
-
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-        }
-
-        .brand {
-            font-size: 25px;
-            font-weight: 800;
-        }
-
-        .menu-btn {
-            width: 56px;
-            height: 56px;
-
-            border: 1px solid rgba(67,58,47,.12);
-            border-radius: 30%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #3f3a34,
-                    #211f1c
-                );
-
-            box-shadow:
-                0 8px 20px rgba(45,35,25,.20),
-                inset 0 1px 1px rgba(255,255,255,.16);
-
-            cursor: pointer;
-
-            transition: .25s ease;
-        }
-
-        .menu-btn:hover {
-            transform: translateY(-2px) scale(1.06);
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #514a42,
-                    #292520
-                );
-        }
-
-        .menu-btn span {
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-            background: #fffdf8;
-        }
-
-        /* MENU */
-
-        .menu {
-            position: fixed;
-            top: 94px;
-            left: 6%;
-            z-index: 2500;
-
-            width: 270px;
-            padding: 10px;
-
-            background: rgba(255,253,248,.95);
-
-            border: 1px solid var(--border);
-            border-radius: 20px;
-
-            box-shadow: var(--shadow);
-
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-
-            opacity: 0;
-            visibility: hidden;
-
-            transform:
-                translateY(-10px)
-                scale(.96);
-
-            transition: .25s ease;
-        }
-
-        .menu.show {
-            opacity: 1;
-            visibility: visible;
-
-            transform:
-                translateY(0)
-                scale(1);
-        }
-
-        .menu-item {
-            width: 100%;
-            min-height: 50px;
-
-            border: none;
-            border-radius: 13px;
-
-            background: transparent;
-            color: var(--text);
-
-            display: flex;
-            align-items: center;
-
-            gap: 12px;
-            padding: 0 14px;
-
-            font-size: 14px;
-            font-weight: 600;
-
-            cursor: pointer;
-
-            transition: .2s ease;
-        }
-
-        .menu-item:hover {
-            background: #f3eee5;
-            transform: translateX(-3px);
-        }
-
-        .menu-icon {
-            width: 30px;
-            height: 30px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 10px;
-
-            background: #eee7da;
-        }
-
-        .divider {
-            height: 1px;
-
-            margin: 8px 5px;
-
-            background: var(--border);
-
-            display: none;
-        }
-
-        /* MAIN */
-
-        main {
-            width: min(1100px,90%);
-            margin: auto;
-
-            padding: 80px 0 70px;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .badge {
-            display: inline-block;
-
-            padding: 8px 15px;
-            margin-bottom: 18px;
-
-            border-radius: 999px;
-
-            background: rgba(215,123,50,.10);
-
-            border: 1px solid rgba(215,123,50,.18);
-
-            color: var(--accent-dark);
-
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        h1 {
-            font-size: clamp(32px,5vw,54px);
-            margin-bottom: 14px;
-        }
-
-        .hero p {
-            color: var(--muted);
-            line-height: 2;
-        }
-
-        /* DASHBOARD */
-
-        .dashboard-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3,minmax(0,1fr));
-
-            gap: 22px;
-        }
-
-        .dashboard-card {
-            min-height: 220px;
-            padding: 30px;
-
-            border: 1px solid var(--border);
-            border-radius: 26px;
-
-            background: var(--surface);
-
-            box-shadow: var(--shadow);
-
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-
-            display: flex;
-            flex-direction: column;
-
-            align-items: center;
-            justify-content: center;
-
-            text-align: center;
-
-            cursor: pointer;
-
-            transition: .3s ease;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-8px);
-
-            box-shadow:
-                0 28px 60px rgba(54,44,31,.15);
-        }
-
-        .card-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-        }
-
-        .dashboard-card h2 {
-            font-size: 21px;
-            margin-bottom: 8px;
-        }
-
-        .dashboard-card p {
-            color: var(--muted);
-            font-size: 13px;
-        }
-
-        .dashboard-empty {
-            grid-column: 1 / -1;
-
-            padding: 55px 25px;
-
-            text-align: center;
-
-            background: var(--surface);
-
-            border: 1px dashed rgba(67,58,47,.18);
-
-            border-radius: 25px;
-
-            color: var(--muted);
-        }
-
-        /* SECTIONS */
-
-        .section-page {
-            display: none;
-        }
-
-        .section-page.active {
-            display: block;
-        }
-
-        .section-head {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .section-head .big-icon {
-            display: block;
-
-            font-size: 55px;
-
-            margin-bottom: 12px;
-        }
-
-        .section-head h2 {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .section-head p {
-            color: var(--muted);
-        }
-
-        .empty-box {
-            max-width: 650px;
-            margin: auto;
-
-            padding: 50px 30px;
-
-            text-align: center;
-
-            background: var(--surface);
-
-            border: 1px solid var(--border);
-            border-radius: 26px;
-
-            box-shadow: var(--shadow);
-        }
-
-        .empty-box .empty-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        .empty-box h3 {
-            margin-bottom: 10px;
-        }
-
-        .empty-box p {
-            color: var(--muted);
-
-            line-height: 2;
-
-            font-size: 14px;
-        }
-
-        /* CAFE */
-
-        .category-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(2,1fr);
-
-            gap: 22px;
-        }
-
-        .category {
-            padding: 25px;
-
-            background: var(--surface);
-
-            border: 1px solid var(--border);
-            border-radius: 25px;
-
-            box-shadow: var(--shadow);
-        }
-
-        .category h3 {
-            font-size: 19px;
-            margin-bottom: 18px;
-        }
-
-        .drink-list {
-            display: grid;
-            gap: 10px;
-        }
-
-        .drink {
-            padding: 14px 16px;
-
-            border-radius: 14px;
-
-            background:
-                rgba(255,255,255,.55);
-
-            border: 1px solid rgba(67,58,47,.08);
-
-            font-weight: 600;
-        }
-
-        /* SUPPORT */
-
-        .support-page {
-            position: fixed;
-            inset: 0;
-            z-index: 3000;
-
-            display: none;
-
-            overflow-y: auto;
-
-            padding: 100px 20px 50px;
-
-            background:
-                radial-gradient(
-                    circle at 10% 10%,
-                    rgba(215,123,50,.12),
-                    transparent 25%
-                ),
-                radial-gradient(
-                    circle at 90% 80%,
-                    rgba(167,130,87,.12),
-                    transparent 28%
-                ),
-                var(--bg);
-        }
-
-        .support-page.show {
-            display: block;
-        }
-
-        .support-box {
-            width: min(650px,100%);
-            margin: auto;
-
-            padding: 35px;
-
-            background: var(--surface);
-
-            border: 1px solid var(--border);
-            border-radius: 30px;
-
-            box-shadow: var(--shadow);
-
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-
-            text-align: center;
-        }
-
-        .support-icon {
-            font-size: 52px;
-            margin-bottom: 15px;
-        }
-
-        .support-box h2 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .support-box > p {
-            color: var(--muted);
-
-            line-height: 1.9;
-
-            margin-bottom: 28px;
-        }
-
-        .phone-list {
-            display: grid;
-            gap: 13px;
-        }
-
-        .phone {
-            min-height: 65px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 0 20px;
-
-            border-radius: 17px;
-
-            background: #fffdf8;
-
-            border: 1px solid var(--border);
-
-            color: var(--text);
-
-            text-decoration: none;
-
-            font-size: 18px;
-            font-weight: 800;
-
-            direction: ltr;
-
-            transition: .2s ease;
-        }
-
-        .phone:hover {
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 10px 25px rgba(54,44,31,.08);
-        }
-
-        .phone small {
-            direction: rtl;
-
-            color: var(--muted);
-
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .back-support {
-            margin-top: 25px;
-
-            border: none;
-            border-radius: 13px;
-
-            padding: 12px 25px;
-
-            background: var(--dark);
-            color: white;
-
-            font-weight: 700;
-
-            cursor: pointer;
-        }
-
-        /* RESPONSIVE */
-
-        @media (max-width: 800px) {
-
-            .dashboard-grid,
-            .category-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .navbar {
-                padding: 0 20px;
-            }
-
-            .menu {
-                left: 20px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>پنل کاربر | س.ح.ن</title>
+<style>
+:root{
+ --accent:#8b5cf6;--soft:rgba(139,92,246,.15);
+ --bg:#10121b;--card:#1b1e2b;--text:#f5f5fa;
+ --muted:#a7a9bd;--border:#343749;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;color:var(--text);
+ background:radial-gradient(ellipse at 85% 0%,var(--soft),transparent 42%),var(--bg);
+ font-family:Tahoma,Arial,sans-serif;transition:.25s
+}
+button{font:inherit;cursor:pointer}
+header{
+ height:76px;padding:0 6%;display:flex;align-items:center;
+ justify-content:space-between;border-bottom:1px solid var(--border)
+}
+.brand{display:flex;align-items:center;gap:12px;font-weight:bold}
+.logo{
+ background:var(--accent);color:white;border-radius:13px;
+ padding:12px;font-size:15px;box-shadow:0 5px 22px var(--soft)
+}
+.menu-wrap{position:relative}
+.menu-button{
+ width:45px;height:43px;border:1px solid var(--border);
+ border-radius:13px;background:var(--card);color:var(--text);font-size:25px
+}
+.dropdown{
+ display:none;position:absolute;left:0;top:52px;width:240px;
+ background:var(--card);border:1px solid var(--border);
+ border-radius:15px;padding:8px;z-index:10;box-shadow:0 15px 40px #0007
+}
+.dropdown.open{display:block}
+.dropdown button{
+ display:block;width:100%;text-align:right;padding:12px;border:0;
+ border-radius:9px;background:transparent;color:var(--text);font-size:13px
+}
+.dropdown button:hover{background:var(--soft)}
+.palette{
+ display:none;grid-template-columns:repeat(4,1fr);gap:9px;padding:12px 7px
+}
+.palette.open{display:grid}
+.swatch{height:30px;border:2px solid #ffffff35;border-radius:8px}
+.swatch.selected{outline:2px solid white;outline-offset:2px}
+.shades{display:none;flex-wrap:wrap;gap:5px;padding:0 7px 10px}
+.shade{flex:1;min-width:30px;height:25px;border:1px solid #ffffff40;border-radius:6px}
+main{max-width:1000px;min-height:calc(100vh - 145px);margin:auto;padding:42px 22px}
+.welcome{
+ padding:35px;border-radius:22px;
+ background:linear-gradient(145deg,var(--soft),transparent 80%),var(--card);
+ border:1px solid var(--border)
+}
+.welcome-icon{
+ width:58px;height:58px;display:grid;place-items:center;
+ border-radius:17px;background:var(--soft);color:var(--accent);
+ font-size:28px;margin-bottom:22px
+}
+h1{font-size:clamp(27px,5vw,38px);margin:0 0 12px}
+.subtitle{font-size:14px;line-height:2;color:var(--muted);margin-bottom:30px}
+.welcome p{font-size:14px;line-height:2;color:var(--muted);margin:0}
+.overlay{
+ position:fixed;inset:0;z-index:30;display:flex;align-items:center;
+ justify-content:center;padding:20px;background:#080910bb;
+ backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+ opacity:0;visibility:hidden;transition:.2s
+}
+.overlay.open{opacity:1;visibility:visible}
+.modal{
+ width:min(470px,100%);max-height:92vh;overflow-y:auto;padding:26px;
+ border-radius:20px;background:var(--card);border:1px solid var(--border);
+ box-shadow:0 25px 70px #0007;transform:translateY(12px);transition:.2s
+}
+.overlay.open .modal{transform:translateY(0)}
+.modal-header{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:15px;margin-bottom:22px
+}
+.modal-header h2{font-size:22px;margin:0}
+.close-btn{
+ width:38px;height:38px;border-radius:11px;background:var(--soft);
+ color:var(--text);font-size:22px;border:0
+}
+.support-description{color:var(--muted);font-size:13px;line-height:2;margin-bottom:18px}
+.support-number{
+ padding:15px;margin-bottom:12px;border-radius:12px;
+ background:var(--soft);border:1px solid var(--border);
+ color:var(--text);font-size:13px;line-height:2.2
+}
+.support-number strong{
+ display:block;direction:ltr;unicode-bidi:plaintext;
+ color:var(--accent);font-size:16px;margin-top:5px
+}
+.message-description{
+ font-size:13px;line-height:2.2;color:var(--muted);
+ padding:15px;border-radius:12px;background:var(--soft);
+ border:1px solid var(--border)
+}
+.message-description strong{color:var(--accent)}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
+@media(max-width:520px){
+ header{height:70px;padding:0 18px}
+ main{padding:30px 17px}
+ .welcome{padding:24px}
+ .modal{padding:20px}
+}
+</style>
 </head>
-
 <body>
 
-    <!-- NAVBAR -->
-
-    <nav class="navbar">
-
-        <div class="brand">
-            س.ح.ن
-        </div>
-
-        <button
-            class="menu-btn"
-            id="menuBtn"
-            aria-label="منو"
-        >
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-    </nav>
-
-    <!-- MENU -->
-
-    <div
-        class="menu"
-        id="menu"
-    >
-
-        <button
-            class="menu-item"
-            id="callSupportBtn"
-        >
-            <span class="menu-icon">☎</span>
-            <span>تماس با پشتیبانی</span>
-        </button>
-
-        <button
-            class="menu-item"
-            id="messageSupportBtn"
-        >
-            <span class="menu-icon">✉</span>
-            <span>پیام به پشتیبانی</span>
-        </button>
-
-        <button
-            class="menu-item"
-            id="sectionExitButton"
-            style="display:none;"
-        >
-            <span class="menu-icon">←</span>
-            <span id="sectionExitText"></span>
-        </button>
-
-        <div
-            class="divider"
-            id="menuDivider"
-        ></div>
-
-        <button
-            class="menu-item"
-            id="logoutButton"
-        >
-            <span class="menu-icon">↩</span>
-            <span>خروج از پنل</span>
-        </button>
-
-    </div>
-
-    <!-- MAIN -->
-
-    <main>
-
-        <!-- HOME -->
-
-        <section id="homePage">
-
-            <div class="hero">
-
-                <span class="badge">
-                    ✦ پنل کاربری
-                </span>
-
-                <h1>
-                    س.ح.ن
-                </h1>
-
-                <p>
-                    بخش موردنظر خود را انتخاب کنید.
-                </p>
-
-            </div>
-
-            <div
-                class="dashboard-grid"
-                id="dashboardGrid"
-            ></div>
-
-        </section>
-
-        <!-- LIBRARY -->
-
-        <section
-            class="section-page"
-            id="libraryPage"
-        >
-
-            <div class="section-head">
-
-                <span class="big-icon">
-                    📚
-                </span>
-
-                <h2>
-                    کتابخانه
-                </h2>
-
-                <p>
-                    محتوای کتابخانه
-                </p>
-
-            </div>
-
-            <div class="empty-box">
-
-                <div class="empty-icon">
-                    📖
-                </div>
-
-                <h3>
-                    فعلاً محتوایی پیدا نشد
-                </h3>
-
-                <p>
-                    به‌زودی محتوای این بخش اضافه خواهد شد.
-                </p>
-
-            </div>
-
-        </section>
-
-        <!-- CAFE -->
-
-        <section
-            class="section-page"
-            id="cafePage"
-        >
-
-            <div class="section-head">
-
-                <span class="big-icon">
-                    ☕
-                </span>
-
-                <h2>
-                    کافه
-                </h2>
-
-                <p>
-                    نوشیدنی موردعلاقه خود را انتخاب کنید.
-                </p>
-
-            </div>
-
-            <div class="category-grid">
-
-                <div class="category">
-
-                    <h3>
-                        ☕ نوشیدنی تلخ
-                    </h3>
-
-                    <div class="drink-list">
-
-                        <div class="drink">
-                            آیس نوت
-                        </div>
-
-                        <div class="drink">
-                            تالیجا
-                        </div>
-
-                        <div class="drink">
-                            جوشینو
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="category">
-
-                    <h3>
-                        🍹 نوشیدنی شیرین
-                    </h3>
-
-                    <div class="drink-list">
-
-                        <div class="drink">
-                            نویتو
-                        </div>
-
-                        <div class="drink">
-                            فریکان
-                        </div>
-
-                        <div class="drink">
-                            شیکانو
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- FUN -->
-
-        <section
-            class="section-page"
-            id="funPage"
-        >
-
-            <div class="section-head">
-
-                <span class="big-icon">
-                    😄
-                </span>
-
-                <h2>
-                    خنده و سوال
-                </h2>
-
-                <p>
-                    سوال‌ها و سرگرمی‌های این بخش به‌زودی اضافه می‌شوند.
-                </p>
-
-            </div>
-
-            <div class="empty-box">
-
-                <div class="empty-icon">
-                    😄
-                </div>
-
-                <h3>
-                    به‌زودی!
-                </h3>
-
-                <p>
-                    این بخش هنوز در حال آماده‌سازی است.
-                </p>
-
-            </div>
-
-        </section>
-
-    </main>
-
-    <!-- SUPPORT -->
-
-    <section
-        class="support-page"
-        id="supportPage"
-    >
-
-        <div class="support-box">
-
-            <div
-                class="support-icon"
-                id="supportIcon"
-            >
-                ☎
-            </div>
-
-            <h2 id="supportTitle">
-                تماس با پشتیبانی
-            </h2>
-
-            <p id="supportDescription">
-                برای ارتباط با پشتیبانی می‌توانید با یکی از شماره‌های زیر تماس بگیرید.
-            </p>
-
-            <div class="phone-list">
-
-                <a
-                    class="phone"
-                    href="tel:09122162177"
-                >
-                    <span>09122162177</span>
-                    <small>تماس</small>
-                </a>
-
-                <a
-                    class="phone"
-                    href="tel:09122940829"
-                >
-                    <span>09122940829</span>
-                    <small>تماس</small>
-                </a>
-
-            </div>
-
-            <button
-                class="back-support"
-                id="backSupportBtn"
-            >
-                بازگشت
-            </button>
-
-        </div>
-
-    </section>
-
-    <script>
-
-        /* =========================
-           SUPABASE
-        ========================= */
-
-        const SUPABASE_URL =
-            "https://zyziyyhzxsnwzrsubulu.supabase.co";
-
-        const SUPABASE_ANON_KEY =
-            "sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
-
-        const {
-            createClient
-        } = supabase;
-
-        const supabaseClient =
-            createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
-
-        /* =========================
-           ELEMENTS
-        ========================= */
-
-        const menuBtn =
-            document.getElementById("menuBtn");
-
-        const menu =
-            document.getElementById("menu");
-
-        const homePage =
-            document.getElementById("homePage");
-
-        const dashboardGrid =
-            document.getElementById("dashboardGrid");
-
-        const libraryPage =
-            document.getElementById("libraryPage");
-
-        const cafePage =
-            document.getElementById("cafePage");
-
-        const funPage =
-            document.getElementById("funPage");
-
-        const sectionExitButton =
-            document.getElementById(
-                "sectionExitButton"
-            );
-
-        const sectionExitText =
-            document.getElementById(
-                "sectionExitText"
-            );
-
-        const menuDivider =
-            document.getElementById(
-                "menuDivider"
-            );
-
-        const logoutButton =
-            document.getElementById(
-                "logoutButton"
-            );
-
-        const callSupportBtn =
-            document.getElementById(
-                "callSupportBtn"
-            );
-
-        const messageSupportBtn =
-            document.getElementById(
-                "messageSupportBtn"
-            );
-
-        const supportPage =
-            document.getElementById(
-                "supportPage"
-            );
-
-        const supportIcon =
-            document.getElementById(
-                "supportIcon"
-            );
-
-        const supportTitle =
-            document.getElementById(
-                "supportTitle"
-            );
-
-        const supportDescription =
-            document.getElementById(
-                "supportDescription"
-            );
-
-        const backSupportBtn =
-            document.getElementById(
-                "backSupportBtn"
-            );
-
-        let currentSection = null;
-
-        /* =========================
-           CHECK USER
-        ========================= */
-
-        async function checkUser() {
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .auth
-                    .getSession();
-
-            if (
-                error ||
-                !data.session
-            ) {
-
-                window.location.href =
-                    "index.html";
-
-                return false;
-            }
-
-            /*
-             * نشست ناشناس کارمند اجازه
-             * ورود به پنل عادی کاربر ندارد.
-             */
-
-            if (
-                data.session.user &&
-                data.session.user.is_anonymous === true
-            ) {
-
-                window.location.href =
-                    "index.html";
-
-                return false;
-            }
-
-            return true;
-        }
-
-        /* =========================
-           LOAD USER CARDS
-        ========================= */
-
-        async function loadUserCards() {
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from("site_cards")
-                    .select("*")
-                    .eq(
-                        "is_deleted",
-                        false
-                    )
-                    .order(
-                        "sort_order",
-                        {
-                            ascending: true
-                        }
-                    );
-
-            if (error) {
-
-                console.error(
-                    "خطا در دریافت کارت‌ها:",
-                    error
-                );
-
-                dashboardGrid.innerHTML = `
-                    <div class="dashboard-empty">
-                        دریافت اطلاعات انجام نشد.
-                    </div>
-                `;
-
-                return;
-            }
-
-            renderDashboardCards(
-                data || []
-            );
-        }
-
-        /* =========================
-           RENDER DASHBOARD
-        ========================= */
-
-        function renderDashboardCards(
-            cards
-        ) {
-
-            dashboardGrid.innerHTML = "";
-
-            if (
-                cards.length === 0
-            ) {
-
-                dashboardGrid.innerHTML = `
-                    <div class="dashboard-empty">
-                        فعلاً کارتی برای نمایش وجود ندارد.
-                    </div>
-                `;
-
-                return;
-            }
-
-            cards.forEach(
-                function(card) {
-
-                    const element =
-                        document.createElement(
-                            "article"
-                        );
-
-                    element.className =
-                        "dashboard-card";
-
-                    element.innerHTML = `
-                        <div class="card-icon">
-                            ${escapeHTML(card.icon)}
-                        </div>
-
-                        <h2>
-                            ${escapeHTML(card.title)}
-                        </h2>
-
-                        <p>
-                            ${escapeHTML(card.description)}
-                        </p>
-                    `;
-
-                    element.addEventListener(
-                        "click",
-                        function() {
-
-                            openCardPage(
-                                card
-                            );
-                        }
-                    );
-
-                    dashboardGrid.appendChild(
-                        element
-                    );
-                }
-            );
-        }
-
-        /* =========================
-           OPEN CARD
-        ========================= */
-
-        function openCardPage(card) {
-
-            if (
-                card.code ===
-                "library"
-            ) {
-
-                openSection(
-                    "library"
-                );
-
-                return;
-            }
-
-            if (
-                card.code ===
-                "cafe"
-            ) {
-
-                openSection(
-                    "cafe"
-                );
-
-                return;
-            }
-
-            if (
-                card.code ===
-                "fun"
-            ) {
-
-                openSection(
-                    "fun"
-                );
-
-                return;
-            }
-
-            createCustomPage(
-                card
-            );
-        }
-
-        /* =========================
-           CUSTOM PAGE
-        ========================= */
-
-        function createCustomPage(
-            card
-        ) {
-
-            const oldPage =
-                document.getElementById(
-                    "customCardPage"
-                );
-
-            if (oldPage) {
-                oldPage.remove();
-            }
-
-            homePage.style.display =
-                "none";
-
-            libraryPage.classList.remove(
-                "active"
-            );
-
-            cafePage.classList.remove(
-                "active"
-            );
-
-            funPage.classList.remove(
-                "active"
-            );
-
-            const customPage =
-                document.createElement(
-                    "section"
-                );
-
-            customPage.id =
-                "customCardPage";
-
-            customPage.className =
-                "section-page active";
-
-            customPage.innerHTML = `
-                <div class="section-head">
-
-                    <span class="big-icon">
-                        ${escapeHTML(card.icon)}
-                    </span>
-
-                    <h2>
-                        ${escapeHTML(card.title)}
-                    </h2>
-
-                    <p>
-                        ${escapeHTML(card.description)}
-                    </p>
-
-                </div>
-
-                <div class="empty-box">
-
-                    <div class="empty-icon">
-                        ${escapeHTML(card.icon)}
-                    </div>
-
-                    <h3>
-                        ${escapeHTML(card.title)}
-                    </h3>
-
-                    <p>
-                        کد صفحه:
-                        ${escapeHTML(card.code)}
-                    </p>
-
-                </div>
-            `;
-
-            document
-                .querySelector("main")
-                .appendChild(
-                    customPage
-                );
-
-            currentSection =
-                "custom";
-
-            sectionExitText.textContent =
-                "خروج از " +
-                card.title;
-
-            sectionExitButton.style.display =
-                "flex";
-
-            menuDivider.style.display =
-                "block";
-
-            menu.classList.remove(
-                "show"
-            );
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-
-        /* =========================
-           OPEN NORMAL SECTION
-        ========================= */
-
-        function openSection(
-            section
-        ) {
-
-            const customPage =
-                document.getElementById(
-                    "customCardPage"
-                );
-
-            if (customPage) {
-                customPage.remove();
-            }
-
-            homePage.style.display =
-                "none";
-
-            libraryPage.classList.remove(
-                "active"
-            );
-
-            cafePage.classList.remove(
-                "active"
-            );
-
-            funPage.classList.remove(
-                "active"
-            );
-
-            currentSection =
-                section;
-
-            if (
-                section ===
-                "library"
-            ) {
-
-                libraryPage.classList.add(
-                    "active"
-                );
-
-                sectionExitText.textContent =
-                    "خروج از کتابخانه";
-
-            } else if (
-                section ===
-                "cafe"
-            ) {
-
-                cafePage.classList.add(
-                    "active"
-                );
-
-                sectionExitText.textContent =
-                    "خروج از کافه";
-
-            } else if (
-                section ===
-                "fun"
-            ) {
-
-                funPage.classList.add(
-                    "active"
-                );
-
-                sectionExitText.textContent =
-                    "خروج از خنده و سوال";
-            }
-
-            sectionExitButton.style.display =
-                "flex";
-
-            menuDivider.style.display =
-                "block";
-
-            menu.classList.remove(
-                "show"
-            );
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-
-        /* =========================
-           EXIT SECTION
-        ========================= */
-
-        sectionExitButton.addEventListener(
-            "click",
-            function() {
-
-                const customPage =
-                    document.getElementById(
-                        "customCardPage"
-                    );
-
-                if (customPage) {
-                    customPage.remove();
-                }
-
-                libraryPage.classList.remove(
-                    "active"
-                );
-
-                cafePage.classList.remove(
-                    "active"
-                );
-
-                funPage.classList.remove(
-                    "active"
-                );
-
-                homePage.style.display =
-                    "block";
-
-                currentSection =
-                    null;
-
-                sectionExitButton.style.display =
-                    "none";
-
-                menuDivider.style.display =
-                    "none";
-
-                menu.classList.remove(
-                    "show"
-                );
-
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            }
-        );
-
-        /* =========================
-           MENU
-        ========================= */
-
-        menuBtn.addEventListener(
-            "click",
-            function(event) {
-
-                event.stopPropagation();
-
-                menu.classList.toggle(
-                    "show"
-                );
-            }
-        );
-
-        menu.addEventListener(
-            "click",
-            function(event) {
-
-                event.stopPropagation();
-            }
-        );
-
-        document.addEventListener(
-            "click",
-            function() {
-
-                menu.classList.remove(
-                    "show"
-                );
-            }
-        );
-
-        /* =========================
-           SUPPORT
-        ========================= */
-
-        function openSupport(
-            type
-        ) {
-
-            menu.classList.remove(
-                "show"
-            );
-
-            const labels =
-                document.querySelectorAll(
-                    ".phone small"
-                );
-
-            if (
-                type ===
-                "call"
-            ) {
-
-                supportIcon.textContent =
-                    "☎";
-
-                supportTitle.textContent =
-                    "تماس با پشتیبانی";
-
-                supportDescription.textContent =
-                    "برای ارتباط با پشتیبانی می‌توانید با یکی از شماره‌های زیر تماس بگیرید.";
-
-                labels.forEach(
-                    function(item) {
-                        item.textContent =
-                            "تماس";
-                    }
-                );
-
-            } else {
-
-                supportIcon.textContent =
-                    "✉";
-
-                supportTitle.textContent =
-                    "پیام به پشتیبانی";
-
-                supportDescription.textContent =
-                    "برای ارسال پیام، یکی از شماره‌های زیر را انتخاب کنید.";
-
-                labels.forEach(
-                    function(item) {
-                        item.textContent =
-                            "پیام";
-                    }
-                );
-            }
-
-            supportPage.classList.add(
-                "show"
-            );
-        }
-
-        callSupportBtn.addEventListener(
-            "click",
-            function() {
-                openSupport("call");
-            }
-        );
-
-        messageSupportBtn.addEventListener(
-            "click",
-            function() {
-                openSupport("message");
-            }
-        );
-
-        backSupportBtn.addEventListener(
-            "click",
-            function() {
-
-                supportPage.classList.remove(
-                    "show"
-                );
-            }
-        );
-
-        /* =========================
-           LOGOUT
-        ========================= */
-
-        logoutButton.addEventListener(
-            "click",
-            async function() {
-
-                await supabaseClient
-                    .auth
-                    .signOut();
-
-                window.location.href =
-                    "index.html";
-            }
-        );
-
-        /* =========================
-           HELPER
-        ========================= */
-
-        function escapeHTML(
-            value
-        ) {
-
-            return String(value)
-                .replaceAll(
-                    "&",
-                    "&amp;"
-                )
-                .replaceAll(
-                    "<",
-                    "&lt;"
-                )
-                .replaceAll(
-                    ">",
-                    "&gt;"
-                )
-                .replaceAll(
-                    '"',
-                    "&quot;"
-                )
-                .replaceAll(
-                    "'",
-                    "&#039;"
-                );
-        }
-
-        /* =========================
-           START
-        ========================= */
-
-        async function start() {
-
-            const authorized =
-                await checkUser();
-
-            if (!authorized) {
-                return;
-            }
-
-            await loadUserCards();
-        }
-
-        start();
-
-    </script>
-
+<header>
+ <div class="brand">
+  <div class="logo">س.ح.ن</div>
+  <div>پنل کاربر</div>
+ </div>
+ <div class="menu-wrap">
+  <button class="menu-button" id="menuBtn" aria-label="منو">•••</button>
+  <div class="dropdown" id="menu">
+   <button id="colorBtn" type="button">🎨 انتخاب رنگ</button>
+   <div class="palette" id="palette"></div>
+   <div class="shades" id="shades"></div>
+   <button id="supportBtn" type="button">☎ تماس با پشتیبانی</button>
+   <button id="messageSupportBtn" type="button">✉ پیام به پشتیبانی</button>
+   <button id="exitPanelBtn" type="button">↩ خروج از پنل</button>
+  </div>
+ </div>
+</header>
+
+<main>
+ <section class="welcome">
+  <div class="welcome-icon">👤</div>
+  <h1>خوش آمدید</h1>
+  <div class="subtitle">به پنل کاربری س.ح.ن خوش آمدید.</div>
+  <p>برای ادامه، می‌توانید از منوی بالای صفحه استفاده کنید.</p>
+ </section>
+</main>
+
+<div class="overlay" id="supportOverlay">
+ <div class="modal">
+  <div class="modal-header">
+   <h2>تماس با پشتیبانی</h2>
+   <button class="close-btn" id="closeSupportBtn" type="button" aria-label="بستن">×</button>
+  </div>
+  <p class="support-description">
+   اگر می‌خواهید با پشتیبانی تماس بگیرید، با یکی از شماره‌های زیر تماس بگیرید. اگر از شمارهٔ اول پاسخ نگرفتید، شمارهٔ دوم را امتحان کنید.
+  </p>
+  <div class="support-number">
+   اگر می‌خواهید با پشتیبانی تماس بگیرید، با این شماره تماس بگیرید:
+   <strong>09122162177</strong>
+  </div>
+  <div class="support-number">
+   اگر پاسخ نگرفتید، با این شماره تماس بگیرید:
+   <strong>09122940829</strong>
+  </div>
+ </div>
+</div>
+
+<div class="overlay" id="messageOverlay">
+ <div class="modal">
+  <div class="modal-header">
+   <h2>پیام به پشتیبانی</h2>
+   <button class="close-btn" id="closeMessageBtn" type="button" aria-label="بستن">×</button>
+  </div>
+  <div class="support-number">
+   اگر می‌خواهید پیام بدهید، به این شماره پیام بدهید:
+   <strong>09122162177</strong>
+  </div>
+  <div class="support-number">
+   اگر پاسخ نگرفتید، به این شماره پیام بدهید:
+   <strong>09122940829</strong>
+  </div>
+ </div>
+</div>
+
+<footer>س.ح.ن · پنل کاربر</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+
+$('menuBtn').addEventListener('click',event=>{
+ event.stopPropagation();
+ $('menu').classList.toggle('open');
+});
+
+document.addEventListener('click',event=>{
+ if(!event.target.closest('.menu-wrap')){
+  $('menu').classList.remove('open');
+ }
+});
+
+$('exitPanelBtn').addEventListener('click',()=>{
+ $('menu').classList.remove('open');
+ window.location.href='./index.html';
+});
+
+$('supportBtn').addEventListener('click',()=>{
+ $('menu').classList.remove('open');
+ $('supportOverlay').classList.add('open');
+});
+
+$('messageSupportBtn').addEventListener('click',()=>{
+ $('menu').classList.remove('open');
+ $('messageOverlay').classList.add('open');
+});
+
+$('closeSupportBtn').addEventListener('click',()=>{
+ $('supportOverlay').classList.remove('open');
+});
+
+$('closeMessageBtn').addEventListener('click',()=>{
+ $('messageOverlay').classList.remove('open');
+});
+
+['supportOverlay','messageOverlay'].forEach(id=>{
+ $(id).addEventListener('click',event=>{
+  if(event.target===$(id)) $(id).classList.remove('open');
+ });
+});
+
+document.addEventListener('keydown',event=>{
+ if(event.key==='Escape'){
+  $('menu').classList.remove('open');
+  $('supportOverlay').classList.remove('open');
+  $('messageOverlay').classList.remove('open');
+ }
+});
+
+const themes=[
+ {name:'بنفش',h:263,s:85,l:65},
+ {name:'صورتی',h:330,s:80,l:62},
+ {name:'سبز',h:145,s:60,l:48},
+ {name:'قرمز',h:0,s:78,l:58},
+ {name:'نارنجی',h:25,s:90,l:55},
+ {name:'زرد',h:48,s:95,l:55},
+ {name:'فیروزه‌ای',h:175,s:75,l:45},
+ {name:'آبی',h:215,s:85,l:60},
+ {name:'نیلی',h:235,s:75,l:62},
+ {name:'قهوه‌ای',h:25,s:45,l:42},
+ {name:'آبی یخی',h:195,s:65,l:72},
+ {name:'خاکستری',h:220,s:8,l:65}
+];
+
+const shadeNames=['ملایم','مات','معمولی','تیره','پررنگ'];
+const adjust=[18,-5,0,-12,-20];
+let selected=0,shadeLevel=2;
+
+try{
+ const savedTheme=localStorage.getItem('userThemeIndex');
+ const savedShade=localStorage.getItem('userShadeLevel');
+ if(savedTheme!==null)selected=Number(savedTheme);
+ if(savedShade!==null)shadeLevel=Number(savedShade);
+}catch(error){}
+
+if(!Number.isInteger(selected)||selected<0||selected>=themes.length)selected=0;
+if(!Number.isInteger(shadeLevel)||shadeLevel<0||shadeLevel>=shadeNames.length)shadeLevel=2;
+
+function updateShades(){
+ document.querySelectorAll('.shade').forEach((button,index)=>{
+  const theme=themes[selected];
+  const lightness=Math.max(25,Math.min(82,theme.l+adjust[index]));
+  button.style.background=`hsl(${theme.h} ${theme.s}% ${lightness}%)`;
+  button.title=shadeNames[index];
+  button.style.outline=index===shadeLevel?'2px solid white':'none';
+ });
+}
+
+function applyTheme(){
+ const theme=themes[selected];
+ const lightness=Math.max(25,Math.min(82,theme.l+adjust[shadeLevel]));
+
+ document.documentElement.style.setProperty('--accent',
+  `hsl(${theme.h} ${theme.s}% ${lightness}%)`);
+ document.documentElement.style.setProperty('--soft',
+  `hsla(${theme.h},${theme.s}%,${lightness}%,.16)`);
+ document.documentElement.style.setProperty('--bg',
+  `hsl(${theme.h} 18% 9%)`);
+ document.documentElement.style.setProperty('--card',
+  `hsl(${theme.h} 17% 14%)`);
+ document.documentElement.style.setProperty('--border',
+  `hsl(${theme.h} 15% 25%)`);
+
+ try{
+  localStorage.setItem('userThemeIndex',String(selected));
+  localStorage.setItem('userShadeLevel',String(shadeLevel));
+ }catch(error){}
+
+ document.querySelectorAll('.swatch').forEach((button,index)=>{
+  button.classList.toggle('selected',index===selected);
+ });
+ updateShades();
+}
+
+themes.forEach((theme,index)=>{
+ const button=document.createElement('button');
+ button.type='button';
+ button.className='swatch';
+ button.title=theme.name;
+ button.style.background=`hsl(${theme.h} ${theme.s}% ${theme.l}%)`;
+ button.addEventListener('click',()=>{
+  selected=index;
+  applyTheme();
+ });
+ $('palette').append(button);
+});
+
+shadeNames.forEach((name,index)=>{
+ const button=document.createElement('button');
+ button.type='button';
+ button.className='shade';
+ button.title=name;
+ button.addEventListener('click',()=>{
+  shadeLevel=index;
+  applyTheme();
+ });
+ $('shades').append(button);
+});
+
+$('colorBtn').addEventListener('click',()=>{
+ const palette=$('palette');
+ palette.classList.toggle('open');
+ $('shades').style.display=palette.classList.contains('open')?'flex':'none';
+});
+
+applyTheme();
+</script>
 </body>
 </html>
