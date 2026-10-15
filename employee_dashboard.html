@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -157,7 +158,10 @@ function openPage(name){
 
 $('menuBtn').onclick=()=>$('menu').classList.toggle('open');
 $('exitPageBtn').onclick=()=>openPage('home');
-$('exitPanelBtn').onclick=()=>openPage('home');
+$('exitPanelBtn').onclick=()=>{
+ $('menu').classList.remove('open');
+ window.location.href='./index.html';
+};
 
 document.addEventListener('click',e=>{
  if(!e.target.closest('.menu-wrap')) $('menu').classList.remove('open');
