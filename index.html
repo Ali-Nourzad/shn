@@ -20,7 +20,7 @@ html{scroll-behavior:smooth}
 body{
  min-height:100vh;color:var(--text);
  background:radial-gradient(ellipse at 85% 0%,var(--soft),transparent 42%),var(--bg);
- font-family:Tahoma,Arial,sans-serif;
+ font-family:Tahoma,Arial,sans-serif;transition:.25s;
 }
 button,input{font:inherit}
 button{cursor:pointer;border:0}
@@ -39,7 +39,7 @@ button{cursor:pointer;border:0}
  border-radius:13px;background:var(--card);color:white;font-size:25px;
 }
 .dropdown{
- display:none;position:absolute;left:0;top:52px;width:230px;
+ display:none;position:absolute;left:0;top:52px;width:240px;
  background:var(--card);border:1px solid var(--border);
  border-radius:15px;padding:8px;z-index:10;box-shadow:0 15px 40px #0007;
 }
@@ -49,6 +49,14 @@ button{cursor:pointer;border:0}
  border-radius:9px;background:transparent;color:var(--text);font-size:13px;
 }
 .dropdown button:hover{background:var(--soft)}
+.palette{
+ display:none;grid-template-columns:repeat(4,1fr);gap:9px;padding:12px 7px;
+}
+.palette.open{display:grid}
+.swatch{height:30px;border:2px solid #ffffff35;border-radius:8px}
+.swatch.selected{outline:2px solid white;outline-offset:2px}
+.shades{display:none;flex-wrap:wrap;gap:5px;padding:0 7px 10px}
+.shade{flex:1;min-width:30px;height:25px;border:1px solid #ffffff40;border-radius:6px}
 main{
  min-height:calc(100vh - 125px);max-width:1000px;margin:auto;
  padding:55px 22px;display:flex;align-items:center;justify-content:center;
@@ -133,14 +141,13 @@ h1{font-size:clamp(35px,6vw,60px);margin-bottom:15px}
 .error{color:#ff7b8b}.success{color:#5ee0a0}
 .support-description{color:var(--muted);font-size:13px;line-height:2;margin-bottom:18px}
 .support-number{
- display:flex;align-items:center;justify-content:space-between;gap:12px;
- padding:14px;margin-bottom:12px;border-radius:12px;
- background:var(--bg);border:1px solid var(--border);
+ padding:15px;margin-bottom:12px;border-radius:12px;
+ background:var(--soft);border:1px solid var(--border);
+ color:var(--text);font-size:13px;line-height:2.2;
 }
-.support-number strong{direction:ltr;unicode-bidi:plaintext}
-.support-number a{
- text-decoration:none;background:var(--accent);color:white;
- border-radius:8px;padding:9px 13px;font-size:12px;
+.support-number strong{
+ display:block;direction:ltr;unicode-bidi:plaintext;
+ color:var(--accent);font-size:16px;margin-top:5px;
 }
 footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
 @media(max-width:700px){.cards{grid-template-columns:1fr}}
@@ -158,8 +165,11 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
  <div class="menu-wrap">
   <button class="menu-btn" id="menuBtn" aria-label="منو">•••</button>
   <div class="dropdown" id="dropdownMenu">
+   <button type="button" id="colorBtn">🎨 انتخاب رنگ</button>
+   <div class="palette" id="palette"></div>
+   <div class="shades" id="shades"></div>
    <button type="button" onclick="openSupport()">☎ تماس با پشتیبانی</button>
-   <button type="button" onclick="openSupport()">✉ پیام به پشتیبانی</button>
+   <button type="button" onclick="openMessageSupport()">✉ پیام به پشتیبانی</button>
   </div>
  </div>
 </header>
@@ -259,12 +269,34 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
 <div class="overlay" id="supportOverlay">
  <div class="modal">
   <div class="modal-header">
-   <h2>پشتیبانی</h2>
-   <button class="close-btn" type="button" onclick="closeSupport()">×</button>
+   <h2>تماس با پشتیبانی</h2>
+   <button class="close-btn" type="button" onclick="closeSupport()" aria-label="بستن">×</button>
   </div>
-  <p class="support-description">برای تماس با پشتیبانی می‌توانید از شماره‌های زیر استفاده کنید.</p>
-  <div class="support-number"><strong>09122162177</strong><a href="tel:09122162177">تماس</a></div>
-  <div class="support-number"><strong>09122940829</strong><a href="tel:09122940829">تماس</a></div>
+  <div class="support-number">
+   اگر می‌خواهید با پشتیبانی تماس بگیرید، با این شماره تماس بگیرید:
+   <strong>09122162177</strong>
+  </div>
+  <div class="support-number">
+   اگر پاسخ نگرفتید، با این شماره تماس بگیرید:
+   <strong>09122940829</strong>
+  </div>
+ </div>
+</div>
+
+<div class="overlay" id="messageOverlay">
+ <div class="modal">
+  <div class="modal-header">
+   <h2>پیام به پشتیبانی</h2>
+   <button class="close-btn" type="button" onclick="closeMessageSupport()" aria-label="بستن">×</button>
+  </div>
+  <div class="support-number">
+   اگر می‌خواهید پیام بدهید، به این شماره پیام بدهید:
+   <strong>09122162177</strong>
+  </div>
+  <div class="support-number">
+   اگر پاسخ نگرفتید، به این شماره پیام بدهید:
+   <strong>09122940829</strong>
+  </div>
  </div>
 </div>
 
@@ -281,11 +313,13 @@ const dropdownMenu=$('dropdownMenu');
 const userOverlay=$('userOverlay');
 const employeeOverlay=$('employeeOverlay');
 const supportOverlay=$('supportOverlay');
+const messageOverlay=$('messageOverlay');
 
 menuBtn.addEventListener('click',event=>{
  event.stopPropagation();
  dropdownMenu.classList.toggle('open');
 });
+
 document.addEventListener('click',event=>{
  if(!dropdownMenu.contains(event.target)&&!menuBtn.contains(event.target)){
   dropdownMenu.classList.remove('open');
@@ -392,10 +426,6 @@ $('employeeForm').addEventListener('submit',async event=>{
  button.disabled=true;
  showMessage('employeeMessage','در حال بررسی کد...','');
 
- /*
-  کدهای ثبت‌شده در داشبورد کارمند و کد آزمایشی «تستی»
-  فقط وقتی کار می‌کنند که هر دو صفحه از یک مبدأ اجرا شوند.
- */
  let localCodes=[];
  try{
   const saved=JSON.parse(localStorage.getItem('employeeCodes')||'[]');
@@ -410,9 +440,6 @@ $('employeeForm').addEventListener('submit',async event=>{
   return;
  }
 
- /*
-  اگر کد در فهرست محلی نباشد، بررسی Supabase نیز انجام می‌شود.
- */
  try{
   const {error:signInError}=await supabaseClient.auth.signInAnonymously();
   if(signInError){
@@ -439,7 +466,17 @@ function openSupport(){
  dropdownMenu.classList.remove('open');
  supportOverlay.classList.add('open');
 }
-function closeSupport(){supportOverlay.classList.remove('open')}
+function closeSupport(){
+ supportOverlay.classList.remove('open');
+}
+
+function openMessageSupport(){
+ dropdownMenu.classList.remove('open');
+ messageOverlay.classList.add('open');
+}
+function closeMessageSupport(){
+ messageOverlay.classList.remove('open');
+}
 
 function togglePassword(id){
  const input=$(id);
@@ -458,12 +495,119 @@ function clearMessages(){
  });
 }
 
-[userOverlay,employeeOverlay,supportOverlay].forEach(overlay=>{
+[userOverlay,employeeOverlay,supportOverlay,messageOverlay].forEach(overlay=>{
  overlay.addEventListener('click',event=>{
   if(event.target!==overlay)return;
   overlay.classList.remove('open');
  });
 });
+
+document.addEventListener('keydown',event=>{
+ if(event.key==='Escape'){
+  dropdownMenu.classList.remove('open');
+  [userOverlay,employeeOverlay,supportOverlay,messageOverlay].forEach(overlay=>{
+   overlay.classList.remove('open');
+  });
+ }
+});
+
+const themes=[
+ {name:'بنفش',h:263,s:85,l:65},
+ {name:'صورتی',h:330,s:80,l:62},
+ {name:'سبز',h:145,s:60,l:48},
+ {name:'قرمز',h:0,s:78,l:58},
+ {name:'نارنجی',h:25,s:90,l:55},
+ {name:'زرد',h:48,s:95,l:55},
+ {name:'فیروزه‌ای',h:175,s:75,l:45},
+ {name:'آبی',h:215,s:85,l:60},
+ {name:'نیلی',h:235,s:75,l:62},
+ {name:'قهوه‌ای',h:25,s:45,l:42},
+ {name:'آبی یخی',h:195,s:65,l:72},
+ {name:'خاکستری',h:220,s:8,l:65}
+];
+
+const shadeNames=['ملایم','مات','معمولی','تیره','پررنگ'];
+const adjust=[18,-5,0,-12,-20];
+let selected=0,shadeLevel=2;
+
+try{
+ const savedTheme=localStorage.getItem('userThemeIndex');
+ const savedShade=localStorage.getItem('userShadeLevel');
+ if(savedTheme!==null)selected=Number(savedTheme);
+ if(savedShade!==null)shadeLevel=Number(savedShade);
+}catch(error){}
+
+if(!Number.isInteger(selected)||selected<0||selected>=themes.length)selected=0;
+if(!Number.isInteger(shadeLevel)||shadeLevel<0||shadeLevel>=shadeNames.length)shadeLevel=2;
+
+function updateShades(){
+ document.querySelectorAll('.shade').forEach((button,index)=>{
+  const theme=themes[selected];
+  const lightness=Math.max(25,Math.min(82,theme.l+adjust[index]));
+  button.style.background=`hsl(${theme.h} ${theme.s}% ${lightness}%)`;
+  button.title=shadeNames[index];
+  button.style.outline=index===shadeLevel?'2px solid white':'none';
+ });
+}
+
+function applyTheme(){
+ const theme=themes[selected];
+ const lightness=Math.max(25,Math.min(82,theme.l+adjust[shadeLevel]));
+
+ document.documentElement.style.setProperty('--accent',
+  `hsl(${theme.h} ${theme.s}% ${lightness}%)`);
+ document.documentElement.style.setProperty('--soft',
+  `hsla(${theme.h},${theme.s}%,${lightness}%,.16)`);
+ document.documentElement.style.setProperty('--bg',
+  `hsl(${theme.h} 18% 9%)`);
+ document.documentElement.style.setProperty('--card',
+  `hsl(${theme.h} 17% 14%)`);
+ document.documentElement.style.setProperty('--border',
+  `hsl(${theme.h} 15% 25%)`);
+
+ try{
+  localStorage.setItem('userThemeIndex',String(selected));
+  localStorage.setItem('userShadeLevel',String(shadeLevel));
+ }catch(error){}
+
+ document.querySelectorAll('.swatch').forEach((button,index)=>{
+  button.classList.toggle('selected',index===selected);
+ });
+ updateShades();
+}
+
+themes.forEach((theme,index)=>{
+ const button=document.createElement('button');
+ button.type='button';
+ button.className='swatch';
+ button.title=theme.name;
+ button.style.background=`hsl(${theme.h} ${theme.s}% ${theme.l}%)`;
+ button.addEventListener('click',()=>{
+  selected=index;
+  applyTheme();
+ });
+ $('palette').append(button);
+});
+
+shadeNames.forEach((name,index)=>{
+ const button=document.createElement('button');
+ button.type='button';
+ button.className='shade';
+ button.title=name;
+ button.addEventListener('click',()=>{
+  shadeLevel=index;
+  applyTheme();
+ });
+ $('shades').append(button);
+});
+
+$('colorBtn').addEventListener('click',()=>{
+ const palette=$('palette');
+ palette.classList.toggle('open');
+ $('shades').style.display=palette.classList.contains('open')?'flex':'none';
+});
+
+applyTheme();
 </script>
 </body>
 </html>
