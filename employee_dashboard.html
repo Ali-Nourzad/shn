@@ -5,16 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>پنل | س.ح.ن</title>
 <style>
-:root{
- --accent:#8b5cf6;--soft:rgba(139,92,246,.15);
- --bg:#10121b;--card:#1b1e2b;--text:#f5f5fa;
- --muted:#a7a9bd;--border:#343749;
- --green:#35d399;--blue:#2997ff;--red:#ff4d5e;
-}
+:root{--accent:#8b5cf6;--soft:rgba(139,92,246,.15);--bg:#10121b;--card:#1b1e2b;--text:#f5f5fa;--muted:#a7a9bd;--border:#343749;--green:#35d399;--blue:#2997ff;--red:#ff4d5e}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;color:var(--text);background:radial-gradient(ellipse at 85% 0%,var(--soft),transparent 42%),var(--bg);font-family:Tahoma,Arial,sans-serif;transition:.25s}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
 header{height:76px;padding:0 6%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .brand{display:flex;align-items:center;gap:12px;font-weight:bold}
 .logo{background:var(--accent);color:white;border-radius:13px;padding:12px;font-size:15px;box-shadow:0 5px 22px var(--soft)}
@@ -31,16 +25,14 @@ header{height:76px;padding:0 6%;display:flex;align-items:center;justify-content:
 .shades{display:none;flex-wrap:wrap;gap:5px;padding:0 7px 10px}
 .shade{flex:1;min-width:30px;height:25px;border:1px solid #ffffff40;border-radius:6px}
 main{max-width:1000px;margin:auto;padding:42px 22px}
-.page{display:none}
-.page.active{display:block}
+.page{display:none}.page.active{display:block}
 h1{font-size:27px;margin:0 0 12px}
 .subtitle{font-size:14px;line-height:2;color:var(--muted);margin-bottom:30px}
 .home-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
 .home-card{display:block;width:100%;min-height:185px;text-align:right;padding:25px;border-radius:20px;background:linear-gradient(145deg,var(--soft),transparent 80%),var(--card);border:1px solid var(--border);color:var(--text);transition:.2s}
 .home-card:hover{transform:translateY(-4px);border-color:var(--accent)}
 .card-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:var(--soft);color:var(--accent);font-size:24px;margin-bottom:20px}
-.home-card h2{font-size:18px;margin:0 0 10px}
-.home-card p{font-size:13px;line-height:1.9;color:var(--muted);margin:0}
+.home-card h2{font-size:18px;margin:0 0 10px}.home-card p{font-size:13px;line-height:1.9;color:var(--muted);margin:0}
 .back{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:9px 14px;margin-bottom:25px}
 .back:hover{border-color:var(--accent);color:var(--text)}
 .tabs{display:flex;gap:9px;margin:25px 0 20px}
@@ -79,15 +71,13 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent)}
 .modal-bg{display:none;position:fixed;inset:0;background:#0009;z-index:100;align-items:center;justify-content:center;padding:18px}
 .modal-bg.open{display:flex}
 .modal{width:min(560px,100%);max-height:90vh;overflow:auto;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:23px;box-shadow:0 20px 70px #0008}
-.modal h2{margin:0 0 10px;font-size:19px}
-.modal p{color:var(--muted);font-size:13px;line-height:1.9}
+.modal h2{margin:0 0 10px;font-size:19px}.modal p{color:var(--muted);font-size:13px;line-height:1.9}
 .modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .type-option{display:block;width:100%;padding:15px;margin:8px 0;text-align:right;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text)}
 .type-option:hover{border-color:var(--accent)}
 .profile-head{display:flex;gap:18px;align-items:center;padding:22px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(145deg,var(--soft),transparent 80%),var(--card);margin-bottom:18px}
 .profile-avatar{width:82px;height:82px;object-fit:cover;border-radius:50%;border:2px solid var(--accent);background:var(--soft);display:grid;place-items:center;font-size:32px;flex-shrink:0}
-.profile-head h2{margin:0 0 7px}
-.profile-head p{margin:0;color:var(--muted);font-size:13px;white-space:pre-wrap}
+.profile-head h2{margin:0 0 7px}.profile-head p{margin:0;color:var(--muted);font-size:13px;white-space:pre-wrap}
 .detail-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
 .detail{padding:14px;border:1px solid var(--border);background:var(--bg);border-radius:12px;min-width:0}
 .detail span{display:block;font-size:12px;color:var(--muted);margin-bottom:8px}
@@ -98,125 +88,80 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent)}
 .drop-options.open{display:block}
 .drop-options button{display:block;width:100%;padding:11px;text-align:right;border:0;border-radius:8px;background:transparent;color:var(--text)}
 .drop-options button:hover{background:var(--soft)}
+.page-tools{display:flex;justify-content:flex-end;margin-bottom:20px}
+.page-add{width:48px;height:48px;border:1px solid var(--green);border-radius:50%;background:rgba(53,211,153,.12);color:var(--green);font-size:27px}
+.inner-tile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px;margin-top:20px}
 footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
-@media(max-width:500px){
- header{padding:0 18px}main{padding:30px 17px}h1{font-size:24px}
- .tile-tools{opacity:1}
- .code-item{align-items:flex-start;flex-direction:column}
- .code-actions{align-self:flex-end}
-}
+@media(max-width:500px){header{padding:0 18px}main{padding:30px 17px}h1{font-size:24px}.tile-tools{opacity:1}.code-item{align-items:flex-start;flex-direction:column}.code-actions{align-self:flex-end}}
 </style>
 </head>
 <body>
 <header>
- <div class="brand">
-  <div class="logo">س.ح.ن</div>
-  <div>پنل<small>مدیریت</small></div>
- </div>
+ <div class="brand"><div class="logo">س.ح.ن</div><div>پنل<small>مدیریت</small></div></div>
  <div class="menu-wrap">
   <button class="menu-button" id="menuBtn" aria-label="منو">•••</button>
   <div class="dropdown" id="menu">
    <button id="colorBtn">🎨 انتخاب رنگ</button>
-   <div class="palette" id="palette"></div>
-   <div class="shades" id="shades"></div>
+   <div class="palette" id="palette"></div><div class="shades" id="shades"></div>
    <button id="exitPageBtn">خروج از صفحه</button>
    <button id="exitPeopleBtn">خروج از افراد</button>
    <button id="exitPanelBtn">خروج از پنل</button>
   </div>
  </div>
 </header>
-
 <main>
  <section id="home" class="page active">
-  <h1>خوش آمدید</h1>
-  <div class="subtitle">به پنل مدیریت س.ح.ن خوش آمدید.</div>
+  <h1>خوش آمدید</h1><div class="subtitle">به پنل مدیریت س.ح.ن خوش آمدید.</div>
   <div class="home-grid">
-   <button class="home-card" onclick="openPage('people')">
-    <div class="card-icon">♙</div><h2>افراد</h2><p>مدیریت بخش کاربران و کارکنان</p>
-   </button>
-   <button class="home-card" onclick="openPage('userChanges')">
-    <div class="card-icon">✎</div><h2>تغییرات صفحه‌ی کاربر</h2><p>ساخت و مدیریت صفحه‌ی کاربر</p>
-   </button>
-   <button class="home-card" onclick="openPage('entryChanges')">
-    <div class="card-icon">⌂</div><h2>تغییرات صفحه‌ی ورودی</h2><p>تنظیمات صفحه‌ی ورودی</p>
-   </button>
+   <button class="home-card" onclick="openPage('people')"><div class="card-icon">♙</div><h2>افراد</h2><p>مدیریت بخش کاربران و کارکنان</p></button>
+   <button class="home-card" onclick="openPage('userChanges')"><div class="card-icon">✎</div><h2>تغییرات صفحه‌ی کاربر</h2><p>ساخت و مدیریت صفحه‌ی کاربر</p></button>
+   <button class="home-card" onclick="openPage('entryChanges')"><div class="card-icon">⌂</div><h2>تغییرات صفحه‌ی ورودی</h2><p>تنظیمات صفحه‌ی ورودی</p></button>
   </div>
  </section>
-
  <section id="people" class="page">
   <button class="back" onclick="openPage('home')">← بازگشت به پنل</button>
   <h1>افراد</h1><div class="subtitle">بخش موردنظر را انتخاب کنید.</div>
-  <div class="tabs">
-   <button class="tab active" data-tab="user">کاربر</button>
-   <button class="tab" data-tab="employee">کارمند</button>
-  </div>
-  <div id="userSection" class="panel">
-   <div class="empty">صفحه‌ی کاربر</div>
-   <button class="primary" onclick="openPage('userChanges')">مدیریت صفحه‌ی کاربر</button>
-  </div>
+  <div class="tabs"><button class="tab active" data-tab="user">کاربر</button><button class="tab" data-tab="employee">کارمند</button></div>
+  <div id="userSection" class="panel"><div class="empty">صفحه‌ی کاربر</div><button class="primary" onclick="openPage('userChanges')">مدیریت صفحه‌ی کاربر</button></div>
   <div id="employeeSection" class="panel" style="display:none">
    <button class="primary" id="showAddForm">＋ افزودن / ساختن کد</button>
    <form id="employeeForm" style="display:none">
-    <h2 style="margin-top:24px">ساخت کد کارمند</h2>
-    <label for="code1">کد کارمند</label><input id="code1" autocomplete="off" required>
-    <button class="primary" type="submit">ثبت کد</button>
-    <button class="secondary" type="button" id="cancelAdd">انصراف</button>
-    <div id="formMessage" class="message" aria-live="polite"></div>
+    <h2 style="margin-top:24px">ساخت کد کارمند</h2><label for="code1">کد کارمند</label><input id="code1" autocomplete="off" required>
+    <button class="primary" type="submit">ثبت کد</button><button class="secondary" type="button" id="cancelAdd">انصراف</button><div id="formMessage" class="message" aria-live="polite"></div>
    </form>
-   <h2 style="margin-top:28px">کدهای کارمندان</h2>
-   <div id="codeList" class="code-list"></div>
+   <h2 style="margin-top:28px">کدهای کارمندان</h2><div id="codeList" class="code-list"></div>
   </div>
  </section>
-
  <section id="userChanges" class="page">
   <button class="back" onclick="openPage('home')">← بازگشت به پنل</button>
-  <div class="builder-head">
-   <div><h1>تغییرات صفحه‌ی کاربر</h1><div class="subtitle" style="margin:0">ساخت و مدیریت کارت‌ها و دکمه‌های صفحه‌ی کاربر</div></div>
-   <button class="add-round" id="addRoot" aria-label="افزودن">＋</button>
-  </div>
+  <div class="builder-head"><div><h1>تغییرات صفحه‌ی کاربر</h1><div class="subtitle" style="margin:0">ساخت و مدیریت کارت‌ها و دکمه‌های صفحه‌ی کاربر</div></div><button class="add-round" id="addRoot" aria-label="افزودن">＋</button></div>
   <div id="userTiles" class="tile-grid"></div>
  </section>
-
  <section id="entryChanges" class="page">
-  <button class="back" onclick="openPage('home')">← بازگشت به پنل</button>
-  <h1>تغییرات صفحه‌ی ورودی</h1>
-  <div class="subtitle">صفحه‌ی ورودی بدون تغییر باقی می‌ماند.</div>
+  <button class="back" onclick="openPage('home')">← بازگشت به پنل</button><h1>تغییرات صفحه‌ی ورودی</h1><div class="subtitle">صفحه‌ی ورودی بدون تغییر باقی می‌ماند.</div>
   <div class="panel"><div class="empty">تنظیمات این صفحه فعلاً تغییری نمی‌کند.</div></div>
  </section>
-
  <section id="contentPage" class="page">
+  <div class="page-tools"><button class="page-add" id="addInside" aria-label="افزودن مورد جدید">＋</button></div>
   <button class="back" id="contentBack">← بازگشت</button><div id="contentArea"></div>
  </section>
  <section id="profilePage" class="page">
+  <div class="page-tools"><button class="page-add" id="addProfileInside" aria-label="افزودن مورد جدید">＋</button></div>
   <button class="back" id="profileBack">← بازگشت</button><div id="profileArea"></div>
  </section>
 </main>
 <footer>س.ح.ن · پنل مدیریت</footer>
-
 <div class="modal-bg" id="modalBg"><div class="modal" id="modal"></div></div>
-
 <script>
 const $=id=>document.getElementById(id);
 const DB_KEY='shn_user_page_tiles';
-let currentPage='home',navStack=[],activeTile=null,tiles=[];
-
-try{
- const saved=JSON.parse(localStorage.getItem(DB_KEY)||'[]');
- tiles=Array.isArray(saved)?saved:[];
-}catch(e){tiles=[]}
-
+let currentPage='home',navStack=[],activeTile=null,tiles=[],activeParentId=null;
+try{const s=JSON.parse(localStorage.getItem(DB_KEY)||'[]');tiles=Array.isArray(s)?s:[]}catch(e){tiles=[]}
 function saveTiles(){localStorage.setItem(DB_KEY,JSON.stringify(tiles))}
-function pageLabel(name){
- if(name==='home')return 'پنل';
- if(name==='people')return 'افراد';
- if(name==='userChanges')return 'تغییرات صفحه‌ی کاربر';
- if(name==='entryChanges')return 'تغییرات صفحه‌ی ورودی';
- if(name==='contentPage')return activeTile?.title||'صفحه';
- if(name==='profilePage')return activeTile?.title||'پروفایل';
- return 'صفحه';
-}
+function childrenOf(id){return tiles.filter(t=>t.parentId===id)}
+function pageLabel(name){if(name==='home')return'پنل';if(name==='people')return'افراد';if(name==='userChanges')return'تغییرات صفحه‌ی کاربر';if(name==='entryChanges')return'تغییرات صفحه‌ی ورودی';return activeTile?.title||'صفحه'}
 function openPage(name,push=true){
- if(push&&currentPage!==name)navStack.push({page:currentPage,tile:activeTile});
+ if(push&&currentPage!==name)navStack.push({page:currentPage,tile:activeTile,parentId:activeParentId});
  currentPage=name;
  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===name));
  $('menu').classList.remove('open');
@@ -225,91 +170,48 @@ function openPage(name,push=true){
  window.scrollTo(0,0);
  if(name==='userChanges')renderTiles();
 }
-function goBack(){
- const previous=navStack.pop();
- if(previous){activeTile=previous.tile;openPage(previous.page,false)}
- else openPage('userChanges',false);
-}
-$('contentBack').onclick=goBack;
-$('profileBack').onclick=goBack;
+function goBack(){const p=navStack.pop();if(p){activeTile=p.tile;activeParentId=p.parentId;openPage(p.page,false)}else{activeTile=null;activeParentId=null;openPage('userChanges',false)}}
+$('contentBack').onclick=goBack;$('profileBack').onclick=goBack;
 $('menuBtn').onclick=()=>$('menu').classList.toggle('open');
 $('exitPageBtn').onclick=()=>{if(currentPage!=='home')goBack()};
-$('exitPeopleBtn').onclick=()=>{navStack=[];activeTile=null;openPage('people',false)};
-$('exitPanelBtn').onclick=()=>{navStack=[];activeTile=null;openPage('home',false)};
+$('exitPeopleBtn').onclick=()=>{navStack=[];activeTile=null;activeParentId=null;openPage('people',false)};
+$('exitPanelBtn').onclick=()=>{navStack=[];activeTile=null;activeParentId=null;openPage('home',false)};
 document.addEventListener('click',e=>{if(!e.target.closest('.menu-wrap'))$('menu').classList.remove('open')});
-
-document.querySelectorAll('.tab').forEach(tab=>{
- tab.onclick=()=>{
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===tab));
-  $('userSection').style.display=tab.dataset.tab==='user'?'block':'none';
-  $('employeeSection').style.display=tab.dataset.tab==='employee'?'block':'none';
- };
+document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===tab));
+ $('userSection').style.display=tab.dataset.tab==='user'?'block':'none';
+ $('employeeSection').style.display=tab.dataset.tab==='employee'?'block':'none';
 });
-
-$('showAddForm').onclick=()=>{
- $('employeeForm').style.display='block';$('showAddForm').style.display='none';
- $('formMessage').textContent='';$('code1').focus();
-};
-$('cancelAdd').onclick=()=>{
- $('employeeForm').reset();$('employeeForm').style.display='none';
- $('showAddForm').style.display='inline-block';$('formMessage').textContent='';
-};
-
-let codes=[];
-try{
- const saved=JSON.parse(localStorage.getItem('employeeCodes')||'[]');
- codes=Array.isArray(saved)?saved.filter(x=>typeof x==='string'):[];
-}catch(e){codes=[]}
+$('showAddForm').onclick=()=>{$('employeeForm').style.display='block';$('showAddForm').style.display='none';$('formMessage').textContent='';$('code1').focus()};
+$('cancelAdd').onclick=()=>{$('employeeForm').reset();$('employeeForm').style.display='none';$('showAddForm').style.display='inline-block';$('formMessage').textContent=''};
+let codes=[];try{const s=JSON.parse(localStorage.getItem('employeeCodes')||'[]');codes=Array.isArray(s)?s.filter(x=>typeof x==='string'):[]}catch(e){codes=[]}
 function saveCodes(){localStorage.setItem('employeeCodes',JSON.stringify(codes))}
 function showMessage(text,type){$('formMessage').className='message '+type;$('formMessage').textContent=text}
 function renderCodes(){
  const list=$('codeList');list.replaceChildren();
- if(!codes.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='هنوز کدی ثبت نشده است.';list.append(empty);return}
+ if(!codes.length){const e=document.createElement('div');e.className='empty';e.textContent='هنوز کدی ثبت نشده است.';list.append(e);return}
  codes.forEach((code,index)=>{
-  const row=document.createElement('div');row.className='code-item';
-  const text=document.createElement('span');text.className='code-text';text.textContent=code;
-  const actions=document.createElement('div');actions.className='code-actions';
-  const copy=document.createElement('button');copy.className='copy';copy.textContent='کپی کد';
-  copy.onclick=async()=>{
-   try{
-    if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(code);
-    else{
-     const temp=document.createElement('textarea');temp.value=code;temp.style.position='fixed';temp.style.opacity='0';document.body.append(temp);temp.select();
-     const ok=document.execCommand('copy');temp.remove();if(!ok)throw Error();
-    }
-    copy.textContent='کپی شد ✓';setTimeout(()=>{if(copy.isConnected)copy.textContent='کپی کد'},1200);
-   }catch(e){showMessage('کپی خودکار نشد؛ کد را دستی کپی کنید.','error')}
-  };
-  const del=document.createElement('button');del.className='delete';del.textContent='حذف';
-  del.onclick=()=>{
-   if(!confirm('آیا از حذف این کد مطمئن هستید؟'))return;
-   const old=[...codes];codes.splice(index,1);
-   try{saveCodes();renderCodes();showMessage('کد حذف شد.','success')}
-   catch(e){codes=old;renderCodes();showMessage('ذخیره‌ی حذف انجام نشد.','error')}
-  };
+  const row=document.createElement('div');row.className='code-item';const text=document.createElement('span');text.className='code-text';text.textContent=code;
+  const actions=document.createElement('div');actions.className='code-actions';const copy=document.createElement('button');copy.className='copy';copy.textContent='کپی کد';
+  copy.onclick=async()=>{try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(code);else{const temp=document.createElement('textarea');temp.value=code;temp.style.position='fixed';temp.style.opacity='0';document.body.append(temp);temp.select();const ok=document.execCommand('copy');temp.remove();if(!ok)throw Error()}copy.textContent='کپی شد ✓';setTimeout(()=>{if(copy.isConnected)copy.textContent='کپی کد'},1200)}catch(e){showMessage('کپی خودکار نشد؛ کد را دستی کپی کنید.','error')}};
+  const del=document.createElement('button');del.className='delete';del.textContent='حذف';del.onclick=()=>{if(!confirm('آیا از حذف این کد مطمئن هستید؟'))return;const old=[...codes];codes.splice(index,1);try{saveCodes();renderCodes();showMessage('کد حذف شد.','success')}catch(e){codes=old;renderCodes();showMessage('ذخیره‌ی حذف انجام نشد.','error')}};
   actions.append(copy,del);row.append(text,actions);list.append(row);
  });
 }
 $('employeeForm').onsubmit=e=>{
- e.preventDefault();const code=$('code1').value.trim();
- if(!code)return showMessage('لطفاً کد کارمند را وارد کنید.','error');
+ e.preventDefault();const code=$('code1').value.trim();if(!code)return showMessage('لطفاً کد کارمند را وارد کنید.','error');
  if(codes.some(x=>x.toLowerCase()===code.toLowerCase()))return showMessage('این کد قبلاً ثبت شده است.','error');
- const old=[...codes];codes.push(code);
- try{saveCodes();renderCodes();$('employeeForm').reset();$('employeeForm').style.display='none';$('showAddForm').style.display='inline-block';showMessage('کد با موفقیت اضافه شد.','success')}
- catch(e){codes=old;showMessage('ذخیره‌ی کد انجام نشد.','error')}
-};
-renderCodes();
-
-function esc(value){
- return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
+ const old=[...codes];codes.push(code);try{saveCodes();renderCodes();$('employeeForm').reset();$('employeeForm').style.display='none';$('showAddForm').style.display='inline-block';showMessage('کد با موفقیت اضافه شد.','success')}catch(e){codes=old;showMessage('ذخیره‌ی کد انجام نشد.','error')}
+};renderCodes();
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function makeId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
 function showModal(html){$('modal').innerHTML=html;$('modalBg').classList.add('open')}
 function closeModal(){$('modalBg').classList.remove('open')}
 $('modalBg').onclick=e=>{if(e.target===$('modalBg'))closeModal()};
-
-$('addRoot').onclick=showTypePicker;
-function showTypePicker(){
+$('addRoot').onclick=()=>showTypePicker(null);
+$('addInside').onclick=()=>showTypePicker(activeTile?.id||null);
+$('addProfileInside').onclick=()=>showTypePicker(activeTile?.id||null);
+function showTypePicker(parentId){
  showModal(`<h2>چه چیزی می‌خواهید بسازید؟</h2><p>نوع مورد را انتخاب کنید.</p>
  <button class="type-option" data-type="card">▦ کارت</button>
  <button class="type-option" data-type="button">↗ دکمه</button>
@@ -317,111 +219,105 @@ function showTypePicker(){
  <button class="type-option" data-type="page">▤ صفحه‌ی جدید</button>
  <div class="modal-actions"><button class="secondary" id="cancelType">انصراف</button></div>`);
  $('cancelType').onclick=closeModal;
- $('modal').querySelectorAll('[data-type]').forEach(b=>b.onclick=()=>{const type=b.dataset.type;closeModal();showEditor(type,null)});
+ $('modal').querySelectorAll('[data-type]').forEach(b=>b.onclick=()=>{closeModal();showEditor(b.dataset.type,null,parentId)});
 }
-function showEditor(type,item){
+function showEditor(type,item,parentId){
  const isProfile=type==='card'||type==='page';
- const extraImage=isProfile?`<label>نشانی تصویر (اختیاری)</label><input id="fieldImage" value="${esc(item?.image||'')}" placeholder="https://...">`:'';
- const extraOptions=type==='dropdown'?`<label>گزینه‌های منوی کشویی (هر گزینه در یک خط)</label><textarea id="fieldOptions" placeholder="گزینه‌ی اول&#10;گزینه‌ی دوم">${esc((item?.options||[]).join('\n'))}</textarea>`:'';
- const actionOptions=`<label>با کلیک روی مورد چه اتفاقی بیفتد؟</label>
- <select id="fieldAction">
-  <option value="profile">باز کردن صفحه‌ی همین مورد</option>
-  <option value="page">باز کردن صفحه‌ی جدید</option>
-  <option value="home">رفتن به صفحه‌ی ورودی</option>
-  <option value="people">رفتن به افراد</option>
-  <option value="employee">رفتن به بخش کارمند</option>
-  <option value="none">بدون انتقال</option>
- </select>
+ const imageField=isProfile?`<label>نشانی تصویر (اختیاری)</label><input id="fieldImage" value="${esc(item?.image||'')}" placeholder="https://...">`:'';
+ const optionsField=type==='dropdown'?`<label>گزینه‌های منوی کشویی (هر گزینه در یک خط)</label><textarea id="fieldOptions" placeholder="گزینه‌ی اول&#10;گزینه‌ی دوم">${esc((item?.options||[]).join('\n'))}</textarea>`:'';
+ const actionField=`<label>با کلیک روی مورد چه اتفاقی بیفتد؟</label><select id="fieldAction">
+ <option value="profile">باز کردن صفحه‌ی همین مورد</option><option value="page">باز کردن صفحه‌ی جدید</option><option value="home">رفتن به صفحه‌ی ورودی</option><option value="people">رفتن به افراد</option><option value="employee">رفتن به بخش کارمند</option><option value="none">بدون انتقال</option></select>
  <div id="targetWrap"><label>عنوان صفحه‌ی جدید</label><input id="fieldTarget" value="${esc(item?.target||'')}" placeholder="نام صفحه"></div>`;
+ const profileFields=isProfile?`<h2 style="margin-top:22px">اطلاعات صفحه</h2>
+ <label>نام</label><input id="firstName" value="${esc(item?.info?.firstName||'')}" placeholder="نام">
+ <label>نام خانوادگی</label><input id="lastName" value="${esc(item?.info?.lastName||'')}" placeholder="نام خانوادگی">
+ <label>ایمیل</label><input id="email" type="email" value="${esc(item?.info?.email||'')}" placeholder="ایمیل">
+ <label>شماره تلفن</label><input id="phone" value="${esc(item?.info?.phone||'')}" placeholder="شماره تلفن">
+ <label>رمز عبور</label><input id="password" type="text" value="${esc(item?.info?.password||'')}" placeholder="رمز عبور">
+ <label>اطلاعات بیشتر</label><textarea id="extraInfo" placeholder="اطلاعات بیشتر">${esc(item?.info?.extra||'')}</textarea>`:'';
  showModal(`<h2>${item?'ویرایش':'ساخت'} ${type==='card'?'کارت':type==='button'?'دکمه':type==='dropdown'?'دکمه‌ی کشویی':'صفحه‌ی جدید'}</h2>
- <label>عنوان اصلی</label><input id="fieldTitle" value="${esc(item?.title||'')}" placeholder="عنوان را وارد کنید" required>
+ <label>عنوان اصلی</label><input id="fieldTitle" value="${esc(item?.title||'')}" placeholder="عنوان را وارد کنید">
  <label>توضیحات زیر عنوان</label><textarea id="fieldDescription" placeholder="توضیحات">${esc(item?.description||'')}</textarea>
- ${extraImage}${extraOptions}${actionOptions}
- ${item&&isProfile?'<label style="display:flex;align-items:center;gap:9px"><input id="changeImage" type="checkbox" style="width:auto"> درخواست تغییر تصویر</label>':''}
+ ${imageField}${optionsField}${actionField}${profileFields}
+ ${item&&isProfile?'<label style="display:flex;align-items:center;gap:9px"><input id="changeImage" type="checkbox" style="width:auto"> می‌خواهم تصویر را تغییر بدهم</label>':''}
  <div class="modal-actions"><button class="primary" id="confirmTile">تأیید</button><button class="secondary" id="cancelEditor">انصراف</button></div>`);
  const action=$('fieldAction');action.value=item?.action||'profile';
- const targetWrap=$('targetWrap');targetWrap.style.display=action.value==='page'?'block':'none';
- action.onchange=()=>targetWrap.style.display=action.value==='page'?'block':'none';
+ $('targetWrap').style.display=action.value==='page'?'block':'none';
+ action.onchange=()=>{$('targetWrap').style.display=action.value==='page'?'block':'none'};
  $('cancelEditor').onclick=closeModal;
  $('confirmTile').onclick=()=>{
-  const title=$('fieldTitle').value.trim();
-  if(!title){alert('عنوان اصلی را وارد کنید.');return}
-  const image=$('fieldImage')?.value.trim()||item?.image||'';
+  const title=$('fieldTitle').value.trim();if(!title){alert('عنوان اصلی را وارد کنید.');return}
+  let image=$('fieldImage')?.value.trim()||item?.image||'';
   if(item&&isProfile&&$('changeImage')?.checked&&!image){alert('نشانی تصویر جدید را وارد کنید.');return}
-  const options=type==='dropdown'?$('fieldOptions').value.split('\n').map(x=>x.trim()).filter(Boolean):[];
-  const newItem={
-   id:item?.id||makeId(),type,title,
-   description:$('fieldDescription').value.trim(),
-   image,options,action:action.value,
-   target:$('fieldTarget').value.trim()
-  };
+  const options=type==='dropdown'?$ ('fieldOptions').value.split('\n').map(x=>x.trim()).filter(Boolean):[];
+  const info=isProfile?{firstName:$('firstName').value.trim(),lastName:$('lastName').value.trim(),email:$('email').value.trim(),phone:$('phone').value.trim(),password:$('password').value,extra:$('extraInfo').value.trim()}:item?.info||{};
+  const newItem={id:item?.id||makeId(),type,title,description:$('fieldDescription').value.trim(),image,options,action:action.value,target:$('fieldTarget').value.trim(),info,parentId:item?item.parentId:parentId};
   const old=[...tiles];
   if(item)tiles=tiles.map(x=>x.id===item.id?newItem:x);else tiles.push(newItem);
-  try{saveTiles();renderTiles();closeModal()}
-  catch(e){tiles=old;alert('ذخیره‌سازی انجام نشد. فضای ذخیره‌سازی مرورگر را بررسی کنید.')}
+  try{saveTiles();renderCurrent();closeModal()}catch(e){tiles=old;alert('ذخیره‌سازی انجام نشد. فضای ذخیره‌سازی مرورگر را بررسی کنید.')}
  };
 }
 function deleteTile(id){
- if(!confirm('این مورد برای همیشه حذف شود؟'))return;
- const old=[...tiles];tiles=tiles.filter(t=>t.id!==id);
- try{saveTiles();renderTiles()}catch(e){tiles=old;alert('حذف ذخیره نشد.')}
+ if(!confirm('این مورد و تمام موارد داخل آن برای همیشه حذف شوند؟'))return;
+ const old=[...tiles];const ids=new Set([id]);
+ let changed=true;while(changed){changed=false;tiles.forEach(t=>{if(ids.has(t.parentId)&&!ids.has(t.id)){ids.add(t.id);changed=true}})}
+ tiles=tiles.filter(t=>!ids.has(t.id));
+ try{saveTiles();renderCurrent()}catch(e){tiles=old;alert('حذف ذخیره نشد.')}
 }
-function renderTiles(){
- const root=$('userTiles');root.replaceChildren();
- if(!tiles.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='هنوز موردی ساخته نشده است. برای شروع، دکمه‌ی سبز + را بزنید.';root.append(empty);return}
- tiles.forEach(tile=>{
+function renderCurrent(){if(currentPage==='userChanges')renderTiles();else if(currentPage==='contentPage'&&activeTile)renderContent(activeTile);else if(currentPage==='profilePage'&&activeTile)renderProfile(activeTile)}
+function renderTileList(root,list){
+ root.replaceChildren();
+ if(!list.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='هنوز موردی ساخته نشده است. برای شروع، دکمه‌ی سبز + را بزنید.';root.append(empty);return}
+ list.forEach(tile=>{
   const el=document.createElement('div');el.className='tile';el.tabIndex=0;
   const tools=document.createElement('div');tools.className='tile-tools';
-  const del=document.createElement('button');del.className='tile-tool tile-delete';del.title='حذف';del.textContent='×';
-  del.onclick=e=>{e.stopPropagation();deleteTile(tile.id)};
-  const edit=document.createElement('button');edit.className='tile-tool tile-edit';edit.title='ویرایش';edit.textContent='✎';
-  edit.onclick=e=>{e.stopPropagation();showEditor(tile.type,tile)};
+  const del=document.createElement('button');del.className='tile-tool tile-delete';del.title='حذف';del.textContent='×';del.onclick=e=>{e.stopPropagation();deleteTile(tile.id)};
+  const edit=document.createElement('button');edit.className='tile-tool tile-edit';edit.title='ویرایش';edit.textContent='✎';edit.onclick=e=>{e.stopPropagation();showEditor(tile.type,tile,tile.parentId)};
   tools.append(del,edit);el.append(tools);
-  if(tile.image){const img=document.createElement('img');img.className='tile-image';img.src=tile.image;img.alt='';el.append(img)}
+  if(tile.image){const img=document.createElement('img');img.className='tile-image';img.src=tile.image;img.alt='';img.onerror=()=>{img.style.display='none'};el.append(img)}
   else{const icon=document.createElement('div');icon.className='tile-image';icon.textContent=tile.type==='button'?'↗':tile.type==='dropdown'?'⌄':'▦';el.append(icon)}
   const title=document.createElement('div');title.className='tile-title';title.textContent=tile.title;el.append(title);
   if(tile.description){const desc=document.createElement('div');desc.className='tile-description';desc.textContent=tile.description;el.append(desc)}
-  el.onclick=()=>activateTile(tile);
-  el.onkeydown=e=>{if(e.key==='Enter'){activateTile(tile)}};
-  root.append(el);
+  el.onclick=()=>activateTile(tile);el.onkeydown=e=>{if(e.key==='Enter')activateTile(tile)};root.append(el);
  });
 }
+function renderTiles(){renderTileList($('userTiles'),tiles.filter(t=>!t.parentId))}
 function activateTile(tile){
- activeTile=tile;
+ activeTile=tile;activeParentId=tile.parentId||null;
  if(tile.action==='home'){openPage('home');return}
  if(tile.action==='people'){openPage('people');return}
- if(tile.action==='employee'){
-  openPage('people');
-  document.querySelector('[data-tab="employee"]').click();
-  return;
- }
+ if(tile.action==='employee'){openPage('people');document.querySelector('[data-tab="employee"]').click();return}
  if(tile.action==='none')return;
- if(tile.type==='dropdown'){renderContent(tile,true);openPage('contentPage');return}
- if(tile.action==='page'){renderContent(tile,false);openPage('contentPage');return}
+ if(tile.type==='dropdown'||tile.type==='button'||tile.action==='page'){renderContent(tile);openPage('contentPage');return}
  renderProfile(tile);openPage('profilePage');
 }
-function renderContent(tile,isDropdown){
+function renderContent(tile){
  const root=$('contentArea');root.replaceChildren();
  const title=document.createElement('h1');title.textContent=tile.title;
- const sub=document.createElement('div');sub.className='subtitle';sub.textContent=tile.description;
+ const sub=document.createElement('div');sub.className='subtitle';sub.textContent=tile.description||'';
  root.append(title,sub);
- const panel=document.createElement('div');panel.className='panel';
- if(isDropdown){
-  const h=document.createElement('h2');h.textContent='گزینه‌ها';panel.append(h);
-  if(!(tile.options||[]).length){const empty=document.createElement('div');empty.className='empty';empty.textContent='هنوز گزینه‌ای ساخته نشده است.';panel.append(empty)}
+ const ownChildren=childrenOf(tile.id);
+ if(tile.type==='dropdown'){
+  const box=document.createElement('div');box.className='panel';
+  const toggle=document.createElement('button');toggle.className='content-button';toggle.textContent='⌄ نمایش گزینه‌ها';
+  const options=document.createElement('div');options.className='drop-options';
   (tile.options||[]).forEach(option=>{
-   const button=document.createElement('button');button.className='content-button';button.textContent=option;
-   button.onclick=()=>{
-    const linked=tiles.find(t=>t.title===option);
+   const b=document.createElement('button');b.textContent=option;
+   b.onclick=()=>{
+    const linked=ownChildren.find(t=>t.title===option)||tiles.find(t=>t.title===option);
     if(linked)activateTile(linked);
-    else{activeTile={title:option,description:'',type:'page'};renderProfile(activeTile);openPage('profilePage')}
+    else{activeTile={id:makeId(),title:option,description:'',type:'page',info:{}};renderProfile(activeTile);openPage('profilePage')}
    };
-   panel.append(button);
+   options.append(b);
   });
- }else{
-  const empty=document.createElement('div');empty.className='empty';empty.textContent='صفحه‌ی '+tile.title;panel.append(empty);
+  toggle.onclick=()=>options.classList.toggle('open');box.append(toggle,options);root.append(box);
  }
- root.append(panel);
+ if(ownChildren.length){
+  const h=document.createElement('h2');h.textContent='موارد این صفحه';h.style.marginTop='25px';root.append(h);
+  const grid=document.createElement('div');grid.className='inner-tile-grid';renderTileList(grid,ownChildren);root.append(grid);
+ }else if(tile.type!=='dropdown'){
+  const empty=document.createElement('div');empty.className='panel empty';empty.textContent='برای افزودن کارت، دکمه یا صفحه‌ی جدید، دکمه‌ی سبز + بالای صفحه را بزنید.';root.append(empty);
+ }
 }
 function renderProfile(tile){
  const root=$('profileArea');root.replaceChildren();
@@ -431,24 +327,19 @@ function renderProfile(tile){
  else{avatar=document.createElement('div');avatar.className='profile-avatar';avatar.textContent='▦'}
  const text=document.createElement('div');const title=document.createElement('h2');title.textContent=tile.title||'اطلاعات';const desc=document.createElement('p');desc.textContent=tile.description||'';
  text.append(title,desc);head.append(avatar,text);root.append(head);
- const panel=document.createElement('div');panel.className='panel';const h=document.createElement('h2');h.textContent='اطلاعات';panel.append(h);
- const details=document.createElement('div');details.className='detail-list';
  const info=tile.info||{};
- [['نام',info.firstName],['نام خانوادگی',info.lastName],['ایمیل',info.email],['شماره تلفن',info.phone],['رمز عبور',info.password],['توضیحات',info.extra]].forEach(([label,value])=>{
-  const item=document.createElement('div');item.className='detail';
-  const l=document.createElement('span');l.textContent=label;
-  const v=document.createElement('strong');v.textContent=value||'—';
-  item.append(l,v);details.append(item);
+ const details=document.createElement('div');details.className='detail-list';
+ [['نام',info.firstName],['نام خانوادگی',info.lastName],['ایمیل',info.email],['شماره تلفن',info.phone],['رمز عبور',info.password],['توضیحات بیشتر',info.extra]].forEach(([label,value])=>{
+  const item=document.createElement('div');item.className='detail';const l=document.createElement('span');l.textContent=label;const v=document.createElement('strong');v.textContent=value||'—';item.append(l,v);details.append(item);
  });
- panel.append(details);root.append(panel);
+ const panel=document.createElement('div');panel.className='panel';const h=document.createElement('h2');h.textContent='اطلاعات';panel.append(h,details);root.append(panel);
+ const ownChildren=childrenOf(tile.id);
+ if(ownChildren.length){const heading=document.createElement('h2');heading.textContent='موارد این صفحه';heading.style.marginTop='25px';root.append(heading);const grid=document.createElement('div');grid.className='inner-tile-grid';renderTileList(grid,ownChildren);root.append(grid)}
 }
 const themes=[
- {name:'بنفش',h:263,s:85,l:65},{name:'صورتی',h:330,s:80,l:62},
- {name:'سبز',h:145,s:60,l:48},{name:'قرمز',h:0,s:78,l:58},
- {name:'نارنجی',h:25,s:90,l:55},{name:'زرد',h:48,s:95,l:55},
- {name:'فیروزه‌ای',h:175,s:75,l:45},{name:'آبی',h:215,s:85,l:60},
- {name:'نیلی',h:235,s:75,l:62},{name:'قهوه‌ای',h:25,s:45,l:42},
- {name:'آبی یخی',h:195,s:65,l:72},{name:'خاکستری',h:220,s:8,l:65}
+ {name:'بنفش',h:263,s:85,l:65},{name:'صورتی',h:330,s:80,l:62},{name:'سبز',h:145,s:60,l:48},{name:'قرمز',h:0,s:78,l:58},
+ {name:'نارنجی',h:25,s:90,l:55},{name:'زرد',h:48,s:95,l:55},{name:'فیروزه‌ای',h:175,s:75,l:45},{name:'آبی',h:215,s:85,l:60},
+ {name:'نیلی',h:235,s:75,l:62},{name:'قهوه‌ای',h:25,s:45,l:42},{name:'آبی یخی',h:195,s:65,l:72},{name:'خاکستری',h:220,s:8,l:65}
 ];
 const shadeNames=['ملایم','مات','معمولی','تیره','پررنگ'],adjust=[18,-5,0,-12,-20];
 let selected=0,shadeLevel=2;
@@ -456,11 +347,7 @@ try{selected=Number(localStorage.getItem('themeIndex')||0);shadeLevel=Number(loc
 if(!Number.isInteger(selected)||selected<0||selected>=themes.length)selected=0;
 if(!Number.isInteger(shadeLevel)||shadeLevel<0||shadeLevel>=shadeNames.length)shadeLevel=2;
 function updateShades(){
- document.querySelectorAll('.shade').forEach((b,i)=>{
-  const t=themes[selected],l=Math.max(25,Math.min(82,t.l+adjust[i]));
-  b.style.background=`hsl(${t.h} ${t.s}% ${l}%)`;b.title=shadeNames[i];
-  b.style.outline=i===shadeLevel?'2px solid white':'none';
- });
+ document.querySelectorAll('.shade').forEach((b,i)=>{const t=themes[selected],l=Math.max(25,Math.min(82,t.l+adjust[i]));b.style.background=`hsl(${t.h} ${t.s}% ${l}%)`;b.title=shadeNames[i];b.style.outline=i===shadeLevel?'2px solid white':'none'});
 }
 function applyTheme(){
  const t=themes[selected],l=Math.max(25,Math.min(82,t.l+adjust[shadeLevel]));
@@ -470,25 +357,12 @@ function applyTheme(){
  document.documentElement.style.setProperty('--card',`hsl(${t.h} 17% 14%)`);
  document.documentElement.style.setProperty('--border',`hsl(${t.h} 15% 25%)`);
  try{localStorage.setItem('themeIndex',selected);localStorage.setItem('shadeLevel',shadeLevel)}catch(e){}
- document.querySelectorAll('.swatch').forEach((b,i)=>b.classList.toggle('selected',i===selected));
  updateShades();
 }
-themes.forEach((t,i)=>{
- const b=document.createElement('button');b.className='swatch';b.title=t.name;
- b.style.background=`hsl(${t.h} ${t.s}% ${t.l}%)`;b.onclick=()=>{selected=i;applyTheme()};
- $('palette').append(b);
-});
-shadeNames.forEach((name,i)=>{
- const b=document.createElement('button');b.className='shade';b.title=name;
- b.onclick=()=>{shadeLevel=i;applyTheme()};$('shades').append(b);
-});
-$('colorBtn').onclick=()=>{
- $('palette').classList.toggle('open');
- $('shades').style.display=$('palette').classList.contains('open')?'flex':'none';
-};
-applyTheme();
-renderTiles();
-openPage('home',false);
+themes.forEach((t,i)=>{const b=document.createElement('button');b.className='swatch';b.title=t.name;b.style.background=`hsl(${t.h} ${t.s}% ${t.l}%)`;b.onclick=()=>{selected=i;applyTheme()};$('palette').append(b)});
+shadeNames.forEach((name,i)=>{const b=document.createElement('button');b.className='shade';b.title=name;b.onclick=()=>{shadeLevel=i;applyTheme()};$('shades').append(b)});
+$('colorBtn').onclick=()=>{$('palette').classList.toggle('open');$('shades').style.display=$('palette').classList.contains('open')?'flex':'none'};
+applyTheme();renderTiles();openPage('home',false);
 </script>
 </body>
 </html>
