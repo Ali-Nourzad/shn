@@ -130,16 +130,16 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
   <h1>خوش آمدید</h1>
   <div class="subtitle">به پنل مدیریت س.ح.ن خوش آمدید.</div>
   <div class="home-grid">
-   <button class="home-card" onclick="openPage('people')"><div class="card-icon">♙</div><h2>افراد</h2><p>مدیریت بخش کاربران و کارکنان</p></button>
-   <button class="home-card" onclick="openPage('userChanges')"><div class="card-icon">✎</div><h2>تغییرات صفحه‌ی کاربر</h2><p>ساخت و مدیریت کارت‌ها، نوشته‌ها و صوت‌ها</p></button>
+   <button class="home-card" onclick="openPage('people',true,null)"><div class="card-icon">♙</div><h2>افراد</h2><p>مدیریت بخش کاربران و کارکنان</p></button>
+   <button class="home-card" onclick="openPage('userChanges',true,null)"><div class="card-icon">✎</div><h2>تغییرات صفحه‌ی کاربر</h2><p>ساخت و مدیریت کارت‌ها، نوشته‌ها و صوت‌ها</p></button>
   </div>
  </section>
 
  <section id="people" class="page">
-  <button class="back" onclick="openPage('home')">← بازگشت به پنل</button>
+  <button class="back" onclick="openPage('home',true,null)">← بازگشت به پنل</button>
   <h1>افراد</h1><div class="subtitle">بخش موردنظر را انتخاب کنید.</div>
   <div class="tabs"><button class="tab active" data-tab="user">کاربر</button><button class="tab" data-tab="employee">کارمند</button></div>
-  <div id="userSection" class="panel"><div class="empty">صفحه‌ی کاربر</div><button class="primary" onclick="openPage('userChanges')">مدیریت صفحه‌ی کاربر</button></div>
+  <div id="userSection" class="panel"><div class="empty">صفحه‌ی کاربر</div><button class="primary" onclick="openPage('userChanges',true,null)">مدیریت صفحه‌ی کاربر</button></div>
   <div id="employeeSection" class="panel" style="display:none">
    <button class="primary" id="showAddForm">＋ افزودن / ساختن کد</button>
    <form id="employeeForm" style="display:none">
@@ -151,7 +151,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
  </section>
 
  <section id="userChanges" class="page">
-  <button class="back" onclick="openPage('home')">← بازگشت به پنل</button>
+  <button class="back" onclick="openPage('home',true,null)">← بازگشت به پنل</button>
   <div class="builder-head"><div><h1>تغییرات صفحه‌ی کاربر</h1><div class="subtitle" style="margin:0">ساخت و مدیریت کارت‌ها، نوشته‌ها و صوت‌ها</div></div><button class="add-round" id="addRoot" aria-label="افزودن">＋</button></div>
   <div id="userTiles" class="tile-grid"></div>
  </section>
@@ -185,9 +185,11 @@ function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 function childrenOf(id){return tiles.filter(t=>t.parentId===id)}
 function mediaOf(id){return recordings.filter(r=>r.parentId===id)}
 function pageLabel(name){if(name==='home')return'پنل';if(name==='people')return'افراد';if(name==='userChanges')return'تغییرات صفحه‌ی کاربر';return activeTile?.title||'صفحه'}
-function openPage(name,push=true){
+
+function openPage(name,push=true,nextTile=activeTile){
  if(push&&currentPage!==name)navStack.push({page:currentPage,tile:activeTile});
  currentPage=name;
+ activeTile=nextTile;
  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===name));
  $('menu').classList.remove('open');
  $('exitPageBtn').textContent='خروج از '+pageLabel(name);
@@ -196,45 +198,76 @@ function openPage(name,push=true){
  window.scrollTo(0,0);
  renderCurrent();
 }
+
 function goBack(){
  const previous=navStack.pop();
- if(previous){activeTile=previous.tile;openPage(previous.page,false)}
- else{activeTile=null;openPage('userChanges',false)}
+ if(previous){openPage(previous.page,false,previous.tile)}
+ else{navStack=[];openPage('userChanges',false,null)}
 }
+
+/* خروج از یک بخش، به صفحه‌ی والد آن برمی‌گردد. */
 function exitToTile(id){
- const index=navStack.findIndex(n=>n.tile?.id===id);
- if(index>=0){
-  const destination=navStack[index];
-  navStack=navStack.slice(0,index);
-  activeTile=destination.tile;
-  openPage(destination.page,false);
- }else{
-  activeTile=tiles.find(t=>t.id===id)||null;
-  if(activeTile){renderContent(activeTile);openPage('contentPage',false)}
+ const tile=tiles.find(t=>t.id===id);
+ if(!tile)return;
+ navStack=navStack.filter(n=>n.tile?.id!==id);
+ if(tile.parentId){
+  const parent=tiles.find(t=>t.id===tile.parentId);
+  if(parent){
+   const parentPage=['writing','audio','button','dropdown'].includes(parent.type)||parent.action==='page'?'contentPage':'profilePage';
+   openPage(parentPage,false,parent);
+   return;
+  }
  }
+ openPage('userChanges',false,null);
 }
+
+/* فقط گزینه‌های خروج مربوط به مسیر فعلی نمایش داده می‌شوند. */
 function renderDynamicExits(){
- const root=$('dynamicExitOptions');root.replaceChildren();
+ const root=$('dynamicExitOptions');
+ root.replaceChildren();
+ if(!activeTile||currentPage==='home'||currentPage==='people'||currentPage==='userChanges')return;
+
+ let branch=[];
+ let current=activeTile;
  const seen=new Set();
- navStack.forEach(n=>{
-  if(!n.tile?.id||seen.has(n.tile.id))return;
-  seen.add(n.tile.id);
+ while(current&&!seen.has(current.id)){
+  seen.add(current.id);
+  branch.unshift(current);
+  current=current.parentId?tiles.find(t=>t.id===current.parentId):null;
+ }
+
+ branch.forEach(tile=>{
   const b=document.createElement('button');
-  b.textContent='خروج از '+n.tile.title;
-  b.onclick=()=>exitToTile(n.tile.id);
+  b.textContent='خروج از '+tile.title;
+  b.onclick=()=>exitToTile(tile.id);
   root.append(b);
  });
- if(activeTile?.id&&!seen.has(activeTile.id)&&currentPage!=='userChanges'){
-  const b=document.createElement('button');b.textContent='خروج از '+activeTile.title;
-  b.onclick=()=>exitToTile(activeTile.id);root.append(b);
- }
 }
+
 $('menuBtn').onclick=()=>$('menu').classList.toggle('open');
-$('exitPageBtn').onclick=()=>{if(currentPage!=='home')goBack()};
-$('exitPeopleBtn').onclick=()=>{navStack=[];activeTile=null;openPage('people',false)};
-$('exitPanelBtn').onclick=()=>{navStack=[];activeTile=null;openPage('home',false)};
-document.addEventListener('click',e=>{if(!e.target.closest('.menu-wrap'))$('menu').classList.remove('open')});
-$('contentBack').onclick=goBack;$('profileBack').onclick=goBack;
+
+$('exitPageBtn').onclick=()=>{
+ $('menu').classList.remove('open');
+ if(currentPage==='home')return;
+ goBack();
+};
+
+$('exitPeopleBtn').onclick=()=>{
+ navStack=[];
+ openPage('people',false,null);
+};
+
+$('exitPanelBtn').onclick=()=>{
+ navStack=[];
+ openPage('home',false,null);
+};
+
+document.addEventListener('click',e=>{
+ if(!e.target.closest('.menu-wrap'))$('menu').classList.remove('open');
+});
+
+$('contentBack').onclick=goBack;
+$('profileBack').onclick=goBack;
 
 document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{
  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===tab));
@@ -242,16 +275,35 @@ document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{
  $('employeeSection').style.display=tab.dataset.tab==='employee'?'block':'none';
 });
 
-$('showAddForm').onclick=()=>{$('employeeForm').style.display='block';$('showAddForm').style.display='none';$('formMessage').textContent='';$('code1').focus()};
-$('cancelAdd').onclick=()=>{$('employeeForm').reset();$('employeeForm').style.display='none';$('showAddForm').style.display='inline-block';$('formMessage').textContent=''};
+$('showAddForm').onclick=()=>{
+ $('employeeForm').style.display='block';
+ $('showAddForm').style.display='none';
+ $('formMessage').textContent='';
+ $('code1').focus();
+};
+
+$('cancelAdd').onclick=()=>{
+ $('employeeForm').reset();
+ $('employeeForm').style.display='none';
+ $('showAddForm').style.display='inline-block';
+ $('formMessage').textContent='';
+};
 
 let codes=[];
 try{const data=JSON.parse(localStorage.getItem('employeeCodes')||'[]');codes=Array.isArray(data)?data.filter(x=>typeof x==='string'):[]}catch(e){codes=[]}
 function saveCodes(){localStorage.setItem('employeeCodes',JSON.stringify(codes))}
 function showMessage(text,type){$('formMessage').className='message '+type;$('formMessage').textContent=text}
+
 function renderCodes(){
- const list=$('codeList');list.replaceChildren();
- if(!codes.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='هنوز کدی ثبت نشده است.';list.append(empty);return}
+ const list=$('codeList');
+ list.replaceChildren();
+ if(!codes.length){
+  const empty=document.createElement('div');
+  empty.className='empty';
+  empty.textContent='هنوز کدی ثبت نشده است.';
+  list.append(empty);
+  return;
+ }
  codes.forEach((code,index)=>{
   const row=document.createElement('div');row.className='code-item';
   const text=document.createElement('span');text.className='code-text';text.textContent=code;
@@ -260,22 +312,40 @@ function renderCodes(){
   copy.onclick=async()=>{
    try{
     if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(code);
-    else{const temp=document.createElement('textarea');temp.value=code;temp.style.position='fixed';temp.style.opacity='0';document.body.append(temp);temp.select();const ok=document.execCommand('copy');temp.remove();if(!ok)throw Error()}
-    copy.textContent='کپی شد ✓';setTimeout(()=>{if(copy.isConnected)copy.textContent='کپی کد'},1200)
+    else{
+     const temp=document.createElement('textarea');
+     temp.value=code;temp.style.position='fixed';temp.style.opacity='0';
+     document.body.append(temp);temp.select();
+     const ok=document.execCommand('copy');temp.remove();
+     if(!ok)throw Error();
+    }
+    copy.textContent='کپی شد ✓';
+    setTimeout(()=>{if(copy.isConnected)copy.textContent='کپی کد'},1200);
    }catch(e){showMessage('کپی خودکار نشد؛ کد را دستی کپی کنید.','error')}
   };
   const del=document.createElement('button');del.className='delete';del.textContent='حذف';
-  del.onclick=()=>{if(!confirm('آیا از حذف این کد مطمئن هستید؟'))return;const old=[...codes];codes.splice(index,1);try{saveCodes();renderCodes();showMessage('کد حذف شد.','success')}catch(e){codes=old;renderCodes();showMessage('ذخیره‌ی حذف انجام نشد.','error')}};
+  del.onclick=()=>{
+   if(!confirm('آیا از حذف این کد مطمئن هستید؟'))return;
+   const old=[...codes];codes.splice(index,1);
+   try{saveCodes();renderCodes();showMessage('کد حذف شد.','success')}
+   catch(e){codes=old;renderCodes();showMessage('ذخیره‌ی حذف انجام نشد.','error')}
+  };
   actions.append(copy,del);row.append(text,actions);list.append(row);
  });
 }
+
 $('employeeForm').onsubmit=e=>{
- e.preventDefault();const code=$('code1').value.trim();
+ e.preventDefault();
+ const code=$('code1').value.trim();
  if(!code)return showMessage('لطفاً کد کارمند را وارد کنید.','error');
  if(codes.some(x=>x.toLowerCase()===code.toLowerCase()))return showMessage('این کد قبلاً ثبت شده است.','error');
  const old=[...codes];codes.push(code);
- try{saveCodes();renderCodes();$('employeeForm').reset();$('employeeForm').style.display='none';$('showAddForm').style.display='inline-block';showMessage('کد با موفقیت اضافه شد.','success')}
- catch(e){codes=old;showMessage('ذخیره‌ی کد انجام نشد.','error')}
+ try{
+  saveCodes();renderCodes();$('employeeForm').reset();
+  $('employeeForm').style.display='none';
+  $('showAddForm').style.display='inline-block';
+  showMessage('کد با موفقیت اضافه شد.','success');
+ }catch(e){codes=old;showMessage('ذخیره‌ی کد انجام نشد.','error')}
 };
 renderCodes();
 
@@ -296,13 +366,19 @@ function showTypePicker(parentId){
  <button class="type-option" data-type="audio">🎙 ضبط صوت</button>
  <div class="modal-actions"><button class="secondary" id="cancelType">انصراف</button></div>`);
  $('cancelType').onclick=closeModal;
- $('modal').querySelectorAll('[data-type]').forEach(b=>b.onclick=()=>{closeModal();if(b.dataset.type==='audio'){showAudioRecorder(parentId);return}showEditor(b.dataset.type,null,parentId)});
+ $('modal').querySelectorAll('[data-type]').forEach(b=>b.onclick=()=>{
+  closeModal();
+  if(b.dataset.type==='audio'){showAudioRecorder(parentId);return}
+  showEditor(b.dataset.type,null,parentId);
+ });
 }
 
 function showEditor(type,item,parentId){
+ if(type==='audio'){showAudioRecorder(parentId);return}
  const isProfile=['card','page'].includes(type);
  const imageField=isProfile?`<label>نشانی تصویر (اختیاری)</label><input id="fieldImage" value="${esc(item?.image||'')}" placeholder="https://...">`:'';
  const optionsField=type==='dropdown'?`<label>گزینه‌های منوی کشویی (هر گزینه در یک خط)</label><textarea id="fieldOptions" placeholder="گزینه‌ی اول&#10;گزینه‌ی دوم">${esc((item?.options||[]).join('\n'))}</textarea>`:'';
+ const writingField=type==='writing'?`<label>متن نوشته</label><textarea id="writingText" style="min-height:180px" placeholder="نوشته‌ی خود را وارد کنید">${esc(item?.body||'')}</textarea>`:'';
  const actionField=`<label>با کلیک روی مورد چه اتفاقی بیفتد؟</label>
  <select id="fieldAction">
  <option value="profile">باز کردن صفحه‌ی همین مورد</option>
@@ -310,7 +386,8 @@ function showEditor(type,item,parentId){
  <option value="home">رفتن به صفحه‌ی اصلی پنل</option>
  <option value="people">رفتن به افراد</option>
  <option value="employee">رفتن به بخش کارمند</option>
- <option value="none">بدون انتقال</option></select>
+ <option value="none">بدون انتقال</option>
+ </select>
  <div id="targetWrap"><label>عنوان صفحه‌ی جدید</label><input id="fieldTarget" value="${esc(item?.target||'')}" placeholder="نام صفحه"></div>`;
  const profileFields=isProfile?`<h2 style="margin-top:22px">اطلاعات صفحه</h2>
  <label>نام</label><input id="firstName" value="${esc(item?.info?.firstName||'')}" placeholder="نام">
@@ -319,7 +396,6 @@ function showEditor(type,item,parentId){
  <label>شماره تلفن</label><input id="phone" value="${esc(item?.info?.phone||'')}" placeholder="شماره تلفن">
  <label>رمز عبور</label><input id="password" type="password" value="${esc(item?.info?.password||'')}" placeholder="رمز عبور">
  <label>اطلاعات بیشتر</label><textarea id="extraInfo" placeholder="اطلاعات بیشتر">${esc(item?.info?.extra||'')}</textarea>`:'';
- const writingField=type==='writing'?`<label>متن نوشته</label><textarea id="writingText" style="min-height:180px" placeholder="نوشته‌ی خود را وارد کنید">${esc(item?.body||'')}</textarea>`:'';
 
  showModal(`<h2>${item?'ویرایش':'ساخت'} ${type==='card'?'کارت':type==='button'?'دکمه':type==='dropdown'?'دکمه‌ی کشویی':type==='page'?'صفحه‌ی جدید':'نوشته'}</h2>
  <label>عنوان اصلی</label><input id="fieldTitle" value="${esc(item?.title||'')}" placeholder="عنوان را وارد کنید">
@@ -327,21 +403,40 @@ function showEditor(type,item,parentId){
  ${imageField}${optionsField}${writingField}${actionField}${profileFields}
  ${item&&isProfile?'<div class="editor-check"><input id="changeImage" type="checkbox"><label for="changeImage">می‌خواهم تصویر را تغییر بدهم</label></div>':''}
  <div class="modal-actions"><button class="primary" id="confirmTile">تأیید</button><button class="secondary" id="cancelEditor">انصراف</button></div>`);
- const action=$('fieldAction');action.value=item?.action||'profile';
+
+ const action=$('fieldAction');
+ action.value=item?.action||'profile';
  $('targetWrap').style.display=action.value==='page'?'block':'none';
  action.onchange=()=>{$('targetWrap').style.display=action.value==='page'?'block':'none'};
  $('cancelEditor').onclick=closeModal;
+
  $('confirmTile').onclick=()=>{
   const title=$('fieldTitle').value.trim();
   if(!title){alert('عنوان اصلی را وارد کنید.');return}
   const image=$('fieldImage')?.value.trim()||item?.image||'';
   if(item&&isProfile&&$('changeImage')?.checked&&!image){alert('نشانی تصویر جدید را وارد کنید.');return}
-  const options=type==='dropdown'?$('fieldOptions').value.split('\n').map(x=>x.trim()).filter(Boolean):[];
-  const info=isProfile?{firstName:$('firstName').value.trim(),lastName:$('lastName').value.trim(),email:$('email').value.trim(),phone:$('phone').value.trim(),password:$('password').value,extra:$('extraInfo').value.trim()}:item?.info||{};
-  const newItem={id:item?.id||makeId(),type,title,description:$('fieldDescription').value.trim(),image,options,action:action.value,target:$('fieldTarget').value.trim(),info,body:type==='writing'?$('writingText').value:(item?.body||''),parentId:item?item.parentId:parentId};
+  const options=type==='dropdown'?$ ('fieldOptions').value.split('\n').map(x=>x.trim()).filter(Boolean):[];
+  const info=isProfile?{
+   firstName:$('firstName').value.trim(),
+   lastName:$('lastName').value.trim(),
+   email:$('email').value.trim(),
+   phone:$('phone').value.trim(),
+   password:$('password').value,
+   extra:$('extraInfo').value.trim()
+  }:item?.info||{};
+  const newItem={
+   id:item?.id||makeId(),type,title,
+   description:$('fieldDescription').value.trim(),
+   image,options,action:action.value,
+   target:$('fieldTarget').value.trim(),info,
+   body:type==='writing'?$('writingText').value:(item?.body||''),
+   parentId:item?item.parentId:parentId
+  };
   const old=[...tiles];
-  if(item)tiles=tiles.map(x=>x.id===item.id?newItem:x);else tiles.push(newItem);
-  try{saveTiles();closeModal();renderCurrent()}catch(e){tiles=old;alert('ذخیره‌سازی انجام نشد.')}
+  if(item)tiles=tiles.map(x=>x.id===item.id?newItem:x);
+  else tiles.push(newItem);
+  try{saveTiles();closeModal();renderCurrent()}
+  catch(e){tiles=old;alert('ذخیره‌سازی انجام نشد.')}
  };
 }
 
@@ -358,9 +453,17 @@ function showAudioRecorder(parentId){
   <audio id="previewAudio" controls style="display:none"></audio>
  </div>
  <div class="modal-actions"><button class="primary" id="saveAudio" disabled>ذخیره‌ی صوت</button><button class="secondary" id="cancelAudio">انصراف</button></div>`);
+
  let localRecorder=null,localStream=null,chunks=[],audioBlob=null,previewUrl=null;
  const status=$('recordStatus'),start=$('startRecording'),stop=$('stopRecording'),save=$('saveAudio'),preview=$('previewAudio');
- $('cancelAudio').onclick=async()=>{if(localRecorder&&localRecorder.state==='recording')localRecorder.stop();if(localStream)localStream.getTracks().forEach(t=>t.stop());if(previewUrl)URL.revokeObjectURL(previewUrl);closeModal()};
+
+ $('cancelAudio').onclick=async()=>{
+  if(localRecorder&&localRecorder.state==='recording')localRecorder.stop();
+  if(localStream)localStream.getTracks().forEach(t=>t.stop());
+  if(previewUrl)URL.revokeObjectURL(previewUrl);
+  closeModal();
+ };
+
  start.onclick=async()=>{
   if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){status.textContent='ضبط صوت در این مرورگر پشتیبانی نمی‌شود.';return}
   try{
@@ -372,14 +475,21 @@ function showAudioRecorder(parentId){
    localRecorder.onstop=()=>{
     audioBlob=new Blob(chunks,{type:localRecorder.mimeType||'audio/webm'});
     if(previewUrl)URL.revokeObjectURL(previewUrl);
-    previewUrl=URL.createObjectURL(audioBlob);preview.src=previewUrl;preview.style.display='block';save.disabled=false;
+    previewUrl=URL.createObjectURL(audioBlob);
+    preview.src=previewUrl;preview.style.display='block';save.disabled=false;
     status.textContent='ضبط تمام شد. می‌توانید گوش کنید و ذخیره کنید.';
     localStream?.getTracks().forEach(t=>t.stop());localStream=null;
    };
-   localRecorder.start();start.disabled=true;stop.disabled=false;save.disabled=true;status.textContent='در حال ضبط صدا…';
+   localRecorder.start();
+   start.disabled=true;stop.disabled=false;save.disabled=true;
+   status.textContent='در حال ضبط صدا…';
   }catch(e){status.textContent='اجازه‌ی استفاده از میکروفون داده نشد یا ضبط شروع نشد.'}
  };
- stop.onclick=()=>{if(localRecorder&&localRecorder.state==='recording'){localRecorder.stop();stop.disabled=true;start.disabled=false}};
+
+ stop.onclick=()=>{
+  if(localRecorder&&localRecorder.state==='recording'){localRecorder.stop();stop.disabled=true;start.disabled=false}
+ };
+
  save.onclick=()=>{
   if(!audioBlob)return;
   const title=$('audioTitle').value.trim()||'ضبط صوت';
@@ -387,7 +497,9 @@ function showAudioRecorder(parentId){
   reader.onload=()=>{
    try{
     const rec={id:makeId(),parentId,title,description:$('audioDescription').value.trim(),data:reader.result,createdAt:new Date().toISOString()};
-    recordings.push(rec);saveRecordings();if(localStream)localStream.getTracks().forEach(t=>t.stop());if(previewUrl)URL.revokeObjectURL(previewUrl);
+    recordings.push(rec);saveRecordings();
+    if(localStream)localStream.getTracks().forEach(t=>t.stop());
+    if(previewUrl)URL.revokeObjectURL(previewUrl);
     closeModal();renderCurrent();
    }catch(e){alert('ذخیره‌ی صوت انجام نشد. ممکن است حجم ضبط زیاد باشد.')}
   };
@@ -398,183 +510,68 @@ function showAudioRecorder(parentId){
 function deleteTile(id){
  if(!confirm('این مورد و تمام موارد داخل آن برای همیشه حذف شوند؟'))return;
  const old=[...tiles],oldMedia=[...recordings],ids=new Set([id]);let changed=true;
- while(changed){changed=false;tiles.forEach(t=>{if(ids.has(t.parentId)&&!ids.has(t.id)){ids.add(t.id);changed=true}})}
- tiles=tiles.filter(t=>!ids.has(t.id));recordings=recordings.filter(r=>!ids.has(r.parentId));
- try{saveTiles();saveRecordings();renderCurrent()}catch(e){tiles=old;recordings=oldMedia;alert('حذف ذخیره نشد.')}
+ while(changed){
+  changed=false;
+  tiles.forEach(t=>{if(ids.has(t.parentId)&&!ids.has(t.id)){ids.add(t.id);changed=true}});
+ }
+ tiles=tiles.filter(t=>!ids.has(t.id));
+ recordings=recordings.filter(r=>!ids.has(r.parentId));
+ navStack=navStack.filter(n=>!ids.has(n.tile?.id));
+ if(activeTile&&ids.has(activeTile.id)){activeTile=null;currentPage='userChanges'}
+ try{saveTiles();saveRecordings();renderCurrent();renderDynamicExits()}
+ catch(e){tiles=old;recordings=oldMedia;alert('حذف ذخیره نشد.')}
 }
+
 function deleteRecording(id){
  if(!confirm('این ضبط صوت حذف شود؟'))return;
- const old=[...recordings];recordings=recordings.filter(r=>r.id!==id);
- try{saveRecordings();renderCurrent()}catch(e){recordings=old;alert('حذف ضبط انجام نشد.')}
+ const old=[...recordings];
+ recordings=recordings.filter(r=>r.id!==id);
+ try{saveRecordings();renderCurrent()}
+ catch(e){recordings=old;alert('حذف ضبط انجام نشد.')}
 }
+
 function renderTileList(root,list){
  root.replaceChildren();
- if(!list.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='هنوز موردی ساخته نشده است. برای شروع، دکمه‌ی سبز + را بزنید.';root.append(empty);return}
+ if(!list.length){
+  const empty=document.createElement('div');empty.className='empty';
+  empty.textContent='هنوز موردی ساخته نشده است. برای شروع، دکمه‌ی سبز + را بزنید.';
+  root.append(empty);return;
+ }
  list.forEach(tile=>{
   const el=document.createElement('div');el.className='tile';el.tabIndex=0;
   const tools=document.createElement('div');tools.className='tile-tools';
-  const del=document.createElement('button');del.className='tile-tool tile-delete';del.title='حذف';del.textContent='×';del.onclick=e=>{e.stopPropagation();deleteTile(tile.id)};
-  const edit=document.createElement('button');edit.className='tile-tool tile-edit';edit.title='ویرایش';edit.textContent='✎';edit.onclick=e=>{e.stopPropagation();showEditor(tile.type,tile,tile.parentId)};
+  const del=document.createElement('button');del.className='tile-tool tile-delete';del.title='حذف';del.textContent='×';
+  del.onclick=e=>{e.stopPropagation();deleteTile(tile.id)};
+  const edit=document.createElement('button');edit.className='tile-tool tile-edit';edit.title='ویرایش';edit.textContent='✎';
+  edit.onclick=e=>{e.stopPropagation();showEditor(tile.type,tile,tile.parentId)};
   tools.append(del,edit);el.append(tools);
-  if(tile.image){const img=document.createElement('img');img.className='tile-image';img.src=tile.image;img.alt='';img.onerror=()=>{img.style.display='none'};el.append(img)}
-  else{const icon=document.createElement('div');icon.className='tile-image';icon.textContent=tile.type==='audio'?'🎙':tile.type==='writing'?'✎':tile.type==='button'?'↗':tile.type==='dropdown'?'⌄':'▦';el.append(icon)}
+  if(tile.image){
+   const img=document.createElement('img');img.className='tile-image';img.src=tile.image;img.alt='';
+   img.onerror=()=>{img.style.display='none'};el.append(img);
+  }else{
+   const icon=document.createElement('div');icon.className='tile-image';
+   icon.textContent=tile.type==='audio'?'🎙':tile.type==='writing'?'✎':tile.type==='button'?'↗':tile.type==='dropdown'?'⌄':'▦';
+   el.append(icon);
+  }
   const title=document.createElement('div');title.className='tile-title';title.textContent=tile.title;el.append(title);
   if(tile.description){const desc=document.createElement('div');desc.className='tile-description';desc.textContent=tile.description;el.append(desc)}
-  el.onclick=()=>activateTile(tile);el.onkeydown=e=>{if(e.key==='Enter')activateTile(tile)};root.append(el);
+  el.onclick=()=>activateTile(tile);
+  el.onkeydown=e=>{if(e.key==='Enter')activateTile(tile)};
+  root.append(el);
  });
-}
-function renderTiles(){renderTileList($('userTiles'),tiles.filter(t=>!t.parentId))}
-function activateTile(tile){
- activeTile=tile;
- if(tile.action==='home'){openPage('home');return}
- if(tile.action==='people'){openPage('people');return}
- if(tile.action==='employee'){openPage('people');document.querySelector('[data-tab="employee"]').click();return}
- if(tile.action==='none')return;
- if(tile.type==='audio'||tile.type==='writing'||tile.type==='dropdown'||tile.type==='button'||tile.action==='page'){renderContent(tile);openPage('contentPage');return}
- renderProfile(tile);openPage('profilePage');
-}
-function renderCurrent(){
- if(currentPage==='userChanges')renderTiles();
- else if(currentPage==='contentPage'&&activeTile)renderContent(activeTile);
- else if(currentPage==='profilePage'&&activeTile)renderProfile(activeTile);
-}
-function addMediaSection(root,parentId){
- const records=mediaOf(parentId);
- const section=document.createElement('div');section.className='panel';section.style.marginTop='20px';
- const h=document.createElement('h2');h.textContent='نوشته‌ها و ضبط‌های صوتی';section.append(h);
- const addText=document.createElement('button');addText.className='content-button';addText.textContent='＋ افزودن نوشته';
- addText.onclick=()=>showWritingEditor(parentId,null);section.append(addText);
- const addAudio=document.createElement('button');addAudio.className='content-button';addAudio.textContent='🎙 ضبط صوت جدید';
- addAudio.onclick=()=>showAudioRecorder(parentId);section.append(addAudio);
- if(!records.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='هنوز نوشته یا صوتی در این بخش ذخیره نشده است.';section.append(empty)}
- records.forEach(rec=>{
-  const item=document.createElement('div');item.className='note-item';
-  const head=document.createElement('div');head.className='note-head';const title=document.createElement('strong');title.textContent=rec.title||'بدون عنوان';
-  const del=document.createElement('button');del.className='small-delete';del.textContent='حذف';del.onclick=()=>deleteRecording(rec.id);
-  head.append(title,del);item.append(head);
-  if(rec.description){const desc=document.createElement('div');desc.className='tile-description';desc.textContent=rec.description;item.append(desc)}
-  if(rec.data){const audio=document.createElement('audio');audio.controls=true;audio.src=rec.data;item.append(audio)}
-  else if(rec.body){const body=document.createElement('div');body.textContent=rec.body;item.append(body)}
-  const edit=document.createElement('button');edit.className='secondary';edit.textContent='ویرایش نوشته';edit.style.marginTop='10px';
-  if(rec.data)edit.style.display='none';else edit.onclick=()=>showWritingEditor(parentId,rec);
-  item.append(edit);section.append(item);
- });
- root.append(section);
-}
-function showWritingEditor(parentId,item){
- showModal(`<h2>${item?'ویرایش نوشته':'نوشته‌ی جدید'}</h2>
- <label>عنوان نوشته</label><input id="noteTitle" value="${esc(item?.title||'')}" placeholder="عنوان">
- <label>متن نوشته</label><textarea id="noteBody" style="min-height:200px" placeholder="متن خود را بنویسید">${esc(item?.body||'')}</textarea>
- <div class="modal-actions"><button class="primary" id="saveNote">ذخیره‌ی نوشته</button><button class="secondary" id="cancelNote">انصراف</button></div>`);
- $('cancelNote').onclick=closeModal;
- $('saveNote').onclick=()=>{
-  const title=$('noteTitle').value.trim();const body=$('noteBody').value;
-  if(!title&&!body.trim()){alert('عنوان یا متن نوشته را وارد کنید.');return}
-  const old=[...recordings];
-  if(item)recordings=recordings.map(r=>r.id===item.id?{...r,title:title||'نوشته',body}:r);
-  else recordings.push({id:makeId(),parentId,title:title||'نوشته',body,createdAt:new Date().toISOString()});
-  try{saveRecordings();closeModal();renderCurrent()}catch(e){recordings=old;alert('ذخیره‌ی نوشته انجام نشد.')}
- };
-}
-function showEditor(type,item,parentId){
- if(type==='audio'){showAudioRecorder(parentId);return}
- const isProfile=['card','page'].includes(type);
- const imageField=isProfile?`<label>نشانی تصویر (اختیاری)</label><input id="fieldImage" value="${esc(item?.image||'')}" placeholder="https://...">`:'';
- const optionsField=type==='dropdown'?`<label>گزینه‌های منوی کشویی (هر گزینه در یک خط)</label><textarea id="fieldOptions" placeholder="گزینه‌ی اول&#10;گزینه‌ی دوم">${esc((item?.options||[]).join('\n'))}</textarea>`:'';
- const writingField=type==='writing'?`<label>متن نوشته</label><textarea id="writingText" style="min-height:180px" placeholder="نوشته‌ی خود را وارد کنید">${esc(item?.body||'')}</textarea>`:'';
- const actionField=`<label>با کلیک روی مورد چه اتفاقی بیفتد؟</label>
- <select id="fieldAction"><option value="profile">باز کردن صفحه‌ی همین مورد</option><option value="page">باز کردن صفحه‌ی جدید</option><option value="home">رفتن به صفحه‌ی اصلی پنل</option><option value="people">رفتن به افراد</option><option value="employee">رفتن به بخش کارمند</option><option value="none">بدون انتقال</option></select>
- <div id="targetWrap"><label>عنوان صفحه‌ی جدید</label><input id="fieldTarget" value="${esc(item?.target||'')}" placeholder="نام صفحه"></div>`;
- const profileFields=isProfile?`<h2 style="margin-top:22px">اطلاعات صفحه</h2>
- <label>نام</label><input id="firstName" value="${esc(item?.info?.firstName||'')}" placeholder="نام">
- <label>نام خانوادگی</label><input id="lastName" value="${esc(item?.info?.lastName||'')}" placeholder="نام خانوادگی">
- <label>ایمیل</label><input id="email" type="email" value="${esc(item?.info?.email||'')}" placeholder="ایمیل">
- <label>شماره تلفن</label><input id="phone" value="${esc(item?.info?.phone||'')}" placeholder="شماره تلفن">
- <label>رمز عبور</label><input id="password" type="password" value="${esc(item?.info?.password||'')}" placeholder="رمز عبور">
- <label>اطلاعات بیشتر</label><textarea id="extraInfo" placeholder="اطلاعات بیشتر">${esc(item?.info?.extra||'')}</textarea>`:'';
- showModal(`<h2>${item?'ویرایش':'ساخت'} ${type==='card'?'کارت':type==='button'?'دکمه':type==='dropdown'?'دکمه‌ی کشویی':type==='page'?'صفحه‌ی جدید':'نوشته'}</h2>
- <label>عنوان اصلی</label><input id="fieldTitle" value="${esc(item?.title||'')}" placeholder="عنوان را وارد کنید">
- <label>توضیحات زیر عنوان</label><textarea id="fieldDescription" placeholder="توضیحات">${esc(item?.description||'')}</textarea>
- ${imageField}${optionsField}${writingField}${actionField}${profileFields}
- ${item&&isProfile?'<div class="editor-check"><input id="changeImage" type="checkbox"><label for="changeImage">می‌خواهم تصویر را تغییر بدهم</label></div>':''}
- <div class="modal-actions"><button class="primary" id="confirmTile">تأیید</button><button class="secondary" id="cancelEditor">انصراف</button></div>`);
- const action=$('fieldAction');action.value=item?.action||'profile';$('targetWrap').style.display=action.value==='page'?'block':'none';action.onchange=()=>{$('targetWrap').style.display=action.value==='page'?'block':'none'};
- $('cancelEditor').onclick=closeModal;
- $('confirmTile').onclick=()=>{
-  const title=$('fieldTitle').value.trim();if(!title){alert('عنوان اصلی را وارد کنید.');return}
-  const image=$('fieldImage')?.value.trim()||item?.image||'';
-  if(item&&isProfile&&$('changeImage')?.checked&&!image){alert('نشانی تصویر جدید را وارد کنید.');return}
-  const options=type==='dropdown'?$ ('fieldOptions').value.split('\n').map(x=>x.trim()).filter(Boolean):[];
-  const info=isProfile?{firstName:$('firstName').value.trim(),lastName:$('lastName').value.trim(),email:$('email').value.trim(),phone:$('phone').value.trim(),password:$('password').value,extra:$('extraInfo').value.trim()}:item?.info||{};
-  const newItem={id:item?.id||makeId(),type,title,description:$('fieldDescription').value.trim(),image,options,action:action.value,target:$('fieldTarget').value.trim(),info,body:type==='writing'?$('writingText').value:(item?.body||''),parentId:item?item.parentId:parentId};
-  const old=[...tiles];if(item)tiles=tiles.map(x=>x.id===item.id?newItem:x);else tiles.push(newItem);
-  try{saveTiles();closeModal();renderCurrent()}catch(e){tiles=old;alert('ذخیره‌سازی انجام نشد.')}
- };
-}
-function renderContent(tile){
- const root=$('contentArea');root.replaceChildren();
- const title=document.createElement('h1');title.textContent=tile.title;
- const sub=document.createElement('div');sub.className='subtitle';sub.textContent=tile.description||'';root.append(title,sub);
- if(tile.type==='writing'){
-  const panel=document.createElement('div');panel.className='panel';
-  const body=document.createElement('div');body.style.whiteSpace='pre-wrap';body.style.lineHeight='2.1';body.textContent=tile.body||'هنوز متنی نوشته نشده است.';
-  const edit=document.createElement('button');edit.className='primary';edit.textContent='ویرایش نوشته';edit.onclick=()=>showEditor('writing',tile,tile.parentId);
-  panel.append(body,edit);root.append(panel);
- }
- if(tile.type==='dropdown'){
-  const box=document.createElement('div');box.className='panel';const toggle=document.createElement('button');toggle.className='content-button';toggle.textContent='⌄ نمایش گزینه‌ها';
-  const options=document.createElement('div');options.className='drop-options';
-  (tile.options||[]).forEach(option=>{
-   const b=document.createElement('button');b.textContent=option;
-   b.onclick=()=>{const linked=childrenOf(tile.id).find(t=>t.title===option)||tiles.find(t=>t.title===option);if(linked)activateTile(linked);else{const note=recordings.find(r=>r.parentId===tile.id&&r.title===option);if(note){const temporary={id:note.id,title:note.title,description:note.description||'',type:note.data?'audio':'writing',body:note.body||'',parentId:tile.id};activeTile=temporary;renderContent(temporary);openPage('contentPage')}}};
-   options.append(b);
-  });
-  toggle.onclick=()=>options.classList.toggle('open');box.append(toggle,options);root.append(box);
- }
- const ownChildren=childrenOf(tile.id);
- if(ownChildren.length){const h=document.createElement('h2');h.textContent='موارد این صفحه';h.style.marginTop='25px';root.append(h);const grid=document.createElement('div');grid.className='inner-tile-grid';renderTileList(grid,ownChildren);root.append(grid)}
- addMediaSection(root,tile.id);
-}
-function renderProfile(tile){
- const root=$('profileArea');root.replaceChildren();
- const head=document.createElement('div');head.className='profile-head';
- let avatar;if(tile.image){avatar=document.createElement('img');avatar.src=tile.image;avatar.alt='تصویر';avatar.className='profile-avatar'}else{avatar=document.createElement('div');avatar.className='profile-avatar';avatar.textContent='▦'}
- const text=document.createElement('div');const title=document.createElement('h2');title.textContent=tile.title||'اطلاعات';const desc=document.createElement('p');desc.textContent=tile.description||'';text.append(title,desc);head.append(avatar,text);root.append(head);
- const info=tile.info||{},details=document.createElement('div');details.className='detail-list';
- [['نام',info.firstName],['نام خانوادگی',info.lastName],['ایمیل',info.email],['شماره تلفن',info.phone],['رمز عبور',info.password],['توضیحات بیشتر',info.extra]].forEach(([label,value])=>{const item=document.createElement('div');item.className='detail';const l=document.createElement('span');l.textContent=label;const v=document.createElement('strong');v.textContent=value||'—';item.append(l,v);details.append(item)});
- const panel=document.createElement('div');panel.className='panel';const h=document.createElement('h2');h.textContent='اطلاعات';panel.append(h,details);root.append(panel);
- const ownChildren=childrenOf(tile.id);
- if(ownChildren.length){const heading=document.createElement('h2');heading.textContent='موارد این صفحه';heading.style.marginTop='25px';root.append(heading);const grid=document.createElement('div');grid.className='inner-tile-grid';renderTileList(grid,ownChildren);root.append(grid)}
- addMediaSection(root,tile.id);
 }
 
-const themes=[
- {name:'بنفش',h:263,s:85,l:65},{name:'صورتی',h:330,s:80,l:62},{name:'سبز',h:145,s:60,l:48},{name:'قرمز',h:0,s:78,l:58},
- {name:'نارنجی',h:25,s:90,l:55},{name:'زرد',h:48,s:95,l:55},{name:'فیروزه‌ای',h:175,s:75,l:45},{name:'آبی',h:215,s:85,l:60},
- {name:'نیلی',h:235,s:75,l:62},{name:'قهوه‌ای',h:25,s:45,l:42},{name:'آبی یخی',h:195,s:65,l:72},{name:'خاکستری',h:220,s:8,l:65}
-];
-const shadeNames=['ملایم','مات','معمولی','تیره','پررنگ'],adjust=[18,-5,0,-12,-20];
-let selected=0,shadeLevel=2;
-try{selected=Number(localStorage.getItem('themeIndex')||0);shadeLevel=Number(localStorage.getItem('shadeLevel')||2)}catch(e){}
-if(!Number.isInteger(selected)||selected<0||selected>=themes.length)selected=0;
-if(!Number.isInteger(shadeLevel)||shadeLevel<0||shadeLevel>=shadeNames.length)shadeLevel=2;
-function updateShades(){
- document.querySelectorAll('.shade').forEach((b,i)=>{const t=themes[selected],l=Math.max(25,Math.min(82,t.l+adjust[i]));b.style.background=`hsl(${t.h} ${t.s}% ${l}%)`;b.title=shadeNames[i];b.style.outline=i===shadeLevel?'2px solid white':'none'});
-}
-function applyTheme(){
- const t=themes[selected],l=Math.max(25,Math.min(82,t.l+adjust[shadeLevel]));
- document.documentElement.style.setProperty('--accent',`hsl(${t.h} ${t.s}% ${l}%)`);
- document.documentElement.style.setProperty('--soft',`hsla(${t.h},${t.s}%,${l}%,.16)`);
- document.documentElement.style.setProperty('--bg',`hsl(${t.h} 18% 9%)`);
- document.documentElement.style.setProperty('--card',`hsl(${t.h} 17% 14%)`);
- document.documentElement.style.setProperty('--border',`hsl(${t.h} 15% 25%)`);
- try{localStorage.setItem('themeIndex',selected);localStorage.setItem('shadeLevel',shadeLevel)}catch(e){}
- updateShades();
-}
-themes.forEach((t,i)=>{const b=document.createElement('button');b.className='swatch';b.title=t.name;b.style.background=`hsl(${t.h} ${t.s}% ${t.l}%)`;b.onclick=()=>{selected=i;applyTheme()};$('palette').append(b)});
-shadeNames.forEach((name,i)=>{const b=document.createElement('button');b.className='shade';b.title=name;b.onclick=()=>{shadeLevel=i;applyTheme()};$('shades').append(b)});
-$('colorBtn').onclick=()=>{$('palette').classList.toggle('open');$('shades').style.display=$('palette').classList.contains('open')?'flex':'none'};
-applyTheme();renderTiles();openPage('home',false);
-</script>
-</body>
-</html>
+function renderTiles(){renderTileList($('userTiles'),tiles.filter(t=>!t.parentId))}
+
+function activateTile(tile){
+ if(tile.action==='home'){openPage('home',true,null);return}
+ if(tile.action==='people'){openPage('people',true,null);return}
+ if(tile.action==='employee'){
+  openPage('people',true,null);
+  document.querySelector('[data-tab="employee"]').click();
+  return;
+ }
+ if(tile.action==='none')return;
+
+ const targetPage=
+  tile.type==='audio'||tile.type==='writing'||tile.type==='dropdown'||tile.type==='button'||tile
