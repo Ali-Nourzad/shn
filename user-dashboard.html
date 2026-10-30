@@ -74,24 +74,11 @@ main{
 h1{font-size:clamp(27px,5vw,38px);margin:0 0 12px}
 .subtitle{font-size:14px;line-height:2;color:var(--muted);margin-bottom:30px}
 .welcome p{font-size:14px;line-height:2;color:var(--muted);margin:0}
-
 .welcome.compact{padding:18px 22px;margin-bottom:18px}
 .welcome.compact .welcome-icon{display:none}
 .welcome.compact h1{font-size:22px;margin-bottom:5px}
 .welcome.compact .subtitle{margin:0;font-size:12px}
 .welcome.compact p{display:none}
-
-.page-toolbar{
- display:flex;align-items:center;justify-content:space-between;
- gap:12px;flex-wrap:wrap;margin:0 0 18px
-}
-.breadcrumb{font-size:13px;color:var(--muted);line-height:2}
-.breadcrumb strong{color:var(--text)}
-.back-button{
- border:1px solid var(--border);border-radius:11px;padding:10px 16px;
- background:var(--soft);color:var(--text);font-size:13px
-}
-.back-button:hover{border-color:var(--accent)}
 
 .user-content{
  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px
@@ -113,11 +100,6 @@ h1{font-size:clamp(27px,5vw,38px);margin:0 0 12px}
  background:var(--soft);color:var(--text);margin:5px 4px 5px 0
 }
 .user-tile button:hover{border-color:var(--accent)}
-.tile-open{
- display:flex;align-items:center;justify-content:space-between;
- gap:12px;width:100%;text-align:right;margin-top:12px!important
-}
-.tile-open span:last-child{color:var(--accent);font-size:20px}
 .tile-description{color:var(--muted);font-size:13px;line-height:2}
 .section-heading{
  grid-column:1/-1;font-size:16px;margin:8px 0 0;color:var(--text)
@@ -129,6 +111,20 @@ h1{font-size:clamp(27px,5vw,38px);margin:0 0 12px}
 }
 .tile-link{color:var(--accent);text-decoration:none;display:inline-block;margin:10px 0}
 .content-media{margin-top:14px}
+.child-tiles{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:12px;margin-top:16px
+}
+.child-tile{
+ min-width:0;padding:16px;border-radius:14px;
+ background:var(--bg);border:1px solid var(--border)
+}
+.child-tile h2,.child-tile h3{font-size:16px}
+.child-tile p{font-size:13px}
+.nested-heading{
+ grid-column:1/-1;color:var(--muted);font-size:13px;
+ margin:12px 0 0
+}
 
 .overlay{
  position:fixed;inset:0;z-index:30;display:flex;align-items:center;
@@ -167,10 +163,9 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
  header{height:70px;padding:0 18px}
  main{padding:30px 17px}
  .welcome{padding:24px}
- .user-content{grid-template-columns:1fr}
+ .user-content,.child-tiles{grid-template-columns:1fr}
  .user-tile{padding:17px}
  .modal{padding:20px}
- .page-toolbar{align-items:flex-start}
 }
 </style>
 </head>
@@ -198,24 +193,18 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
 </header>
 
 <main>
-
  <section class="welcome" id="welcome">
   <div class="welcome-icon">👤</div>
   <h1>خوش آمدید</h1>
   <div class="subtitle">به پنل کاربری س.ح.ن خوش آمدید.</div>
-  <p>برای مشاهده محتوا، یکی از کارت‌های زیر را انتخاب کنید.</p>
+  <p>محتوای قرارگرفته در پنل در این قسمت نمایش داده می‌شود.</p>
  </section>
 
- <div class="page-toolbar" id="pageToolbar" hidden>
-  <div class="breadcrumb" id="breadcrumb"></div>
-  <button class="back-button" id="backButton" type="button">← بازگشت</button>
- </div>
-
  <section id="userContent" class="user-content"></section>
- <div id="emptyContent" class="empty-content">
-  محتوایی برای نمایش در این بخش وجود ندارد.
- </div>
 
+ <div id="emptyContent" class="empty-content">
+  هنوز محتوایی برای نمایش وجود ندارد.
+ </div>
 </main>
 
 <div class="overlay" id="supportOverlay">
@@ -273,7 +262,7 @@ document.addEventListener('click',event=>{
  }
 });
 
-/* خروج واقعی از پنل */
+/* خروج از پنل */
 $('exitPanelBtn').addEventListener('click',()=>{
  $('menu').classList.remove('open');
  window.location.href='./index.html';
@@ -304,7 +293,7 @@ $('closeMessageBtn').addEventListener('click',()=>{
  });
 });
 
-/* اطلاعات ذخیره‌شده */
+/* خواندن اطلاعات ذخیره‌شده */
 function readStoredData(key){
  try{
   const value=localStorage.getItem(key);
@@ -319,7 +308,6 @@ function readStoredData(key){
 
 let tiles=[];
 let media=[];
-let navigation=[];
 
 function refreshData(){
  tiles=readStoredData('shn_user_page_tiles');
@@ -334,12 +322,10 @@ function getTileText(item){
  return item?.text||item?.content||item?.description||item?.message||'';
 }
 
-/* شناسه کارت */
 function getItemId(item){
  return item?.id??item?.tileId??item?.tile_id??item?.uuid??null;
 }
 
-/* شناسه کارت والد */
 function getParentId(item){
  return item?.parentId??
         item?.parent_id??
@@ -354,7 +340,6 @@ function sameId(a,b){
         String(a)===String(b);
 }
 
-/* زیرکارت‌هایی که با شناسه والد به کارت وصل شده‌اند */
 function getNestedChildren(item){
  const children=Array.isArray(item?.children)?item.children:
                 Array.isArray(item?.items)?item.items:
@@ -364,16 +349,16 @@ function getNestedChildren(item){
 
 function getChildren(item){
  const id=getItemId(item);
-
  const flatChildren=id===null?[]:
   tiles.filter(child=>sameId(getParentId(child),id));
 
  const nested=getNestedChildren(item);
 
- return [...nested,...flatChildren];
+ return [...nested,...flatChildren.filter(flat=>
+  !nested.some(child=>sameId(getItemId(child),getItemId(flat)))
+ )];
 }
 
-/* کارت‌های اصلی */
 function getRootTiles(){
  return tiles.filter(item=>{
   const parent=getParentId(item);
@@ -381,25 +366,23 @@ function getRootTiles(){
  });
 }
 
-/* پیدا کردن رسانه‌های متصل به کارت */
+function getMediaOwner(entry){
+ return entry?.tileId??
+        entry?.tile_id??
+        entry?.cardId??
+        entry?.card_id??
+        entry?.parentId??
+        entry?.parent_id??
+        entry?.ownerId??null;
+}
+
 function getMediaFor(item){
  const id=getItemId(item);
  if(id===null)return [];
-
- return media.filter(entry=>{
-  const owner=entry?.tileId??
-              entry?.tile_id??
-              entry?.cardId??
-              entry?.card_id??
-              entry?.parentId??
-              entry?.parent_id??
-              entry?.ownerId??null;
-
-  return sameId(owner,id);
- });
+ return media.filter(entry=>sameId(getMediaOwner(entry),id));
 }
 
-/* جلوگیری از اجرای آدرس‌های ناامن */
+/* جلوگیری از آدرس‌های ناامن */
 function safeUrl(value){
  if(typeof value!=='string'||!value.trim())return '';
  const url=value.trim();
@@ -426,7 +409,7 @@ function addText(parent,tag,text,className){
  return element;
 }
 
-/* نمایش محتوا */
+/* نمایش متن، تصویر، صدا، ویدئو و لینک */
 function appendItemContent(container,item){
  if(!item||typeof item!=='object')return;
 
@@ -467,6 +450,7 @@ function appendItemContent(container,item){
   const player=document.createElement('video');
   player.controls=true;
   player.src=video;
+  player.playsInline=true;
   container.appendChild(player);
  }
 
@@ -512,99 +496,11 @@ function appendItemContent(container,item){
  });
 }
 
-/* کارت قابل ورود */
-function createTileCard(item){
- const tile=document.createElement('article');
- tile.className='user-tile';
-
- const title=getTileTitle(item);
- const text=getTileText(item);
- const children=getChildren(item);
- const linkedMedia=getMediaFor(item);
-
- addText(tile,'h2',title);
-
- if(text){
-  addText(tile,'p',text,'tile-description');
- }
-
- const openButton=document.createElement('button');
- openButton.type='button';
- openButton.className='tile-open';
-
- const buttonText=document.createElement('span');
- buttonText.textContent='ورود به '+title;
-
- const arrow=document.createElement('span');
- arrow.textContent='←';
-
- openButton.append(buttonText,arrow);
- openButton.addEventListener('click',()=>openTile(item));
-
- tile.appendChild(openButton);
-
- let description='برای مشاهده وارد شوید';
-
- if(children.length){
-  description=children.length+' زیرمجموعه';
- }else if(linkedMedia.length){
-  description=linkedMedia.length+' محتوای پیوست‌شده';
- }
-
- addText(tile,'div',description,'tile-description');
-
- return tile;
-}
-
-/* ورود به کارت */
-function openTile(item){
- navigation.push(item);
- renderUserContent();
-}
-
-/* بازگشت یک مرحله */
-function goBack(){
- if(navigation.length){
-  navigation.pop();
- }
- renderUserContent();
-}
-
-$('backButton').addEventListener('click',goBack);
-
-/* مسیر بالای صفحه */
-function renderBreadcrumb(){
- const breadcrumb=$('breadcrumb');
- breadcrumb.replaceChildren();
-
- addText(breadcrumb,'span','صفحه اصلی');
-
- navigation.forEach((item,index)=>{
-  breadcrumb.appendChild(document.createTextNode('  ←  '));
-
-  const part=document.createElement('span');
-  part.textContent=getTileTitle(item);
-
-  if(index===navigation.length-1){
-   part.style.color='var(--text)';
-   part.style.fontWeight='bold';
-  }
-
-  breadcrumb.appendChild(part);
- });
-}
-
-/* نمایش محتوای یک کارت */
-function renderCardContent(item,container){
- const linkedMedia=getMediaFor(item);
-
- /* محتوای مستقیم خود کارت */
- appendItemContent(container,item);
-
- /* محتوای ذخیره‌شده در بخش رسانه */
- linkedMedia.forEach(entry=>{
-  const mediaCard=document.createElement('article');
-  mediaCard.className='user-tile content-media';
+/* رسانه‌های متصل به هر کارت */
+function appendLinkedMedia(container,item){
+ getMediaFor(item).forEach(entry=>{
+  const mediaCard=document.createElement('div');
+  mediaCard.className='content-media';
   appendItemContent(mediaCard,entry);
 
   if(mediaCard.children.length){
@@ -613,91 +509,103 @@ function renderCardContent(item,container){
  });
 }
 
-/* نمایش صفحه */
+/* نمایش کارت‌ها و زیرکارت‌ها بدون صفحه ورود جداگانه */
+function createTileCard(item,level=0,visited=new Set()){
+ if(!item||typeof item!=='object')return null;
+
+ const id=getItemId(item);
+ const visitKey=id!==null?String(id):item;
+
+ if(visited.has(visitKey))return null;
+ visited.add(visitKey);
+
+ const tile=document.createElement('article');
+ tile.className=level===0?'user-tile':'child-tile';
+
+ appendItemContent(tile,item);
+ appendLinkedMedia(tile,item);
+
+ const children=getChildren(item);
+
+ if(children.length){
+  const heading=document.createElement('h3');
+  heading.className='nested-heading';
+  heading.textContent='محتوا';
+  tile.appendChild(heading);
+
+  const childContainer=document.createElement('div');
+  childContainer.className='child-tiles';
+
+  children.forEach(child=>{
+   const childCard=createTileCard(child,level+1,visited);
+   if(childCard)childContainer.appendChild(childCard);
+  });
+
+  if(childContainer.children.length){
+   tile.appendChild(childContainer);
+  }
+ }
+
+ return tile;
+}
+
+/* نمایش صفحه کاربر */
 function renderUserContent(){
  refreshData();
 
  const container=$('userContent');
  const empty=$('emptyContent');
- const toolbar=$('pageToolbar');
  const welcome=$('welcome');
- const backButton=$('backButton');
 
  container.replaceChildren();
 
- const current=navigation.length?
-  navigation[navigation.length-1]:null;
+ const roots=getRootTiles();
+ const visited=new Set();
 
- const isHome=!current;
+ roots.forEach(item=>{
+  const card=createTileCard(item,0,visited);
+  if(card)container.appendChild(card);
+ });
 
- welcome.classList.toggle('compact',!isHome);
- toolbar.hidden=isHome;
+ /* نمایش کارت‌هایی که والد مشخص دارند اما والدشان موجود نیست */
+ tiles.forEach(item=>{
+  const id=getItemId(item);
+  const parent=getParentId(item);
 
- if(!isHome){
-  renderBreadcrumb();
+  if(parent!==null&&parent!==''&&
+     !tiles.some(candidate=>sameId(getItemId(candidate),parent))&&
+     !visited.has(id!==null?String(id):item)){
+   const card=createTileCard(item,0,visited);
+   if(card)container.appendChild(card);
+  }
+ });
 
-  backButton.textContent=
-   navigation.length===1?
-   '← بازگشت به صفحه اصلی':
-   '← بازگشت به بخش قبلی';
- }
+ /* رسانه‌هایی که به هیچ کارتی وصل نشده‌اند */
+ media.forEach(entry=>{
+  const owner=getMediaOwner(entry);
 
- let visibleItems=[];
-
- if(isHome){
-  visibleItems=getRootTiles();
- }else{
-  /* ابتدا زیرکارت‌های کارت فعلی */
-  visibleItems=getChildren(current);
-
-  /* محتوای خود کارت نیز در همین صفحه نمایش داده می‌شود */
-  renderCardContent(current,container);
- }
-
- /* کارت‌های فرزند */
- if(visibleItems.length){
-  const heading=document.createElement('h2');
-  heading.className='section-heading';
-  heading.textContent=isHome?'بخش‌های شما':'زیرمجموعه‌ها';
-  container.appendChild(heading);
-
-  visibleItems.forEach(item=>{
-   const card=createTileCard(item);
-   container.appendChild(card);
-  });
- }
-
- /* اگر صفحه اصلی خالی باشد */
- if(isHome&&visibleItems.length===0){
-  const unassigned=media.filter(entry=>{
-   const owner=entry?.tileId??
-               entry?.tile_id??
-               entry?.cardId??
-               entry?.card_id??
-               entry?.parentId??
-               entry?.parent_id??null;
-   return owner===null||owner==='';
-  });
-
-  unassigned.forEach(entry=>{
+  if(owner===null||owner===''){
    const card=document.createElement('article');
    card.className='user-tile';
    appendItemContent(card,entry);
-   if(card.children.length)container.appendChild(card);
-  });
- }
+
+   if(card.children.length){
+    container.appendChild(card);
+   }
+  }
+ });
 
  const hasContent=container.children.length>0;
+
  empty.style.display=hasContent?'none':'block';
+ welcome.classList.toggle('compact',hasContent);
 
  if(!hasContent){
-  empty.textContent=isHome?
-   'هنوز محتوایی برای نمایش وجود ندارد.':
-   'در این بخش هنوز محتوایی قرار نگرفته است.';
+  empty.textContent='هنوز محتوایی برای نمایش وجود ندارد.';
  }
 }
 
-/* تغییرات ذخیره‌شده در تب دیگر */
+/* بروزرسانی در صورت تغییر اطلاعات در تب دیگر */
 window.addEventListener('storage',event=>{
  if(event.key==='shn_user_page_tiles'||
     event.key==='shn_page_media_v1'){
