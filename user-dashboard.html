@@ -100,15 +100,6 @@ h1{font-size:clamp(27px,5vw,38px);margin:0 0 12px}
  background:var(--soft);color:var(--text);margin:5px 4px 5px 0
 }
 .user-tile button:hover{border-color:var(--accent)}
-.tile-description{color:var(--muted);font-size:13px;line-height:2}
-.section-heading{
- grid-column:1/-1;font-size:16px;margin:8px 0 0;color:var(--text)
-}
-.empty-content{
- display:none;padding:22px;border:1px dashed var(--border);
- border-radius:15px;color:var(--muted);font-size:13px;
- text-align:center;line-height:2
-}
 .tile-link{color:var(--accent);text-decoration:none;display:inline-block;margin:10px 0}
 .content-media{margin-top:14px}
 .child-tiles{
@@ -124,6 +115,18 @@ h1{font-size:clamp(27px,5vw,38px);margin:0 0 12px}
 .nested-heading{
  grid-column:1/-1;color:var(--muted);font-size:13px;
  margin:12px 0 0
+}
+.empty-content{
+ display:none;
+ min-height:180px;
+ align-items:center;
+ justify-content:center;
+ border:1px dashed var(--border);
+ border-radius:18px;
+ color:var(--muted);
+ font-size:13px;
+ text-align:center;
+ line-height:2
 }
 
 .overlay{
@@ -197,7 +200,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
   <div class="welcome-icon">👤</div>
   <h1>خوش آمدید</h1>
   <div class="subtitle">به پنل کاربری س.ح.ن خوش آمدید.</div>
-  <p>محتوای قرارگرفته در پنل در این قسمت نمایش داده می‌شود.</p>
+  <p>محتوای اضافه‌شده از پنل کارمند در این قسمت نمایش داده می‌شود.</p>
  </section>
 
  <section id="userContent" class="user-content"></section>
@@ -315,7 +318,7 @@ function refreshData(){
 }
 
 function getTileTitle(item){
- return item?.title||item?.name||item?.heading||item?.label||'بدون عنوان';
+ return item?.title||item?.name||item?.heading||item?.label||'';
 }
 
 function getTileText(item){
@@ -416,7 +419,7 @@ function appendItemContent(container,item){
  const title=getTileTitle(item);
  const text=getTileText(item);
 
- if(title&&title!=='بدون عنوان'){
+ if(title){
   addText(container,'h2',title);
  }
 
@@ -509,7 +512,7 @@ function appendLinkedMedia(container,item){
  });
 }
 
-/* نمایش کارت‌ها و زیرکارت‌ها بدون صفحه ورود جداگانه */
+/* ساخت کارت فقط برای اطلاعات واقعی ذخیره‌شده */
 function createTileCard(item,level=0,visited=new Set()){
  if(!item||typeof item!=='object')return null;
 
@@ -528,11 +531,6 @@ function createTileCard(item,level=0,visited=new Set()){
  const children=getChildren(item);
 
  if(children.length){
-  const heading=document.createElement('h3');
-  heading.className='nested-heading';
-  heading.textContent='محتوا';
-  tile.appendChild(heading);
-
   const childContainer=document.createElement('div');
   childContainer.className='child-tiles';
 
@@ -545,6 +543,9 @@ function createTileCard(item,level=0,visited=new Set()){
    tile.appendChild(childContainer);
   }
  }
+
+ /* کارت کاملاً خالی نمایش داده نشود */
+ if(!tile.children.length)return null;
 
  return tile;
 }
@@ -567,20 +568,10 @@ function renderUserContent(){
   if(card)container.appendChild(card);
  });
 
- /* نمایش کارت‌هایی که والد مشخص دارند اما والدشان موجود نیست */
- tiles.forEach(item=>{
-  const id=getItemId(item);
-  const parent=getParentId(item);
+ /* کارت‌های دارای والد ناموجود عمداً نمایش داده نمی‌شوند؛
+    تا محتوای ناقص یا نامرتبط وارد صفحه نشود. */
 
-  if(parent!==null&&parent!==''&&
-     !tiles.some(candidate=>sameId(getItemId(candidate),parent))&&
-     !visited.has(id!==null?String(id):item)){
-   const card=createTileCard(item,0,visited);
-   if(card)container.appendChild(card);
-  }
- });
-
- /* رسانه‌هایی که به هیچ کارتی وصل نشده‌اند */
+ /* رسانه‌های مستقل فقط در صورت داشتن محتوای واقعی */
  media.forEach(entry=>{
   const owner=getMediaOwner(entry);
 
@@ -597,7 +588,7 @@ function renderUserContent(){
 
  const hasContent=container.children.length>0;
 
- empty.style.display=hasContent?'none':'block';
+ empty.style.display=hasContent?'none':'flex';
  welcome.classList.toggle('compact',hasContent);
 
  if(!hasContent){
@@ -766,4 +757,3 @@ document.addEventListener('keydown',event=>{
 
 </body>
 </html>
-
