@@ -2,508 +2,881 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>پنل مدیریت</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>پنل | س.ح.ن</title>
 <style>
-:root{--accent:#8b5cf6;--soft:rgba(139,92,246,.15);--bg:#10121b;--card:#1b1e2b;--text:#f5f5fa;--muted:#a7a9bd;--border:#343749;--green:#35d399;--blue:#2997ff;--red:#ff4d5e}
+:root{
+ --accent:#8b5cf6;--soft:rgba(139,92,246,.15);--bg:#10121b;
+ --card:#1b1e2b;--text:#f5f5fa;--muted:#a7a9bd;
+ --border:#343749;--green:#35d399;--blue:#2997ff;--red:#ff4d5e
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}
-button,input,select,textarea{font:inherit}
+body{margin:0;min-height:100vh;color:var(--text);background:radial-gradient(ellipse at 85% 0%,var(--soft),transparent 42%),var(--bg);font-family:Tahoma,Arial,sans-serif;transition:background .2s}
+button,input,textarea,select{font:inherit}
 button{cursor:pointer}
-.app{max-width:1100px;margin:auto;padding:18px}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
-.brand{font-size:20px;font-weight:bold}
+header{min-height:76px;padding:12px 6%;display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:bold}
+.logo{background:var(--accent);color:white;border-radius:13px;padding:12px;font-size:15px}
+.brand small{display:block;color:var(--muted);font-weight:normal;margin-top:5px}
 .header-actions{display:flex;align-items:center;gap:9px}
-.icon-btn,.add-menu-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:25px}
-.icon-btn{color:var(--text);background:var(--card);border:1px solid var(--border)}
-.add-menu-btn{display:none;color:var(--green);background:rgba(53,211,153,.12);border:1px solid var(--green);font-size:28px}
-.add-menu-btn.visible{display:flex}
-.page-title{font-size:25px;margin:12px 0}
-.subtitle{color:var(--muted);line-height:1.9;margin:8px 0 22px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
-.tile{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;min-height:135px;display:flex;flex-direction:column;gap:12px}
-.tile:hover{border-color:var(--accent)}
-.tile-main{cursor:pointer;flex:1}
-.tile-icon{font-size:27px;margin-bottom:8px}
-.tile-title{font-weight:bold;line-height:1.8;overflow-wrap:anywhere}
-.tile-description{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.8}
-.tile-tools,.menu-tools{display:flex;gap:7px;align-items:center}
-.tool-btn{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:transparent;border:1px solid;font-size:16px;flex-shrink:0}
-.delete-btn{color:var(--red);border-color:var(--red);background:rgba(255,77,94,.1)}
-.edit-btn{color:var(--blue);border-color:var(--blue);background:rgba(41,151,255,.1)}
-.section{margin-top:25px}
-.section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
-.section-heading h2{font-size:18px;margin:0}
-.primary-btn,.secondary-btn,.tab-btn{border-radius:10px;padding:10px 14px;border:1px solid var(--border);background:var(--card);color:var(--text)}
-.primary-btn{background:var(--accent);border-color:var(--accent);color:white}
-.secondary-btn:hover,.tab-btn.active{border-color:var(--accent);background:var(--soft)}
-.top-add{display:none;background:var(--soft);border:1px solid var(--accent);color:var(--accent);border-radius:10px;padding:9px 13px}
-.top-add.visible{display:inline-flex}
-.tabs{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:17px}
-.field{display:flex;flex-direction:column;gap:8px;margin-bottom:15px}
-.field label{font-size:13px;color:var(--muted)}
-.field input,.field select,.field textarea{width:100%;padding:11px;border-radius:9px;background:var(--bg);color:var(--text);border:1px solid var(--border)}
-.field textarea{min-height:90px;resize:vertical}
-.empty{color:var(--muted);padding:18px 0;line-height:1.9}
-.overlay{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
-.overlay.open{display:flex}
-.modal{background:var(--card);border:1px solid var(--border);border-radius:17px;padding:22px;width:min(520px,100%);max-height:88vh;overflow:auto}
-.modal h2{font-size:20px;margin:0 0 20px}
-.modal-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
-.menu-pop{position:fixed;z-index:40;top:70px;right:max(15px,calc((100vw - 1060px)/2));width:min(400px,calc(100vw - 30px));max-height:78vh;overflow:auto;background:var(--card);border:1px solid var(--border);border-radius:15px;padding:10px;display:none;box-shadow:0 18px 55px #0008}
-.menu-pop.open{display:block}
-.menu-heading{font-weight:bold;padding:12px}
-.menu-item{display:flex;align-items:center;gap:8px;padding:10px;border-bottom:1px solid var(--border)}
-.menu-label{flex:1;line-height:1.8;cursor:pointer;overflow-wrap:anywhere}
-.palette{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.swatch{height:48px;border-radius:11px;border:2px solid #ffffff30}
-.notice{font-size:12px;color:var(--muted);line-height:1.8;margin-top:8px}
-.list-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
-.back-btn{margin-bottom:14px}
-@media(max-width:520px){.app{padding:13px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tile{padding:12px}.page-title{font-size:22px}}
+.menu-wrap{position:relative}
+.menu-button{width:45px;height:43px;border:1px solid var(--border);border-radius:13px;background:var(--card);color:white;font-size:25px}
+.dropdown{display:none;position:absolute;left:0;top:52px;width:min(330px,88vw);background:var(--card);border:1px solid var(--border);border-radius:15px;padding:9px;z-index:50;box-shadow:0 15px 40px #0007;max-height:78vh;overflow:auto}
+.dropdown.open{display:block}
+.menu-item{display:flex;align-items:center;gap:7px;padding:5px;margin:3px 0;border-radius:10px;border:1px solid transparent}
+.menu-item:hover{border-color:var(--border);background:var(--soft)}
+.menu-action{display:block;width:100%;min-width:0;text-align:right;padding:10px 7px;border:0;border-radius:8px;background:transparent;color:var(--text);font-size:13px;overflow-wrap:anywhere}
+.menu-action:hover{background:var(--soft)}
+.menu-tools{display:flex;gap:5px;flex-shrink:0}
+.menu-tool{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;padding:0;background:transparent;font-size:17px}
+.menu-delete{color:var(--red);border:1px solid var(--red);background:rgba(255,77,94,.1)}
+.palette{display:none;grid-template-columns:repeat(4,1fr);gap:9px;padding:12px 7px}
+.palette.open{display:grid}
+.swatch{height:32px;border:2px solid #ffffff50;border-radius:8px}
+.shades{display:none;flex-wrap:wrap;gap:5px;padding:0 7px 10px}
+.shades.open{display:flex}
+.shade{flex:1;min-width:30px;height:27px;border:1px solid #ffffff55;border-radius:6px}
+.menu-separator{height:1px;background:var(--border);margin:7px 3px}
+main{max-width:1000px;margin:auto;padding:38px 22px}
+.page{display:none}.page.active{display:block}
+h1{font-size:27px;margin:0 0 12px}
+.subtitle{font-size:14px;line-height:2;color:var(--muted);margin-bottom:30px}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.home-card{display:block;width:100%;min-height:185px;text-align:right;padding:25px;border-radius:20px;background:linear-gradient(145deg,var(--soft),transparent 80%),var(--card);border:1px solid var(--border);color:var(--text);transition:.2s}
+.home-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.card-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:var(--soft);color:var(--accent);font-size:24px;margin-bottom:20px}
+.home-card h2{font-size:18px;margin:0 0 10px}
+.home-card p{font-size:13px;line-height:1.9;color:var(--muted);margin:0}
+.back{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:9px 14px;margin-bottom:25px}
+.back:hover{border-color:var(--accent);color:var(--text)}
+.tabs{display:flex;gap:9px;margin:25px 0 20px}
+.tab{padding:11px 22px;border-radius:11px;border:1px solid var(--border);background:var(--card);color:var(--muted)}
+.tab.active{background:var(--accent);border-color:var(--accent);color:white}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:18px}
+.panel h2{font-size:17px;margin:0 0 17px}
+label{display:block;font-size:13px;color:var(--muted);margin:13px 0 8px}
+input,textarea,select{width:100%;padding:13px;border-radius:10px;background:var(--bg);border:1px solid var(--border);color:var(--text);outline:none}
+textarea{min-height:85px;resize:vertical}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+.primary{background:var(--accent);color:white;border:0;border-radius:10px;padding:12px 18px;margin-top:12px}
+.secondary{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px 15px;margin-top:12px}
+.message{font-size:13px;margin-top:12px;line-height:1.9}
+.success{color:#5ee0a0}.error{color:#ff7b8b}
+.code-list{display:grid;gap:10px;margin-top:18px}
+.code-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:11px}
+.code-text{overflow-wrap:anywhere;word-break:break-word}
+.code-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.delete{background:#632c3a;color:#ffb8c3;border:0;border-radius:8px;padding:8px 12px}
+.copy{background:var(--soft);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 12px}
+.empty{color:var(--muted);font-size:13px;line-height:2}
+.builder-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:25px}
+.add-round,.page-add{width:52px;height:52px;border-radius:50%;border:1px solid var(--green);background:rgba(53,211,153,.12);color:var(--green);font-size:29px;display:grid;place-items:center;flex-shrink:0}
+.add-round:hover,.page-add:hover{background:rgba(53,211,153,.22)}
+#addMenuItem{display:none}
+.tile-grid,.inner-tile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:18px}
+.tile{position:relative;min-height:185px;text-align:right;padding:23px;border-radius:20px;background:linear-gradient(145deg,var(--soft),transparent 80%),var(--card);border:1px solid var(--border);color:var(--text);transition:.2s;overflow:hidden}
+.tile:hover{transform:translateY(-2px);border-color:var(--accent)}
+.tile-tools{position:absolute;top:10px;left:10px;display:flex;gap:7px;z-index:3}
+.tile-tool{width:34px;height:34px;border-radius:50%;font-size:20px;padding:0;display:grid;place-items:center;background:var(--card)}
+.tile-delete{color:var(--red);background:rgba(255,77,94,.12);border:1px solid var(--red)}
+.tile-image{width:62px;height:62px;object-fit:cover;border-radius:17px;background:var(--soft);display:grid;place-items:center;font-size:26px;margin-bottom:15px}
+.tile-title{font-weight:bold;font-size:17px;margin-bottom:9px;overflow-wrap:anywhere}
+.tile-description{font-size:13px;color:var(--muted);line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere}
+.modal-bg{display:none;position:fixed;inset:0;background:#000a;z-index:100;align-items:center;justify-content:center;padding:18px}
+.modal-bg.open{display:flex}
+.modal{width:min(580px,100%);max-height:90vh;overflow:auto;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:23px;box-shadow:0 20px 70px #0008}
+.modal h2{margin:0 0 10px;font-size:19px}
+.modal p{color:var(--muted);font-size:13px;line-height:1.9}
+.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.type-option{display:block;width:100%;padding:15px;margin:8px 0;text-align:right;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text)}
+.type-option:hover{border-color:var(--accent)}
+.profile-head{display:flex;gap:18px;align-items:center;padding:22px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(145deg,var(--soft),transparent 80%),var(--card);margin-bottom:18px}
+.profile-avatar{width:82px;height:82px;object-fit:cover;border-radius:50%;border:2px solid var(--accent);background:var(--soft);display:grid;place-items:center;font-size:32px;flex-shrink:0}
+.profile-head h2{margin:0 0 7px}.profile-head p{margin:0;color:var(--muted);font-size:13px;white-space:pre-wrap}
+.detail-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.detail{padding:14px;border:1px solid var(--border);background:var(--bg);border-radius:12px;min-width:0}
+.detail span{display:block;font-size:12px;color:var(--muted);margin-bottom:8px}
+.detail strong{font-size:14px;overflow-wrap:anywhere;white-space:pre-wrap}
+.content-button{width:100%;text-align:right;padding:15px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);margin:7px 0}
+.content-button:hover{border-color:var(--accent)}
+.drop-options{display:none;margin:4px 0 12px;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:12px}
+.drop-options.open{display:block}
+.drop-options button{display:block;width:100%;padding:11px;text-align:right;border:0;border-radius:8px;background:transparent;color:var(--text)}
+.drop-options button:hover{background:var(--soft)}
+.page-tools{display:flex;justify-content:flex-end;margin-bottom:14px}
+.page-add{width:46px;height:46px;font-size:25px}
+.editor-check{display:flex;align-items:center;gap:9px;line-height:1.8}
+.editor-check label{margin:8px 0}.editor-check input{width:auto}
+.recording-panel{border:1px solid var(--border);background:var(--bg);padding:15px;border-radius:13px;margin:12px 0}
+.recording-panel audio{width:100%;margin-top:10px}
+.recording-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.recording-actions button{padding:9px 12px;border-radius:9px}
+.record-start{background:rgba(255,77,94,.13);border:1px solid var(--red);color:#ff9ba5}
+.record-stop{background:var(--soft);border:1px solid var(--border);color:var(--text)}
+.note-item{padding:15px;border:1px solid var(--border);border-radius:12px;background:var(--bg);margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.note-item audio{width:100%;margin-top:12px}
+.note-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}
+.note-head strong{font-size:14px}
+.small-delete{border:1px solid var(--red);background:rgba(255,77,94,.12);color:#ff929d;border-radius:8px;padding:6px 10px}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
+@media(max-width:500px){
+ header{padding:12px 17px}main{padding:28px 16px}h1{font-size:24px}
+ .code-item{align-items:flex-start;flex-direction:column}
+ .code-actions{align-self:flex-end}.profile-head{align-items:flex-start}
+ .tile-grid,.inner-tile-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div class="app">
 <header>
-  <div class="brand">✦ پنل مدیریت</div>
-  <div class="header-actions">
-    <button id="menuAddBtn" class="add-menu-btn" title="افزودن گزینه منو" aria-label="افزودن گزینه منو">+</button>
-    <button id="menuBtn" class="icon-btn" title="منو" aria-label="منو">⋯</button>
+ <div class="brand">
+  <div class="logo">س.ح.ن</div>
+  <div>پنل<small>مدیریت</small></div>
+ </div>
+ <div class="header-actions">
+  <button class="add-round" id="addMenuItem" aria-label="افزودن گزینه به منو" title="افزودن گزینه">＋</button>
+  <div class="menu-wrap">
+   <button class="menu-button" id="menuBtn" aria-label="منو">•••</button>
+   <div class="dropdown" id="menu">
+    <div id="menuItems"></div>
+    <div class="menu-separator"></div>
+    <div class="palette" id="palette"></div>
+    <div class="shades" id="shades"></div>
+    <div class="menu-separator"></div>
+    <div id="dynamicExitOptions"></div>
+    <button class="menu-action" id="exitPanelBtn">خروج از پنل</button>
+   </div>
   </div>
+ </div>
 </header>
-<main id="main"></main>
-</div>
-<div id="menuPop" class="menu-pop"></div>
-<div id="overlay" class="overlay"><div class="modal"><div id="modalContent"></div></div></div>
+
+<main>
+ <section id="home" class="page active">
+  <h1>خوش آمدید</h1>
+  <div class="subtitle">به پنل مدیریت س.ح.ن خوش آمدید.</div>
+  <div class="home-grid">
+   <button class="home-card" data-open="people"><div class="card-icon">♙</div><h2>افراد</h2><p>مدیریت بخش کاربران و کارکنان</p></button>
+   <button class="home-card" data-open="userChanges"><div class="card-icon">✎</div><h2>تغییرات صفحه‌ی کاربر</h2><p>ساخت و مدیریت کارت‌ها، نوشته‌ها و صوت‌ها</p></button>
+  </div>
+ </section>
+
+ <section id="people" class="page">
+  <button class="back" data-open="home">← بازگشت به پنل</button>
+  <h1>افراد</h1><div class="subtitle">بخش موردنظر را انتخاب کنید.</div>
+  <div class="tabs">
+   <button class="tab active" data-tab="user">کاربر</button>
+   <button class="tab" data-tab="employee">کارمند</button>
+  </div>
+  <div id="userSection" class="panel">
+   <div class="empty">صفحه‌ی کاربر</div>
+   <button class="primary" data-open="userChanges">مدیریت صفحه‌ی کاربر</button>
+  </div>
+  <div id="employeeSection" class="panel" style="display:none">
+   <button class="primary" id="showAddForm">＋ افزودن / ساختن کد</button>
+   <form id="employeeForm" style="display:none">
+    <h2 style="margin-top:24px">ساخت کد کارمند</h2>
+    <label for="code1">کد کارمند</label><input id="code1" autocomplete="off" required>
+    <button class="primary" type="submit">ثبت کد</button>
+    <button class="secondary" type="button" id="cancelAdd">انصراف</button>
+    <div id="formMessage" class="message" aria-live="polite"></div>
+   </form>
+   <h2 style="margin-top:28px">کدهای کارمندان</h2>
+   <div id="codeList" class="code-list"></div>
+  </div>
+ </section>
+
+ <section id="userChanges" class="page">
+  <button class="back" data-open="home">← بازگشت به پنل</button>
+  <div class="builder-head">
+   <div><h1>تغییرات صفحه‌ی کاربر</h1><div class="subtitle" style="margin:0">ساخت و مدیریت کارت‌ها، نوشته‌ها و صوت‌ها</div></div>
+   <button class="add-round" id="addRoot" aria-label="افزودن">＋</button>
+  </div>
+  <div id="userTiles" class="tile-grid"></div>
+ </section>
+
+ <section id="contentPage" class="page">
+  <div class="page-tools"><button class="page-add" id="addInside" aria-label="افزودن مورد جدید">＋</button></div>
+  <button class="back" id="contentBack">← بازگشت</button>
+  <div id="contentArea"></div>
+ </section>
+
+ <section id="profilePage" class="page">
+  <div class="page-tools"><button class="page-add" id="addProfileInside" aria-label="افزودن مورد جدید">＋</button></div>
+  <button class="back" id="profileBack">← بازگشت</button>
+  <div id="profileArea"></div>
+ </section>
+</main>
+
+<footer>س.ح.ن · پنل مدیریت</footer>
+<div class="modal-bg" id="modalBg"><div class="modal" id="modal"></div></div>
 
 <script>
 'use strict';
 
+const $=id=>document.getElementById(id);
 const DB_KEY='shn_user_page_tiles';
-const EMPLOYEE_KEY='employeeCodes';
-const MENU_KEY='shn_custom_menu_items_v3';
-const COLOR_KEY='shn_panel_color_v2';
-const PAGE_KEY='shn_custom_pages_v3';
-const SUPPORT_KEY='shn_page_media_v1';
+const MEDIA_KEY='shn_page_media_v1';
+const MENU_KEY='shn_custom_menu_items';
+const THEME_KEY='shn_panel_theme';
+const COLORS=['#8b5cf6','#2997ff','#35d399','#ff4d5e','#f59e0b','#ec4899','#14b8a6','#6478ff'];
 
-const $=s=>document.querySelector(s);
-const main=$('#main'),menuPop=$('#menuPop'),overlay=$('#overlay'),modalContent=$('#modalContent');
-const menuBtn=$('#menuBtn'),menuAddBtn=$('#menuAddBtn');
+let currentPage='home';
+let navStack=[];
+let activeTile=null;
+let tiles=readArray(DB_KEY);
+let recordings=readArray(MEDIA_KEY);
+let customMenuItems=readArray(MENU_KEY);
+let codes=readArray('employeeCodes').filter(x=>typeof x==='string');
+let selectedColor=localStorage.getItem(THEME_KEY)||'#8b5cf6';
 
-function read(key,fallback){
-  try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}
-  catch{return fallback}
+function readArray(key){
+ try{const value=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}
+ catch(e){return []}
 }
-function save(key,value){
-  try{localStorage.setItem(key,JSON.stringify(value))}
-  catch(e){console.warn('ذخیره‌سازی انجام نشد',e)}
+function saveTiles(){localStorage.setItem(DB_KEY,JSON.stringify(tiles))}
+function saveRecordings(){localStorage.setItem(MEDIA_KEY,JSON.stringify(recordings))}
+function saveMenuItems(){localStorage.setItem(MENU_KEY,JSON.stringify(customMenuItems))}
+function saveCodes(){localStorage.setItem('employeeCodes',JSON.stringify(codes))}
+function makeId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,9)}
+function esc(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function childrenOf(id){return tiles.filter(t=>t.parentId===id)}
+function mediaOf(id){return recordings.filter(r=>r.parentId===id)}
+function pageLabel(name){
+ if(name==='home')return 'پنل';
+ if(name==='people')return 'افراد';
+ if(name==='userChanges')return 'تغییرات صفحه‌ی کاربر';
+ return activeTile?.title||'صفحه';
 }
-function uid(){return 'p_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8)}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function closeMenu(){menuPop.classList.remove('open')}
-function showModal(html){modalContent.innerHTML=html;overlay.classList.add('open')}
-function closeModal(){overlay.classList.remove('open')}
-function getTiles(){return read(DB_KEY,[])}
-function putTiles(v){save(DB_KEY,v)}
-function getPages(){return read(PAGE_KEY,[])}
-function putPages(v){save(PAGE_KEY,v)}
-function getMenu(){return read(MENU_KEY,[])}
-function putMenu(v){save(MENU_KEY,v)}
+function pageForTile(tile){
+ return ['writing','audio','dropdown','button'].includes(tile.type)?'contentPage':'profilePage';
+}
+function applyTheme(color){
+ if(!COLORS.includes(color)&&!/^#[0-9a-f]{6}$/i.test(color))return;
+ selectedColor=color;
+ const r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16);
+ document.documentElement.style.setProperty('--accent',color);
+ document.documentElement.style.setProperty('--soft',`rgba(${r},${g},${b},.15)`);
+ localStorage.setItem(THEME_KEY,color);
+ $('shades').classList.remove('open');
+ $('palette').classList.remove('open');
+}
+applyTheme(selectedColor);
 
-function applyColor(hex){
-  if(!/^#[0-9a-f]{6}$/i.test(hex))hex='#8b5cf6';
-  const rgb={r:parseInt(hex.slice(1,3),16),g:parseInt(hex.slice(3,5),16),b:parseInt(hex.slice(5,7),16)};
-  document.documentElement.style.setProperty('--accent',hex);
-  document.documentElement.style.setProperty('--soft',`rgba(${rgb.r},${rgb.g},${rgb.b},.15)`);
-  save(COLOR_KEY,hex);
-}
-applyColor(read(COLOR_KEY,'#8b5cf6'));
-
-const colors=[
- ['بنفش','#8b5cf6'],['آبی','#2997ff'],['سبز','#20b981'],['صورتی','#ec4899'],
- ['نارنجی','#f97316'],['قرمز','#ef4444'],['فیروزه‌ای','#14b8a6'],
- ['طلایی','#eab308'],['یاسی','#a78bfa'],['آبی روشن','#38bdf8'],
- ['سبز روشن','#35d399'],['سرمه‌ای','#6366f1'],['صورتی روشن','#f472b6'],
- ['قهوه‌ای','#a16207'],['خاکستری','#94a3b8']
-];
-
-const standardMenu=[
- {id:'color',title:'🎨 انتخاب رنگ',kind:'color',target:'',scope:'global'},
- {id:'support-call',title:'تماس با پشتیبانی',kind:'supportCall',target:'',scope:'global'},
- {id:'support-message',title:'پیام به پشتیبانی',kind:'supportMessage',target:'',scope:'global'},
- {id:'exit-user',title:'خروج از صفحه کاربر',kind:'exitUser',target:'',scope:'userChanges'},
- {id:'exit-employee',title:'خروج از صفحه کارمند',kind:'exitEmployee',target:'',scope:'employee'},
- {id:'exit-people',title:'خروج از افراد',kind:'exitPeople',target:'',scope:'people'},
- {id:'exit-panel',title:'خروج از پنل',kind:'exitPanel',target:'',scope:'global'}
-];
-
-function ensureMenu(){
-  let items=getMenu();
-  for(const def of standardMenu){
-    if(!items.some(x=>x.id===def.id))items.push({...def});
-  }
-  putMenu(items);
-}
-ensureMenu();
-
-let state={
-  page:'home',
-  currentCustomPage:null,
-  activeTab:'user',
-  employeeCodes:read(EMPLOYEE_KEY,[])
-};
-
-function getCurrentPageId(){
-  return state.page==='custom'?state.currentCustomPage:state.page;
-}
-function pageTitle(){
-  if(state.page==='home')return'ورودی';
-  if(state.page==='people')return'افراد';
-  if(state.page==='userChanges')return'تغییرات صفحه کاربر';
-  if(state.page==='employee')return'صفحه کارمند';
-  if(state.page==='custom')return getPages().find(p=>p.id===state.currentCustomPage)?.title||'صفحه';
-  return'پنل';
-}
-function pageChain(id){
-  const result=[];
-  let page=getPages().find(p=>p.id===id),guard=0;
-  while(page&&guard++<100){
-    result.unshift(page.id);
-    page=getPages().find(p=>p.id===page.parentId);
-  }
-  return result;
-}
-function currentScope(){
-  if(state.page==='custom')return{scope:'custom',parentId:state.currentCustomPage};
-  return{scope:state.page,parentId:null};
-}
-function isVisible(item){
-  if(item.scope==='global'||!item.scope)return true;
-  if(item.scope==='custom'){
-    return state.page==='custom'&&pageChain(state.currentCustomPage).includes(item.parentId);
-  }
-  return item.scope===state.page;
-}
-function navigate(page,id=null){
-  closeMenu();
-  state.page=page;
-  state.currentCustomPage=page==='custom'?id:null;
-  render();
-}
-function goHome(){navigate('home')}
-function iconFor(type){
-  return({card:'▣',button:'🔘',dropdown:'▾',page:'📄',writing:'✍️',audio:'🎙️'})[type]||'▣';
-}
-function destinations(){
-  return[
-    ['userChanges','کاربر'],
-    ['employee','کارمند'],
-    ['home','ورودی'],
-    ['newPage','صفحه جدید'],
-    ['people','افراد'],
-    ...getPages().map(p=>[p.id,p.title])
-  ];
-}
-function targetSelect(selected){
-  return `<select name="target" required>${destinations().map(([v,l])=>`<option value="${esc(v)}" ${selected===v?'selected':''}>${esc(l)}</option>`).join('')}</select>`;
-}
-function openTarget(target){
-  if(target==='newPage'){createPageModal();return}
-  if(target==='custom'||getPages().some(p=>p.id===target)){navigate('custom',target);return}
-  if(target==='employee'){navigate('employee');return}
-  if(target==='people'){state.activeTab='user';navigate('people');return}
-  if(target==='user')target='userChanges';
-  if(['home','userChanges'].includes(target)){navigate(target);return}
-  navigate('home');
-}
-function render(){
-  menuBtn.style.display='flex';
-  menuAddBtn.classList.toggle('visible',state.page==='userChanges');
-  if(state.page==='home')renderHome();
-  else if(state.page==='people')renderPeople();
-  else if(state.page==='userChanges')renderUserChanges();
-  else if(state.page==='employee')renderEmployee();
-  else if(state.page==='custom')renderCustomPage();
-}
-
-function tileHTML(t,tools=true){
- return `<article class="tile">
- <div class="tile-main" data-activate="${esc(t.id)}">
- <div class="tile-icon">${esc(t.icon||iconFor(t.type))}</div>
- <div class="tile-title">${esc(t.title)}</div>
- ${t.description?`<div class="tile-description">${esc(t.description)}</div>`:''}
- </div>
- ${tools?`<div class="tile-tools">
- <button class="tool-btn delete-btn" data-delete-tile="${esc(t.id)}" title="حذف">×</button>
- <button class="tool-btn edit-btn" data-edit-tile="${esc(t.id)}" title="ویرایش">✎</button>
- </div>`:''}
- </article>`;
-}
-function renderHome(){
- const roots=getPages().filter(p=>!p.parentId);
- main.innerHTML=`<h1 class="page-title">ورودی پنل</h1>
- <p class="subtitle">بخش موردنظر را انتخاب کن.</p>
- <div class="grid">
- ${tileHTML({id:'root-user',title:'صفحه کاربر',icon:'👤',action:'userChanges'},false)}
- ${tileHTML({id:'root-people',title:'افراد',icon:'👥',action:'people'},false)}
- ${tileHTML({id:'root-employee',title:'صفحه کارمند',icon:'🧑‍💼',action:'employee'},false)}
- </div>
- <section class="section"><div class="section-heading"><h2>صفحه‌های ساخته‌شده</h2><button class="primary-btn" id="createPageBtn">+ صفحه جدید</button></div>
- <div class="grid">${roots.map(p=>tileHTML({id:p.id,title:p.title,icon:'📄'},false)).join('')||'<div class="empty">هنوز صفحه‌ای ساخته نشده است.</div>'}</div></section>`;
-}
-function renderUserChanges(){
- const arr=getTiles().filter(t=>t.scope==='userChanges');
- main.innerHTML=`<button class="secondary-btn back-btn" id="backHome">← بازگشت به ورودی</button>
- <h1 class="page-title">تغییرات صفحه کاربر</h1>
- <p class="subtitle">آیتم‌ها را اضافه، ویرایش یا حذف کن.</p>
- <section class="section"><div class="section-heading"><h2>محتوای صفحه کاربر</h2><button class="top-add visible" id="addTileBtn">+ افزودن آیتم</button></div>
- <div class="grid">${arr.map(t=>tileHTML(t)).join('')||'<div class="empty">هنوز آیتمی ساخته نشده است.</div>'}</div></section>`;
-}
-function renderPeople(){
- main.innerHTML=`<button class="secondary-btn back-btn" id="backHome">← بازگشت به ورودی</button>
- <h1 class="page-title">افراد</h1><p class="subtitle">مدیریت بخش کاربر و کارمند.</p>
- <div class="tabs">
- <button class="tab-btn ${state.activeTab==='user'?'active':''}" data-tab="user">کاربر</button>
- <button class="tab-btn ${state.activeTab==='employee'?'active':''}" data-tab="employee">کارمند</button>
- </div>
- ${state.activeTab==='user'?`<div class="panel"><h2>صفحه کاربر</h2><button class="primary-btn" id="openUserChanges">تغییرات صفحه کاربر</button></div>`:
- `<div class="panel"><div class="section-heading"><h2>کدهای کارمند</h2><button class="primary-btn" id="addEmployeeCode">+ افزودن کد</button></div>
- ${state.employeeCodes.map((c,i)=>`<div class="list-row"><span>${esc(typeof c==='string'?c:c.code||'')}</span><button class="tool-btn delete-btn" data-delete-code="${i}">×</button></div>`).join('')||'<div class="empty">هنوز کدی ثبت نشده است.</div>'}
- <button class="secondary-btn" id="openEmployeePage">ورود به صفحه کارمند</button></div>`}`;
-}
-function renderEmployee(){
- const arr=getTiles().filter(t=>t.scope==='employee');
- main.innerHTML=`<button class="secondary-btn back-btn" id="backHome">← بازگشت به ورودی</button>
- <h1 class="page-title">صفحه کارمند</h1>
- <p class="subtitle">محتوای مخصوص کارمند در این صفحه نگهداری می‌شود.</p>
- <section class="section"><div class="section-heading"><h2>آیتم‌های کارمند</h2><button class="primary-btn" id="addEmployeeTile">+ افزودن آیتم</button></div>
- <div class="grid">${arr.map(t=>tileHTML(t)).join('')||'<div class="empty">هنوز آیتمی برای کارمند ساخته نشده است.</div>'}</div>
- <div class="panel" style="margin-top:16px"><div class="field"><label>کد کارمند</label><input id="employeeLoginCode" placeholder="کد کارمند را وارد کنید"></div><button class="secondary-btn" id="employeeLogin">بررسی کد</button></div></section>`;
-}
-function renderCustomPage(){
- const p=getPages().find(x=>x.id===state.currentCustomPage);
- if(!p){goHome();return}
- const children=getPages().filter(x=>x.parentId===p.id);
- const arr=getTiles().filter(t=>t.scope==='custom'&&t.parentId===p.id);
- main.innerHTML=`<button class="secondary-btn back-btn" id="backHome">← بازگشت به ورودی</button>
- <h1 class="page-title">${esc(p.title)}</h1><p class="subtitle">صفحه سفارشی</p>
- <section class="section"><div class="section-heading"><h2>زیرصفحه‌ها</h2><button class="primary-btn" id="addSubPage">+ صفحه جدید</button></div>
- <div class="grid">${children.map(c=>tileHTML({id:c.id,title:c.title,icon:'📄'},false)).join('')||'<div class="empty">زیرصفحه‌ای وجود ندارد.</div>'}</div></section>
- <section class="section"><div class="section-heading"><h2>محتوای صفحه</h2><button class="primary-btn" id="addCustomTile">+ افزودن آیتم</button></div>
- <div class="grid">${arr.map(t=>tileHTML(t)).join('')||'<div class="empty">هنوز آیتمی ساخته نشده است.</div>'}</div></section>`;
-}
-function createPageModal(prefill='',parentOverride){
- const parent=parentOverride===undefined?(state.page==='custom'?state.currentCustomPage:null):parentOverride;
- showModal(`<h2>ساخت صفحه جدید</h2>
- <div class="field"><label>عنوان صفحه</label><input id="newPageTitle" value="${esc(prefill)}" placeholder="عنوان صفحه" required></div>
- <div class="modal-actions"><button class="primary-btn" id="saveNewPage">ساخت صفحه</button><button class="secondary-btn" data-close>انصراف</button></div>`);
- $('#saveNewPage').onclick=()=>{
-  const title=$('#newPageTitle').value.trim();
-  if(!title)return alert('عنوان صفحه را وارد کن.');
-  const p={id:uid(),title,parentId:parent||null};
-  putPages([...getPages(),p]);closeModal();navigate('custom',p.id);
- };
-}
-function addTileForm(scope,parentId=null){
- showModal(`<h2>افزودن آیتم</h2>
- <div class="field"><label>نوع آیتم</label><select id="newTileType">
- <option value="card">کارت</option><option value="button">دکمه</option><option value="dropdown">منوی کشویی</option><option value="page">صفحه</option><option value="writing">نوشته</option><option value="audio">ضبط صوت</option></select></div>
- <div class="field"><label>ورود به صفحه‌ی...</label>${targetSelect('userChanges')}</div>
- <div class="field"><label>عنوان</label><input id="newTileTitle" required placeholder="عنوان آیتم"></div>
- <div class="field"><label>توضیحات (اختیاری)</label><textarea id="newTileDescription"></textarea></div>
- <div class="modal-actions"><button class="primary-btn" id="saveNewTile">ساخت آیتم</button><button class="secondary-btn" data-close>انصراف</button></div>`);
- $('#saveNewTile').onclick=()=>{
-  const title=$('#newTileTitle').value.trim(),type=$('#newTileType').value,target=$('[name="target"]',modalContent).value;
-  if(!title)return alert('عنوان را وارد کن.');
-  if(type==='page'||target==='newPage'){
-   closeModal();createPageModal(title,parentId);return;
-  }
-  const t={id:uid(),title,type,icon:iconFor(type),target,description:$('#newTileDescription').value.trim(),scope,parentId:scope==='custom'?parentId:null};
-  putTiles([...getTiles(),t]);closeModal();render();
- };
-}
-function editTile(id){
- const t=getTiles().find(x=>x.id===id);if(!t)return;
- showModal(`<h2>ویرایش آیتم</h2>
- <div class="field"><label>ورود به صفحه‌ی...</label>${targetSelect(t.target||'userChanges')}</div>
- <div class="field"><label>عنوان</label><input id="editTileTitle" value="${esc(t.title)}" required></div>
- <div class="field"><label>نوع آیتم</label><select id="editTileType">${[['card','کارت'],['button','دکمه'],['dropdown','منوی کشویی'],['page','صفحه'],['writing','نوشته'],['audio','ضبط صوت']].map(([v,l])=>`<option value="${v}" ${t.type===v?'selected':''}>${l}</option>`).join('')}</select></div>
- <div class="field"><label>توضیحات</label><textarea id="editTileDesc">${esc(t.description||'')}</textarea></div>
- <div class="modal-actions"><button class="primary-btn" id="saveTileEdit">ذخیره</button><button class="secondary-btn" data-close>انصراف</button></div>`);
- $('#saveTileEdit').onclick=()=>{
-  const title=$('#editTileTitle').value.trim();if(!title)return alert('عنوان را وارد کن.');
-  const target=$('[name="target"]',modalContent).value;
-  putTiles(getTiles().map(x=>x.id===id?{...x,title,target,type:$('#editTileType').value,icon:iconFor($('#editTileType').value),description:$('#editTileDesc').value.trim()}:x));
-  closeModal();render();
- };
-}
-function deleteTile(id){
- const t=getTiles().find(x=>x.id===id);if(!t)return;
- if(!confirm(`آیتم «${t.title}» حذف شود؟`))return;
- putTiles(getTiles().filter(x=>x.id!==id));render();
-}
-function openPalette(){
- showModal(`<h2>🎨 انتخاب رنگ</h2>
- <div class="palette">${colors.map(([n,c])=>`<button class="swatch" style="background:${c}" data-color="${c}" title="${n}"></button>`).join('')}</div>
- <div class="field" style="margin-top:16px"><label>رنگ دلخواه</label><input type="color" id="customColor" value="${esc(read(COLOR_KEY,'#8b5cf6'))}"></div>
- <div class="modal-actions"><button class="primary-btn" id="applyColorBtn">اعمال رنگ</button><button class="secondary-btn" data-close>بستن</button></div>`);
- modalContent.querySelectorAll('[data-color]').forEach(b=>b.onclick=()=>{applyColor(b.dataset.color);closeModal()});
- $('#applyColorBtn').onclick=()=>{applyColor($('#customColor').value);closeModal()};
-}
-function addMenuItem(){
- showModal(`<h2>افزودن گزینه منو</h2>
- <div class="field"><label>ورود به صفحه‌ی...</label>${targetSelect('userChanges')}</div>
- <div class="notice">عنوان پیش‌فرض «🎨 انتخاب رنگ» است. بعداً با مداد می‌توانی آن را تغییر بدهی.</div>
- <div class="modal-actions"><button class="primary-btn" id="saveNewMenu">افزودن گزینه</button><button class="secondary-btn" data-close>انصراف</button></div>`);
- $('#saveNewMenu').onclick=()=>{
-  const target=$('[name="target"]',modalContent).value;
-  if(target==='newPage'){
-   closeModal();
-   createPageModal('',state.page==='custom'?state.currentCustomPage:null);
-   return;
-  }
-  putMenu([...getMenu(),{id:uid(),title:'🎨 انتخاب رنگ',kind:'custom',target,...currentScope()}]);
-  closeModal();renderMenu();
- };
-}
-function editMenuItem(id){
- const item=getMenu().find(x=>x.id===id);if(!item)return;
- showModal(`<h2>ویرایش گزینه منو</h2>
- <div class="field"><label>ورود به صفحه‌ی...</label>${targetSelect(item.target||'home')}</div>
- <div class="field"><label>عنوان</label><input id="editMenuTitle" value="${esc(item.title)}" required></div>
- <div class="modal-actions"><button class="primary-btn" id="saveMenuEdit">ذخیره</button><button class="secondary-btn" data-close>انصراف</button></div>`);
- $('#saveMenuEdit').onclick=()=>{
-  const title=$('#editMenuTitle').value.trim();if(!title)return alert('عنوان را وارد کن.');
-  const target=$('[name="target"]',modalContent).value;
-  putMenu(getMenu().map(x=>x.id===id?{...x,title,target}:x));
-  closeModal();renderMenu();
- };
-}
-function deleteMenuItem(id){
- const item=getMenu().find(x=>x.id===id);if(!item)return;
- if(!confirm(`گزینه «${item.title}» حذف شود؟`))return;
- putMenu(getMenu().filter(x=>x.id!==id));renderMenu();
-}
-function renderMenu(){
- const visible=getMenu().filter(isVisible);
- menuPop.innerHTML=`<div class="menu-heading">منو · ${esc(pageTitle())}</div>
- ${visible.map(item=>`<div class="menu-item">
- <div class="menu-label" data-menu-action="${esc(item.id)}">${esc(item.title)}</div>
- <div class="menu-tools">
- <button class="tool-btn delete-btn" data-delete-menu="${esc(item.id)}" title="حذف">×</button>
- <button class="tool-btn edit-btn" data-edit-menu="${esc(item.id)}" title="ویرایش">✎</button>
- </div></div>`).join('')||'<div class="empty">گزینه‌ای برای این صفحه وجود ندارد.</div>'}`;
-}
-function runMenuItem(item){
+function openPage(name,push=true,nextTile=activeTile){
+ if(push&&currentPage!==name)navStack.push({page:currentPage,tile:activeTile});
+ currentPage=name;
+ activeTile=nextTile||null;
+ document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===name));
  closeMenu();
- if(item.kind==='color'){openPalette();return}
- if(item.kind==='supportCall'){
-  showModal(`<h2>تماس با پشتیبانی</h2><div class="field"><label>شماره تماس</label><input id="supportPhone" placeholder="شماره تماس پشتیبانی"></div><div class="modal-actions"><button class="primary-btn" id="callSupport">تماس</button><button class="secondary-btn" data-close>بستن</button></div>`);
-  $('#callSupport').onclick=()=>{const n=$('#supportPhone').value.trim();if(!n)return alert('شماره را وارد کن.');location.href='tel:'+n};return;
- }
- if(item.kind==='supportMessage'){
-  showModal(`<h2>پیام به پشتیبانی</h2><div class="field"><label>پیام</label><textarea id="supportMessageText" placeholder="پیامت را بنویس"></textarea></div><div class="modal-actions"><button class="primary-btn" id="saveSupportMessage">ذخیره پیام</button><button class="secondary-btn" data-close>بستن</button></div><div class="notice">ارسال واقعی پیام نیاز به اتصال سرویس پشتیبانی دارد.</div>`);
-  $('#saveSupportMessage').onclick=()=>{const text=$('#supportMessageText').value.trim();if(!text)return alert('پیام را بنویس.');save(SUPPORT_KEY,{...read(SUPPORT_KEY,{}),supportMessage:text});alert('پیام ذخیره شد.')};return;
- }
- if(item.kind==='exitUser'){navigate('home');return}
- if(item.kind==='exitEmployee'){navigate('people');state.activeTab='employee';renderPeople();return}
- if(item.kind==='exitPeople'){navigate('home');return}
- if(item.kind==='exitPanel'){if(confirm('از پنل خارج شوی و به ورودی برگردی؟'))navigate('home');return}
- openTarget(item.target||'home');
+ renderDynamicExits();
+ renderCurrent();
+ window.scrollTo(0,0);
 }
-function activateTile(id){
- if(id==='root-user'){navigate('userChanges');return}
- if(id==='root-people'){state.activeTab='user';navigate('people');return}
- if(id==='root-employee'){navigate('employee');return}
- const p=getPages().find(x=>x.id===id);
- if(p){navigate('custom',p.id);return}
- const t=getTiles().find(x=>x.id===id);if(!t)return;
- if(t.type==='writing'){
-  showModal(`<h2>${esc(t.title)}</h2><p class="subtitle">${esc(t.description||'')}</p><div class="modal-actions"><button class="secondary-btn" data-close>بستن</button></div>`);return;
- }
- if(t.type==='audio'){showAudio(t);return}
- if(t.type==='dropdown'){
-  showModal(`<h2>${esc(t.title)}</h2><div class="field"><label>انتخاب مقصد</label>${targetSelect(t.target||'userChanges')}</div><div class="modal-actions"><button class="primary-btn" id="goDropdown">ورود</button><button class="secondary-btn" data-close>بستن</button></div>`);
-  $('#goDropdown').onclick=()=>{const target=$('[name="target"]',modalContent).value;closeModal();openTarget(target)};return;
- }
- openTarget(t.target||'userChanges');
+function closeMenu(){
+ $('menu').classList.remove('open');
+ $('addMenuItem').style.display='none';
 }
-function showAudio(t){
- showModal(`<h2>${esc(t.title||'ضبط صوت')}</h2><button class="primary-btn" id="startRecording">شروع ضبط</button><button class="secondary-btn" data-close>بستن</button><div id="recordStatus" class="notice"></div><audio id="audioPreview" controls style="display:none;width:100%;margin-top:12px"></audio>`);
- let recorder=null,parts=[],stream=null;
- $('#startRecording').onclick=async()=>{
-  if(recorder&&recorder.state==='recording'){recorder.stop();return}
-  try{
-   stream=await navigator.mediaDevices.getUserMedia({audio:true});
-   recorder=new MediaRecorder(stream);parts=[];
-   recorder.ondataavailable=e=>{if(e.data.size)parts.push(e.data)};
-   recorder.onstop=()=>{
-    const audio=$('#audioPreview');audio.src=URL.createObjectURL(new Blob(parts,{type:'audio/webm'}));audio.style.display='block';
-    $('#recordStatus').textContent='ضبط تمام شد.';
-    stream.getTracks().forEach(track=>track.stop());
-    $('#startRecording').textContent='ضبط دوباره';
+function goBack(){
+ const previous=navStack.pop();
+ if(previous){openPage(previous.page,false,previous.tile)}
+ else{navStack=[];openPage('userChanges',false,null)}
+}
+function getRootTile(tile){
+ let node=tile;
+ const seen=new Set();
+ while(node?.parentId&&!seen.has(node.id)){
+  seen.add(node.id);
+  const parent=tiles.find(t=>t.id===node.parentId);
+  if(!parent)break;
+  node=parent;
+ }
+ return node||null;
+}
+function renderDynamicExits(){
+ const root=$('dynamicExitOptions');
+ root.replaceChildren();
+
+ let label='';
+ let handler=null;
+
+ if(currentPage==='people'){
+  label='افراد';
+  handler=()=>openPage('home',false,null);
+ }else if(currentPage==='userChanges'){
+  label='تغییرات صفحه‌ی کاربر';
+  handler=()=>openPage('home',false,null);
+ }else if(['contentPage','profilePage'].includes(currentPage)&&activeTile){
+  const section=getRootTile(activeTile);
+  if(section){
+   label=section.title;
+   handler=()=>{
+    if(activeTile.id!==section.id){
+     openPage(pageForTile(section),false,section);
+    }else{
+     openPage('userChanges',false,null);
+    }
    };
-   recorder.start();$('#recordStatus').textContent='در حال ضبط...';$('#startRecording').textContent='پایان ضبط';
-  }catch(e){$('#recordStatus').textContent='دسترسی به میکروفون ممکن نیست.'}
+  }
+ }
+
+ if(!label)return;
+
+ const button=document.createElement('button');
+ button.className='menu-action';
+ button.textContent='↩ خروج از '+label;
+ button.onclick=()=>{closeMenu();handler()};
+ root.append(button);
+}
+
+function defaultMenuItems(){
+ return [
+  {id:'builtin-color',title:'🎨 انتخاب رنگ',kind:'color',target:'user'},
+  {id:'builtin-support',title:'تماس با پشتیبانی',kind:'support',target:'user'},
+  {id:'builtin-message',title:'پیام به پشتیبانی',kind:'message',target:'user'}
+ ];
+}
+function getAllMenuItems(){
+ const defaults=defaultMenuItems().map(item=>{
+  const override=customMenuItems.find(x=>x.id===item.id);
+  return override?{...item,...override,builtin:true}:{...item,builtin:true};
+ }).filter(item=>!item.hidden);
+
+ const custom=customMenuItems.filter(x=>
+  !x.builtin&&
+  !['builtin-color','builtin-support','builtin-message'].includes(x.id)&&
+  !x.hidden
+ );
+ return defaults.concat(custom);
+}
+function renderMenuItems(){
+ const root=$('menuItems');
+ root.replaceChildren();
+ getAllMenuItems().forEach(item=>{
+  const row=document.createElement('div');
+  row.className='menu-item';
+
+  const action=document.createElement('button');
+  action.className='menu-action';
+  action.textContent=(item.icon?item.icon+' ':'')+item.title;
+  action.onclick=()=>activateMenuItem(item);
+
+  const tools=document.createElement('div');
+  tools.className='menu-tools';
+
+  const del=document.createElement('button');
+  del.className='menu-tool menu-delete';
+  del.title='حذف';
+  del.setAttribute('aria-label','حذف '+item.title);
+  del.textContent='×';
+  del.onclick=e=>{e.stopPropagation();deleteMenuItem(item)};
+
+  tools.append(del);
+  row.append(action,tools);
+  root.append(row);
+ });
+}
+function activateMenuItem(item){
+ if(item.kind==='color'){
+  $('palette').classList.toggle('open');
+  $('shades').classList.remove('open');
+  return;
+ }
+ if(item.kind==='support'){
+  showModal(`<h2>${esc(item.title)}</h2><p>برای تماس با پشتیبانی، اطلاعات تماس خود را در این بخش تنظیم کنید.</p><label>شماره یا راه ارتباطی پشتیبانی</label><input id="supportContact" placeholder="شماره تلفن، ایمیل یا نشانی پشتیبانی"><div class="modal-actions"><button class="primary" id="saveSupport">ذخیره</button><button class="secondary" id="cancelSupport">بستن</button></div>`);
+  $('supportContact').value=item.contact||'';
+  $('cancelSupport').onclick=closeModal;
+  $('saveSupport').onclick=()=>{
+   const value=$('supportContact').value.trim();
+   updateMenuItem(item.id,{contact:value});
+   closeModal();
+  };
+  return;
+ }
+ if(item.kind==='message'){
+  showModal(`<h2>${esc(item.title)}</h2><label>پیام شما</label><textarea id="supportMessage" placeholder="پیام خود را بنویسید"></textarea><div class="modal-actions"><button class="primary" id="sendMessage">ثبت پیام</button><button class="secondary" id="cancelMessage">انصراف</button></div><div class="message" id="messageStatus"></div>`);
+  $('cancelMessage').onclick=closeModal;
+  $('sendMessage').onclick=()=>{
+   const text=$('supportMessage').value.trim();
+   if(!text){$('messageStatus').textContent='لطفاً پیام خود را بنویسید.';return}
+   const messages=readArray('shn_support_messages');
+   messages.push({id:makeId(),text,createdAt:new Date().toISOString()});
+   try{localStorage.setItem('shn_support_messages',JSON.stringify(messages));$('messageStatus').textContent='پیام در این دستگاه ثبت شد.'}
+   catch(e){$('messageStatus').textContent='ذخیره‌ی پیام انجام نشد.'}
+  };
+  return;
+ }
+
+ const target=item.target||'user';
+ closeMenu();
+ if(target==='employee'){
+  openPage('people',true,null);
+  document.querySelector('[data-tab="employee"]').click();
+ }else if(target==='input'){
+  openPage('userChanges',true,null);
+ }else{
+  openPage('people',true,null);
+ }
+}
+function updateMenuItem(id,changes){
+ const current=getAllMenuItems().find(x=>x.id===id);
+ if(!current)return;
+ const updated={...current,...changes};
+ const index=customMenuItems.findIndex(x=>x.id===id);
+ if(index>=0)customMenuItems[index]=updated;
+ else customMenuItems.push({...updated,builtin:false});
+ try{saveMenuItems();renderMenuItems()}
+ catch(e){alert('ذخیره‌ی تغییرات منو انجام نشد.')}
+}
+function deleteMenuItem(item){
+ if(!confirm(`گزینه‌ی «${item.title}» حذف شود؟`))return;
+ if(item.builtin){
+  const index=customMenuItems.findIndex(x=>x.id===item.id);
+  if(index>=0)customMenuItems[index]={...customMenuItems[index],hidden:true};
+  else customMenuItems.push({...item,hidden:true,builtin:false});
+ }else{
+  customMenuItems=customMenuItems.filter(x=>x.id!==item.id);
+ }
+ try{saveMenuItems();renderMenuItems()}
+ catch(e){alert('حذف گزینه ذخیره نشد.')}
+}
+function showMenuEditor(){
+ showModal(`
+  <h2>افزودن گزینه به منو</h2>
+  <label for="menuEmoji">ایموجی (اختیاری)</label>
+  <input id="menuEmoji" maxlength="8" placeholder="مثلاً 📚">
+  <label for="menuTitle">عنوان</label>
+  <input id="menuTitle" placeholder="عنوان گزینه">
+  <label for="menuTarget">ورود به صفحه‌ی...</label>
+  <select id="menuTarget">
+   <option value="user">کاربر</option>
+   <option value="employee">کارمند</option>
+   <option value="input">ورودی</option>
+  </select>
+  <div class="modal-actions">
+   <button class="primary" id="saveMenuItem">ذخیره</button>
+   <button class="secondary" id="cancelMenuItem">انصراف</button>
+  </div>`);
+ $('cancelMenuItem').onclick=closeModal;
+ $('saveMenuItem').onclick=()=>{
+  const title=$('menuTitle').value.trim();
+  const icon=$('menuEmoji').value.trim();
+  const target=$('menuTarget').value;
+  if(!title){alert('لطفاً عنوان را وارد کنید.');return}
+  customMenuItems.push({id:makeId(),title,icon,kind:'route',target,builtin:false});
+  try{saveMenuItems();closeModal();renderMenuItems()}
+  catch(e){alert('ذخیره‌ی گزینه انجام نشد.')}
  };
 }
 
+$('menuBtn').onclick=()=>{
+ const opening=!$('menu').classList.contains('open');
+ $('menu').classList.toggle('open',opening);
+ $('addMenuItem').style.display=opening?'grid':'none';
+ if(opening)renderMenuItems();
+};
+$('addMenuItem').onclick=()=>{
+ closeMenu();
+ showMenuEditor();
+};
+$('exitPanelBtn').onclick=()=>{
+ navStack=[];
+ openPage('home',false,null);
+};
 document.addEventListener('click',e=>{
- const close=e.target.closest('[data-close]');
- if(close){closeModal();return}
- const dm=e.target.closest('[data-delete-menu]');
- if(dm){e.stopPropagation();deleteMenuItem(dm.dataset.deleteMenu);return}
- const em=e.target.closest('[data-edit-menu]');
- if(em){e.stopPropagation();editMenuItem(em.dataset.editMenu);return}
- const ma=e.target.closest('[data-menu-action]');
- if(ma){const item=getMenu().find(x=>x.id===ma.dataset.menuAction);if(item)runMenuItem(item);return}
- const dt=e.target.closest('[data-delete-tile]');
- if(dt){e.stopPropagation();deleteTile(dt.dataset.deleteTile);return}
- const et=e.target.closest('[data-edit-tile]');
- if(et){e.stopPropagation();editTile(et.dataset.editTile);return}
- const ac=e.target.closest('[data-activate]');
- if(ac){activateTile(ac.dataset.activate);return}
- if(e.target.closest('#backHome')){goHome();return}
- if(e.target.closest('#createPageBtn')){createPageModal();return}
- if(e.target.closest('#addTileBtn')){addTileForm('userChanges');return}
- if(e.target.closest('#addEmployeeTile')){addTileForm('employee');return}
- if(e.target.closest('#addCustomTile')){addTileForm('custom',state.currentCustomPage);return}
- if(e.target.closest('#addSubPage')){createPageModal('',state.currentCustomPage);return}
- if(e.target.closest('#openUserChanges')){navigate('userChanges');return}
- if(e.target.closest('#openEmployeePage')){navigate('employee');return}
- const tab=e.target.closest('[data-tab]');
- if(tab){state.activeTab=tab.dataset.tab;renderPeople();return}
- if(e.target.closest('#addEmployeeCode')){
-  showModal(`<h2>افزودن کد کارمند</h2><div class="field"><label>کد کارمند</label><input id="newEmployeeCode" required></div><div class="modal-actions"><button class="primary-btn" id="saveEmployeeCode">ذخیره</button><button class="secondary-btn" data-close>انصراف</button></div>`);
-  $('#saveEmployeeCode').onclick=()=>{
-   const code=$('#newEmployeeCode').value.trim();if(!code)return alert('کد را وارد کن.');
-   state.employeeCodes.push(code);save(EMPLOYEE_KEY,state.employeeCodes);closeModal();renderPeople();
-  };return;
- }
- const dc=e.target.closest('[data-delete-code]');
- if(dc){if(!confirm('این کد حذف شود؟'))return;state.employeeCodes.splice(Number(dc.dataset.deleteCode),1);save(EMPLOYEE_KEY,state.employeeCodes);renderPeople();return}
- if(e.target.closest('#employeeLogin')){
-  const code=$('#employeeLoginCode').value.trim();
-  alert(state.employeeCodes.some(c=>(typeof c==='string'?c:c.code)===code)?'کد کارمند تأیید شد.':'کد کارمند ثبت نشده است.');
- }
+ if(!e.target.closest('.menu-wrap')&&!e.target.closest('#addMenuItem'))closeMenu();
 });
 
-menuBtn.addEventListener('click',()=>{
- renderMenu();
- menuPop.classList.toggle('open');
-});
-menuAddBtn.addEventListener('click',()=>{
- closeMenu();addMenuItem();
-});
-document.addEventListener('click',e=>{
- if(!menuPop.contains(e.target)&&!menuBtn.contains(e.target)&&!menuAddBtn.contains(e.target))closeMenu();
-});
-overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeMenu()}});
+function renderPalette(){
+ const palette=$('palette');
+ palette.replaceChildren();
+ COLORS.forEach(color=>{
+  const button=document.createElement('button');
+  button.className='swatch';button.style.background=color;button.title='انتخاب رنگ';
+  button.setAttribute('aria-label','انتخاب رنگ '+color);
+  button.onclick=()=>{
+   applyTheme(color);
+   $('palette').classList.add('open');
+   renderShades(color);
+  };
+  palette.append(button);
+ });
+}
+function renderShades(color){
+ const root=$('shades');root.replaceChildren();root.classList.add('open');
+ const rgb=[1,3,5].map(i=>parseInt(color.slice(i,i+2),16));
+ [0.25,0.4,0.55,0.7,0.85,1].forEach(amount=>{
+  const shade=rgb.map(v=>Math.round(v*amount+255*(1-amount)));
+  const hex='#'+shade.map(v=>v.toString(16).padStart(2,'0')).join('');
+  const button=document.createElement('button');button.className='shade';button.style.background=hex;
+  button.title='انتخاب این طیف';button.onclick=()=>applyTheme(hex);
+  root.append(button);
+ });
+}
+renderPalette();
+renderMenuItems();
 
-render();
+document.querySelectorAll('[data-open]').forEach(button=>{
+ button.addEventListener('click',()=>openPage(button.dataset.open,true,null));
+});
+document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===tab));
+ $('userSection').style.display=tab.dataset.tab==='user'?'block':'none';
+ $('employeeSection').style.display=tab.dataset.tab==='employee'?'block':'none';
+});
+$('showAddForm').onclick=()=>{
+ $('employeeForm').style.display='block';$('showAddForm').style.display='none';
+ $('formMessage').textContent='';$('code1').focus();
+};
+$('cancelAdd').onclick=()=>{
+ $('employeeForm').reset();$('employeeForm').style.display='none';
+ $('showAddForm').style.display='inline-block';$('formMessage').textContent='';
+};
+function showMessage(text,type){$('formMessage').className='message '+type;$('formMessage').textContent=text}
+function renderCodes(){
+ const list=$('codeList');list.replaceChildren();
+ if(!codes.length){
+  const empty=document.createElement('div');empty.className='empty';empty.textContent='هنوز کدی ثبت نشده است.';list.append(empty);return;
+ }
+ codes.forEach((code,index)=>{
+  const row=document.createElement('div');row.className='code-item';
+  const text=document.createElement('span');text.className='code-text';text.textContent=code;
+  const actions=document.createElement('div');actions.className='code-actions';
+  const copy=document.createElement('button');copy.className='copy';copy.textContent='کپی کد';
+  copy.onclick=async()=>{
+   try{
+    if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(code);
+    else{
+     const temp=document.createElement('textarea');temp.value=code;
+     temp.style.position='fixed';temp.style.opacity='0';document.body.append(temp);
+     temp.select();const ok=document.execCommand('copy');temp.remove();if(!ok)throw Error();
+    }
+    copy.textContent='کپی شد ✓';
+    setTimeout(()=>{if(copy.isConnected)copy.textContent='کپی کد'},1200);
+   }catch(e){showMessage('کپی خودکار نشد؛ کد را دستی کپی کنید.','error')}
+  };
+  const del=document.createElement('button');del.className='delete';del.textContent='حذف';
+  del.onclick=()=>{
+   if(!confirm('آیا از حذف این کد مطمئن هستید؟'))return;
+   const old=[...codes];codes.splice(index,1);
+   try{saveCodes();renderCodes();showMessage('کد حذف شد.','success')}
+   catch(e){codes=old;renderCodes();showMessage('ذخیره‌ی حذف انجام نشد.','error')}
+  };
+  actions.append(copy,del);row.append(text,actions);list.append(row);
+ });
+}
+$('employeeForm').onsubmit=e=>{
+ e.preventDefault();
+ const code=$('code1').value.trim();
+ if(!code)return showMessage('لطفاً کد کارمند را وارد کنید.','error');
+ if(codes.some(x=>x.toLowerCase()===code.toLowerCase()))return showMessage('این کد قبلاً ثبت شده است.','error');
+ const old=[...codes];codes.push(code);
+ try{
+  saveCodes();renderCodes();$('employeeForm').reset();
+  $('employeeForm').style.display='none';$('showAddForm').style.display='inline-block';
+  showMessage('کد با موفقیت اضافه شد.','success');
+ }catch(e){codes=old;showMessage('ذخیره‌ی کد انجام نشد.','error')}
+};
+renderCodes();
+
+function showModal(html){$('modal').innerHTML=html;$('modalBg').classList.add('open')}
+function closeModal(){$('modalBg').classList.remove('open')}
+$('modalBg').onclick=e=>{if(e.target===$('modalBg'))closeModal()};
+$('addRoot').onclick=()=>showTypePicker(null);
+$('addInside').onclick=()=>showTypePicker(activeTile?.id||null);
+$('addProfileInside').onclick=()=>showTypePicker(activeTile?.id||null);
+$('contentBack').onclick=goBack;
+$('profileBack').onclick=goBack;
+
+function showTypePicker(parentId){
+ showModal(`
+  <h2>چه چیزی می‌خواهید بسازید؟</h2>
+  <p>نوع مورد را انتخاب کنید.</p>
+  <button class="type-option" data-type="card">▦ کارت</button>
+  <button class="type-option" data-type="button">↗ دکمه</button>
+  <button class="type-option" data-type="dropdown">⌄ دکمه‌ی کشویی</button>
+  <button class="type-option" data-type="page">▤ صفحه‌ی جدید</button>
+  <button class="type-option" data-type="writing">✎ نوشته</button>
+  <button class="type-option" data-type="audio">🎙 ضبط صوت</button>
+  <div class="modal-actions"><button class="secondary" id="cancelType">انصراف</button></div>`);
+ $('cancelType').onclick=closeModal;
+ $('modal').querySelectorAll('[data-type]').forEach(button=>button.onclick=()=>{
+  const type=button.dataset.type;closeModal();
+  if(type==='audio')showAudioRecorder(parentId);
+  else showEditor(type,null,parentId);
+ });
+}
+
+function showEditor(type,item,parentId){
+ const isProfile=['card','page'].includes(type);
+ const imageField=isProfile?`<label>نشانی تصویر (اختیاری)</label><input id="fieldImage" value="${esc(item?.image||'')}" placeholder="https://...">`:'';
+ const optionsField=type==='dropdown'?`<label>گزینه‌های منوی کشویی (هر گزینه در یک خط)</label><textarea id="fieldOptions" placeholder="گزینه‌ی اول&#10;گزینه‌ی دوم">${esc((item?.options||[]).join('\n'))}</textarea>`:'';
+ const writingField=type==='writing'?`<label>متن نوشته</label><textarea id="writingText" style="min-height:180px" placeholder="نوشته‌ی خود را وارد کنید">${esc(item?.body||'')}</textarea>`:'';
+ const actionField=`
+  <label>با کلیک روی مورد چه اتفاقی بیفتد؟</label>
+  <select id="fieldAction">
+   <option value="profile">باز کردن صفحه‌ی همین مورد</option>
+   <option value="page">باز کردن صفحه‌ی جدید</option>
+   <option value="home">رفتن به صفحه‌ی اصلی پنل</option>
+   <option value="people">رفتن به افراد</option>
+   <option value="employee">رفتن به بخش کارمند</option>
+   <option value="none">بدون انتقال</option>
+  </select>
+  <div id="targetWrap"><label>عنوان صفحه‌ی جدید</label><input id="fieldTarget" value="${esc(item?.target||'')}" placeholder="نام صفحه"></div>`;
+ const profileFields=isProfile?`
+  <h2 style="margin-top:22px">اطلاعات صفحه</h2>
+  <label>نام</label><input id="firstName" value="${esc(item?.info?.firstName||'')}" placeholder="نام">
+  <label>نام خانوادگی</label><input id="lastName" value="${esc(item?.info?.lastName||'')}" placeholder="نام خانوادگی">
+  <label>ایمیل</label><input id="email" type="email" value="${esc(item?.info?.email||'')}" placeholder="ایمیل">
+  <label>شماره تلفن</label><input id="phone" value="${esc(item?.info?.phone||'')}" placeholder="شماره تلفن">
+  <label>رمز عبور</label><input id="password" type="password" value="${esc(item?.info?.password||'')}" placeholder="رمز عبور">
+  <label>اطلاعات بیشتر</label><textarea id="extraInfo" placeholder="اطلاعات بیشتر">${esc(item?.info?.extra||'')}</textarea>`:'';
+
+ const typeNames={card:'کارت',button:'دکمه',dropdown:'دکمه‌ی کشویی',page:'صفحه‌ی جدید',writing:'نوشته'};
+ showModal(`
+  <h2>${item?'ویرایش':'ساخت'} ${typeNames[type]||'مورد'}</h2>
+  <label>عنوان اصلی</label><input id="fieldTitle" value="${esc(item?.title||'')}" placeholder="عنوان را وارد کنید">
+  <label>توضیحات زیر عنوان</label><textarea id="fieldDescription" placeholder="توضیحات">${esc(item?.description||'')}</textarea>
+  ${imageField}${optionsField}${writingField}${actionField}${profileFields}
+  <div class="modal-actions">
+   <button class="primary" id="confirmTile">تأیید</button>
+   <button class="secondary" id="cancelEditor">انصراف</button>
+  </div>`);
+ const action=$('fieldAction');
+ action.value=item?.action||'profile';
+ $('targetWrap').style.display=action.value==='page'?'block':'none';
+ action.onchange=()=>{$('targetWrap').style.display=action.value==='page'?'block':'none'};
+ $('cancelEditor').onclick=closeModal;
+ $('confirmTile').onclick=()=>{
+  const title=$('fieldTitle').value.trim();
+  if(!title){alert('عنوان اصلی را وارد کنید.');return}
+  const image=$('fieldImage')?.value.trim()||item?.image||'';
+  const options=type==='dropdown'?$('fieldOptions').value.split('\n').map(x=>x.trim()).filter(Boolean):[];
+  const info=isProfile?{
+   firstName:$('firstName').value.trim(),
+   lastName:$('lastName').value.trim(),
+   email:$('email').value.trim(),
+   phone:$('phone').value.trim(),
+   password:$('password').value,
+   extra:$('extraInfo').value.trim()
+  }:(item?.info||{});
+  const newItem={
+   id:item?.id||makeId(),type,title,
+   description:$('fieldDescription').value.trim(),image,options,
+   action:action.value,target:$('fieldTarget').value.trim(),info,
+   body:type==='writing'?$('writingText').value:(item?.body||''),
+   parentId:item?item.parentId:parentId
+  };
+  const old=[...tiles];
+  if(item)tiles=tiles.map(x=>x.id===item.id?newItem:x);
+  else tiles.push(newItem);
+  try{saveTiles();closeModal();renderCurrent();renderDynamicExits()}
+  catch(e){tiles=old;alert('ذخیره‌سازی انجام نشد.')}
+ };
+}
+
+function showAudioRecorder(parentId){
+ showModal(`
+  <h2>ضبط صوت جدید</h2>
+  <label>عنوان ضبط</label><input id="audioTitle" placeholder="مثلاً یادداشت صوتی">
+  <label>توضیحات (اختیاری)</label><textarea id="audioDescription" placeholder="توضیحات صوت"></textarea>
+  <div class="recording-panel">
+   <div id="recordStatus" class="empty">برای شروع، دکمه‌ی ضبط را بزنید.</div>
+   <div class="recording-actions">
+    <button class="record-start" id="startRecording">● شروع ضبط</button>
+    <button class="record-stop" id="stopRecording" disabled>■ پایان ضبط</button>
+   </div>
+   <audio id="previewAudio" controls style="display:none"></audio>
+  </div>
+  <div class="modal-actions"><button class="primary" id="saveAudio" disabled>ذخیره‌ی صوت</button><button class="secondary" id="cancelAudio">انصراف</button></div>`);
+ let localRecorder=null,localStream=null,chunks=[],audioBlob=null,previewUrl=null;
+ const status=$('recordStatus'),start=$('startRecording'),stop=$('stopRecording'),save=$('saveAudio'),preview=$('previewAudio');
+ $('cancelAudio').onclick=()=>{
+  if(localRecorder&&localRecorder.state==='recording')localRecorder.stop();
+  if(localStream)localStream.getTracks().forEach(t=>t.stop());
+  if(previewUrl)URL.revokeObjectURL(previewUrl);
+  closeModal();
+ };
+ start.onclick=async()=>{
+  if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){status.textContent='ضبط صوت در این مرورگر پشتیبانی نمی‌شود.';return}
+  try{
+   localStream=await navigator.mediaDevices.getUserMedia({audio:true});
+   const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(t=>MediaRecorder.isTypeSupported(t));
+   localRecorder=new MediaRecorder(localStream,mime?{mimeType:mime}:{});
+   chunks=[];
+   localRecorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+   localRecorder.onstop=()=>{
+    audioBlob=new Blob(chunks,{type:localRecorder.mimeType||'audio/webm'});
+    if(previewUrl)URL.revokeObjectURL(previewUrl);
+    previewUrl=URL.createObjectURL(audioBlob);preview.src=previewUrl;preview.style.display='block';
+    save.disabled=false;status.textContent='ضبط تمام شد. می‌توانید گوش کنید و ذخیره کنید.';
+    localStream?.getTracks().forEach(t=>t.stop());localStream=null;
+   };
+   localRecorder.start();start.disabled=true;stop.disabled=false;save.disabled=true;
+   status.textContent='در حال ضبط صدا…';
+  }catch(e){status.textContent='اجازه‌ی استفاده از میکروفون داده نشد یا ضبط شروع نشد.'}
+ };
+ stop.onclick=()=>{
+  if(localRecorder&&localRecorder.state==='recording'){localRecorder.stop();stop.disabled=true;start.disabled=false}
+ };
+ save.onclick=()=>{
+  if(!audioBlob)return;
+  const title=$('audioTitle').value.trim()||'ضبط صوت';
+  const reader=new FileReader();
+  reader.onload=()=>{
+   try{
+    recordings.push({id:makeId(),parentId,title,description:$('audioDescription').value.trim(),data:reader.result,createdAt:new Date().toISOString()});
+    saveRecordings();
+    if(localStream)localStream.getTracks().forEach(t=>t.stop());
+    if(previewUrl)URL.revokeObjectURL(previewUrl);
+    closeModal();renderCurrent();
+   }catch(e){alert('ذخیره‌ی صوت انجام نشد. ممکن است حجم ضبط زیاد باشد.')}
+  };
+  reader.readAsDataURL(audioBlob);
+ };
+}
+
+function deleteTile(id){
+ if(!confirm('این مورد و تمام موارد داخل آن حذف شوند؟'))return;
+ const oldTiles=[...tiles],oldMedia=[...recordings];
+ const ids=new Set([id]);let changed=true;
+ while(changed){
+  changed=false;
+  tiles.forEach(t=>{if(ids.has(t.parentId)&&!ids.has(t.id)){ids.add(t.id);changed=true}});
+ }
+ tiles=tiles.filter(t=>!ids.has(t.id));
+ recordings=recordings.filter(r=>!ids.has(r.parentId));
+ navStack=navStack.filter(n=>!ids.has(n.tile?.id));
+ if(activeTile&&ids.has(activeTile.id)){activeTile=null;currentPage='userChanges'}
+ try{saveTiles();saveRecordings();renderCurrent();renderDynamicExits()}
+ catch(e){tiles=oldTiles;recordings=oldMedia;alert('حذف ذخیره نشد.')}
+}
+function deleteRecording(id){
+ if(!confirm('این ضبط صوت حذف شود؟'))return;
+ const old=[...recordings];recordings=recordings.filter(r=>r.id!==id);
+ try{saveRecordings();renderCurrent()}
+ catch(e){recordings=old;alert('حذف ضبط انجام نشد.')}
+}
+function renderTileList(root,list){
+ root.replaceChildren();
+ if(!list.length){
+  const empty=document.createElement('div');empty.className='empty';
+  empty.textContent='هنوز موردی ساخته نشده است. برای شروع، دکمه‌ی سبز + را بزنید.';
+  root.append(empty);return;
+ }
+ list.forEach(tile=>{
+  const el=document.createElement('div');el.className='tile';el.tabIndex=0;
+  const tools=document.createElement('div');tools.className='tile-tools';
+  const del=document.createElement('button');del.className='tile-tool tile-delete';del.title='حذف';del.textContent='×';
+  del.setAttribute('aria-label','حذف '+tile.title);
+  del.onclick=e=>{e.stopPropagation();deleteTile(tile.id)};
+  tools.append(del);el.append(tools);
+
+  if(tile.image){
+   const img=document.createElement('img');img.className='tile-image';img.src=tile.image;img.alt='';
+   img.onerror=()=>{img.style.display='none'};el.append(img);
+  }else{
+   const icon=document.createElement('div');icon.className='tile-image';
+   icon.textContent=tile.type==='audio'?'🎙':tile.type==='writing'?'✎':tile.type==='button'?'↗':tile.type==='dropdown'?'⌄':'▦';
+   el.append(icon);
+  }
+  const title=document.createElement('div');title.className='tile-title';title.textContent=tile.title;el.append(title);
+  if(tile.description){const desc=document.createElement('div');desc.className='tile-description';desc.textContent=tile.description;el.append(desc)}
+  el.onclick=()=>activateTile(tile);
+  el.onkeydown=e=>{if(e.key==='Enter')activateTile(tile)};
+  root.append(el);
+ });
+}
+function renderTiles(){renderTileList($('userTiles'),tiles.filter(t=>!t.parentId))}
+function renderCurrent(){
+ if(currentPage==='userChanges')renderTiles();
+ if(currentPage==='contentPage')renderContentPage();
+ if(currentPage==='profilePage')renderProfilePage();
+ renderDynamicExits();
+}
+function renderContentPage(){
+ const root=$('contentArea');root.replaceChildren();
+ if(!activeTile){openPage('userChanges',false,null);return}
+ const h=document.createElement('h1');h.textContent=activeTile.title;root.append(h);
+ if(activeTile.description){const sub=document.createElement('div');sub.className='subtitle';sub.textContent=activeTile.description;root.append(sub)}
+ if(activeTile.type==='writing'&&activeTile.body){
+  const note=document.createElement('div');note.className='note-item';note.textContent=activeTile.body;root.append(note);
+ }
+ if(activeTile.type==='dropdown'){
+  const drop=document.createElement('div');drop.className='drop-options open';
+  (activeTile.options||[]).forEach(option=>{
+   const button=document.createElement('button');button.textContent=option;
+   button.onclick=()=>{const note=document.createElement('div');note.className='note-item';note.textContent=option;root.append(note)};
+   drop.append(button);
+  });
+  root.append(drop);
+ }
+ const childRoot=document.createElement('div');childRoot.className='inner-tile-grid';
+ renderTileList(childRoot,childrenOf(activeTile.id));root.append(childRoot);
+ renderRecordings(root,activeTile.id);
+}
+function renderProfilePage(){
+ const root=$('profileArea');root.replaceChildren();
+ if(!activeTile){openPage('userChanges',false,null);return}
+ const head=document.createElement('div');head.className='profile-head';
+ if(activeTile.image){
+  const img=document.createElement('img');img.className='profile-avatar';img.src=activeTile.image;img.alt='';
+  img.onerror=()=>{img.style.display='none'};head.append(img);
+ }else{
+  const avatar=document.createElement('div');avatar.className='profile-avatar';avatar.textContent='▦';head.append(avatar);
+ }
+ const intro=document.createElement('div');const h=document.createElement('h2');h.textContent=activeTile.title;intro.append(h);
+ const p=document.createElement('p');p.textContent=activeTile.description||'';intro.append(p);head.append(intro);root.append(head);
+ const info=activeTile.info||{};
+ const entries=[['نام',info.firstName],['نام خانوادگی',info.lastName],['ایمیل',info.email],['شماره تلفن',info.phone],['اطلاعات بیشتر',info.extra]];
+ const details=document.createElement('div');details.className='detail-list';
+ entries.forEach(([label,value])=>{
+  if(!value)return;
+  const item=document.createElement('div');item.className='detail';
+  const span=document.createElement('span');span.textContent=label;
+  const strong=document.createElement('strong');strong.textContent=value;
+  item.append(span,strong);details.append(item);
+ });
+ if(details.children.length)root.append(details);
+ if(activeTile.body){const note=document.createElement('div');note.className='note-item';note.textContent=activeTile.body;root.append(note)}
+ const childRoot=document.createElement('div');childRoot.className='inner-tile-grid';
+ renderTileList(childRoot,childrenOf(activeTile.id));root.append(childRoot);
+ renderRecordings(root,activeTile.id);
+}
+function renderRecordings(root,parentId){
+ const list=mediaOf(parentId);
+ if(!list.length)return;
+ const heading=document.createElement('h2');heading.textContent='ضبط‌های صوتی';heading.style.marginTop='25px';root.append(heading);
+ list.forEach(rec=>{
+  const item=document.createElement('div');item.className='note-item';
+  const head=document.createElement('div');head.className='note-head';
+  const title=document.createElement('strong');title.textContent=rec.title;
+  const del=document.createElement('button');del.className='small-delete';del.textContent='حذف';
+  del.onclick=()=>deleteRecording(rec.id);
+  head.append(title,del);item.append(head);
+  if(rec.description){const desc=document.createElement('div');desc.textContent=rec.description;item.append(desc)}
+  const audio=document.createElement('audio');audio.controls=true;audio.src=rec.data;item.append(audio);root.append(item);
+ });
+}
+function activateTile(tile){
+ if(tile.action==='home'){openPage('home',true,null);return}
+ if(tile.action==='people'){openPage('people',true,null);return}
+ if(tile.action==='employee'){
+  openPage('people',true,null);
+  document.querySelector('[data-tab="employee"]').click();return;
+ }
+ if(tile.action==='none')return;
+ if(tile.action==='page'){
+  openPage('contentPage',true,tile);return;
+ }
+ if(tile.type==='button'&&tile.target){
+  if(tile.target==='user'){openPage('people',true,null);return}
+  if(tile.target==='employee'){
+   openPage('people',true,null);document.querySelector('[data-tab="employee"]').click();return;
+  }
+  if(tile.target==='input'){openPage('userChanges',true,null);return}
+ }
+ openPage(pageForTile(tile),true,tile);
+}
 </script>
 </body>
 </html>
