@@ -66,8 +66,10 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent)}
 .code-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:11px}
 .code-text{overflow-wrap:anywhere;word-break:break-word}
 .code-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.delete{background:#632c3a;color:#ffb8c3;border:0;border-radius:8px;padding:8px 12px}
-.copy{background:var(--soft);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 12px}
+.delete,.copy{width:38px;height:38px;border-radius:50%;padding:0;display:grid;place-items:center;flex-shrink:0}
+.delete{background:#632c3a;color:#ffb8c3;border:1px solid #ff4d5e;font-size:23px}
+.copy{background:var(--soft);color:white;border:1px solid var(--border)}
+.copy svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:1.8}
 .empty{color:var(--muted);font-size:13px;line-height:2}
 .builder-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:25px}
 .add-round,.page-add{width:52px;height:52px;border-radius:50%;border:1px solid var(--green);background:rgba(53,211,153,.12);color:var(--green);font-size:29px;display:grid;place-items:center;flex-shrink:0}
@@ -212,7 +214,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
 
 <script>
 'use strict';
-
 const $=id=>document.getElementById(id);
 const DB_KEY='shn_user_page_tiles';
 const MEDIA_KEY='shn_page_media_v1';
@@ -220,9 +221,7 @@ const MENU_KEY='shn_custom_menu_items';
 const THEME_KEY='shn_panel_theme';
 const COLORS=['#8b5cf6','#2997ff','#35d399','#ff4d5e','#f59e0b','#ec4899','#14b8a6','#6478ff'];
 
-let currentPage='home';
-let navStack=[];
-let activeTile=null;
+let currentPage='home',navStack=[],activeTile=null;
 let tiles=readArray(DB_KEY);
 let recordings=readArray(MEDIA_KEY);
 let customMenuItems=readArray(MENU_KEY);
@@ -264,13 +263,9 @@ applyTheme(selectedColor);
 
 function openPage(name,push=true,nextTile=activeTile){
  if(push&&currentPage!==name)navStack.push({page:currentPage,tile:activeTile});
- currentPage=name;
- activeTile=nextTile||null;
+ currentPage=name;activeTile=nextTile||null;
  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===name));
- closeMenu();
- renderDynamicExits();
- renderCurrent();
- window.scrollTo(0,0);
+ closeMenu();renderDynamicExits();renderCurrent();window.scrollTo(0,0);
 }
 function closeMenu(){
  $('menu').classList.remove('open');
@@ -278,12 +273,11 @@ function closeMenu(){
 }
 function goBack(){
  const previous=navStack.pop();
- if(previous){openPage(previous.page,false,previous.tile)}
+ if(previous)openPage(previous.page,false,previous.tile);
  else{navStack=[];openPage('userChanges',false,null)}
 }
 function getRootTile(tile){
- let node=tile;
- const seen=new Set();
+ let node=tile;const seen=new Set();
  while(node?.parentId&&!seen.has(node.id)){
   seen.add(node.id);
   const parent=tiles.find(t=>t.id===node.parentId);
@@ -293,41 +287,28 @@ function getRootTile(tile){
  return node||null;
 }
 function renderDynamicExits(){
- const root=$('dynamicExitOptions');
- root.replaceChildren();
-
- let label='';
- let handler=null;
-
+ const root=$('dynamicExitOptions');root.replaceChildren();
+ let label='',handler=null;
  if(currentPage==='people'){
-  label='افراد';
-  handler=()=>openPage('home',false,null);
+  label='افراد';handler=()=>openPage('home',false,null);
  }else if(currentPage==='userChanges'){
-  label='تغییرات صفحه‌ی کاربر';
-  handler=()=>openPage('home',false,null);
+  label='تغییرات صفحه‌ی کاربر';handler=()=>openPage('home',false,null);
  }else if(['contentPage','profilePage'].includes(currentPage)&&activeTile){
   const section=getRootTile(activeTile);
   if(section){
    label=section.title;
    handler=()=>{
-    if(activeTile.id!==section.id){
-     openPage(pageForTile(section),false,section);
-    }else{
-     openPage('userChanges',false,null);
-    }
+    if(activeTile.id!==section.id)openPage(pageForTile(section),false,section);
+    else openPage('userChanges',false,null);
    };
   }
  }
-
  if(!label)return;
-
  const button=document.createElement('button');
- button.className='menu-action';
- button.textContent='↩ خروج از '+label;
+ button.className='menu-action';button.textContent='↩ خروج از '+label;
  button.onclick=()=>{closeMenu();handler()};
  root.append(button);
 }
-
 function defaultMenuItems(){
  return [
   {id:'builtin-color',title:'🎨 انتخاب رنگ',kind:'color',target:'user'},
@@ -340,55 +321,33 @@ function getAllMenuItems(){
   const override=customMenuItems.find(x=>x.id===item.id);
   return override?{...item,...override,builtin:true}:{...item,builtin:true};
  }).filter(item=>!item.hidden);
-
- const custom=customMenuItems.filter(x=>
-  !x.builtin&&
-  !['builtin-color','builtin-support','builtin-message'].includes(x.id)&&
-  !x.hidden
- );
+ const custom=customMenuItems.filter(x=>!x.builtin&&!['builtin-color','builtin-support','builtin-message'].includes(x.id)&&!x.hidden);
  return defaults.concat(custom);
 }
 function renderMenuItems(){
- const root=$('menuItems');
- root.replaceChildren();
+ const root=$('menuItems');root.replaceChildren();
  getAllMenuItems().forEach(item=>{
-  const row=document.createElement('div');
-  row.className='menu-item';
-
-  const action=document.createElement('button');
-  action.className='menu-action';
+  const row=document.createElement('div');row.className='menu-item';
+  const action=document.createElement('button');action.className='menu-action';
   action.textContent=(item.icon?item.icon+' ':'')+item.title;
   action.onclick=()=>activateMenuItem(item);
-
-  const tools=document.createElement('div');
-  tools.className='menu-tools';
-
-  const del=document.createElement('button');
-  del.className='menu-tool menu-delete';
-  del.title='حذف';
-  del.setAttribute('aria-label','حذف '+item.title);
-  del.textContent='×';
+  const tools=document.createElement('div');tools.className='menu-tools';
+  const del=document.createElement('button');del.className='menu-tool menu-delete';
+  del.title='حذف';del.setAttribute('aria-label','حذف '+item.title);del.textContent='×';
   del.onclick=e=>{e.stopPropagation();deleteMenuItem(item)};
-
-  tools.append(del);
-  row.append(action,tools);
-  root.append(row);
+  tools.append(del);row.append(action,tools);root.append(row);
  });
 }
 function activateMenuItem(item){
  if(item.kind==='color'){
-  $('palette').classList.toggle('open');
-  $('shades').classList.remove('open');
-  return;
+  $('palette').classList.toggle('open');$('shades').classList.remove('open');return;
  }
  if(item.kind==='support'){
   showModal(`<h2>${esc(item.title)}</h2><p>برای تماس با پشتیبانی، اطلاعات تماس خود را در این بخش تنظیم کنید.</p><label>شماره یا راه ارتباطی پشتیبانی</label><input id="supportContact" placeholder="شماره تلفن، ایمیل یا نشانی پشتیبانی"><div class="modal-actions"><button class="primary" id="saveSupport">ذخیره</button><button class="secondary" id="cancelSupport">بستن</button></div>`);
   $('supportContact').value=item.contact||'';
   $('cancelSupport').onclick=closeModal;
   $('saveSupport').onclick=()=>{
-   const value=$('supportContact').value.trim();
-   updateMenuItem(item.id,{contact:value});
-   closeModal();
+   const value=$('supportContact').value.trim();updateMenuItem(item.id,{contact:value});closeModal();
   };
   return;
  }
@@ -405,27 +364,19 @@ function activateMenuItem(item){
   };
   return;
  }
-
- const target=item.target||'user';
- closeMenu();
+ const target=item.target||'user';closeMenu();
  if(target==='employee'){
-  openPage('people',true,null);
-  document.querySelector('[data-tab="employee"]').click();
- }else if(target==='input'){
-  openPage('userChanges',true,null);
- }else{
-  openPage('people',true,null);
- }
+  openPage('people',true,null);document.querySelector('[data-tab="employee"]').click();
+ }else if(target==='input')openPage('userChanges',true,null);
+ else openPage('people',true,null);
 }
 function updateMenuItem(id,changes){
- const current=getAllMenuItems().find(x=>x.id===id);
- if(!current)return;
+ const current=getAllMenuItems().find(x=>x.id===id);if(!current)return;
  const updated={...current,...changes};
  const index=customMenuItems.findIndex(x=>x.id===id);
  if(index>=0)customMenuItems[index]=updated;
  else customMenuItems.push({...updated,builtin:false});
- try{saveMenuItems();renderMenuItems()}
- catch(e){alert('ذخیره‌ی تغییرات منو انجام نشد.')}
+ try{saveMenuItems();renderMenuItems()}catch(e){alert('ذخیره‌ی تغییرات منو انجام نشد.')}
 }
 function deleteMenuItem(item){
  if(!confirm(`گزینه‌ی «${item.title}» حذف شود؟`))return;
@@ -433,38 +384,22 @@ function deleteMenuItem(item){
   const index=customMenuItems.findIndex(x=>x.id===item.id);
   if(index>=0)customMenuItems[index]={...customMenuItems[index],hidden:true};
   else customMenuItems.push({...item,hidden:true,builtin:false});
- }else{
-  customMenuItems=customMenuItems.filter(x=>x.id!==item.id);
- }
- try{saveMenuItems();renderMenuItems()}
- catch(e){alert('حذف گزینه ذخیره نشد.')}
+ }else customMenuItems=customMenuItems.filter(x=>x.id!==item.id);
+ try{saveMenuItems();renderMenuItems()}catch(e){alert('حذف گزینه ذخیره نشد.')}
 }
 function showMenuEditor(){
- showModal(`
-  <h2>افزودن گزینه به منو</h2>
-  <label for="menuEmoji">ایموجی (اختیاری)</label>
-  <input id="menuEmoji" maxlength="8" placeholder="مثلاً 📚">
-  <label for="menuTitle">عنوان</label>
-  <input id="menuTitle" placeholder="عنوان گزینه">
+ showModal(`<h2>افزودن گزینه به منو</h2>
+  <label for="menuEmoji">ایموجی (اختیاری)</label><input id="menuEmoji" maxlength="8" placeholder="مثلاً 📚">
+  <label for="menuTitle">عنوان</label><input id="menuTitle" placeholder="عنوان گزینه">
   <label for="menuTarget">ورود به صفحه‌ی...</label>
-  <select id="menuTarget">
-   <option value="user">کاربر</option>
-   <option value="employee">کارمند</option>
-   <option value="input">ورودی</option>
-  </select>
-  <div class="modal-actions">
-   <button class="primary" id="saveMenuItem">ذخیره</button>
-   <button class="secondary" id="cancelMenuItem">انصراف</button>
-  </div>`);
+  <select id="menuTarget"><option value="user">کاربر</option><option value="employee">کارمند</option><option value="input">ورودی</option></select>
+  <div class="modal-actions"><button class="primary" id="saveMenuItem">ذخیره</button><button class="secondary" id="cancelMenuItem">انصراف</button></div>`);
  $('cancelMenuItem').onclick=closeModal;
  $('saveMenuItem').onclick=()=>{
-  const title=$('menuTitle').value.trim();
-  const icon=$('menuEmoji').value.trim();
-  const target=$('menuTarget').value;
+  const title=$('menuTitle').value.trim(),icon=$('menuEmoji').value.trim(),target=$('menuTarget').value;
   if(!title){alert('لطفاً عنوان را وارد کنید.');return}
   customMenuItems.push({id:makeId(),title,icon,kind:'route',target,builtin:false});
-  try{saveMenuItems();closeModal();renderMenuItems()}
-  catch(e){alert('ذخیره‌ی گزینه انجام نشد.')}
+  try{saveMenuItems();closeModal();renderMenuItems()}catch(e){alert('ذخیره‌ی گزینه انجام نشد.')}
  };
 }
 
@@ -474,30 +409,25 @@ $('menuBtn').onclick=()=>{
  $('addMenuItem').style.display=opening?'grid':'none';
  if(opening)renderMenuItems();
 };
-$('addMenuItem').onclick=()=>{
- closeMenu();
- showMenuEditor();
-};
+$('addMenuItem').onclick=()=>{closeMenu();showMenuEditor()};
+
+/* خروج از پنل کارمند: برگشت به صفحه انتخاب ورود */
 $('exitPanelBtn').onclick=()=>{
  navStack=[];
- openPage('home',false,null);
+ window.location.href='./index.html';
 };
+
 document.addEventListener('click',e=>{
  if(!e.target.closest('.menu-wrap')&&!e.target.closest('#addMenuItem'))closeMenu();
 });
 
 function renderPalette(){
- const palette=$('palette');
- palette.replaceChildren();
+ const palette=$('palette');palette.replaceChildren();
  COLORS.forEach(color=>{
   const button=document.createElement('button');
   button.className='swatch';button.style.background=color;button.title='انتخاب رنگ';
   button.setAttribute('aria-label','انتخاب رنگ '+color);
-  button.onclick=()=>{
-   applyTheme(color);
-   $('palette').classList.add('open');
-   renderShades(color);
-  };
+  button.onclick=()=>{applyTheme(color);$('palette').classList.add('open');renderShades(color)};
   palette.append(button);
  });
 }
@@ -508,12 +438,10 @@ function renderShades(color){
   const shade=rgb.map(v=>Math.round(v*amount+255*(1-amount)));
   const hex='#'+shade.map(v=>v.toString(16).padStart(2,'0')).join('');
   const button=document.createElement('button');button.className='shade';button.style.background=hex;
-  button.title='انتخاب این طیف';button.onclick=()=>applyTheme(hex);
-  root.append(button);
+  button.title='انتخاب این طیف';button.onclick=()=>applyTheme(hex);root.append(button);
  });
 }
-renderPalette();
-renderMenuItems();
+renderPalette();renderMenuItems();
 
 document.querySelectorAll('[data-open]').forEach(button=>{
  button.addEventListener('click',()=>openPage(button.dataset.open,true,null));
@@ -532,16 +460,23 @@ $('cancelAdd').onclick=()=>{
  $('showAddForm').style.display='inline-block';$('formMessage').textContent='';
 };
 function showMessage(text,type){$('formMessage').className='message '+type;$('formMessage').textContent=text}
+
 function renderCodes(){
  const list=$('codeList');list.replaceChildren();
  if(!codes.length){
-  const empty=document.createElement('div');empty.className='empty';empty.textContent='هنوز کدی ثبت نشده است.';list.append(empty);return;
+  const empty=document.createElement('div');empty.className='empty';
+  empty.textContent='هنوز کدی ثبت نشده است.';list.append(empty);return;
  }
  codes.forEach((code,index)=>{
   const row=document.createElement('div');row.className='code-item';
   const text=document.createElement('span');text.className='code-text';text.textContent=code;
   const actions=document.createElement('div');actions.className='code-actions';
-  const copy=document.createElement('button');copy.className='copy';copy.textContent='کپی کد';
+
+  const copy=document.createElement('button');
+  copy.className='copy';copy.type='button';copy.title='کپی کد';
+  copy.setAttribute('aria-label','کپی کد');
+  copy.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"></path></svg>';
+
   copy.onclick=async()=>{
    try{
     if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(code);
@@ -550,11 +485,17 @@ function renderCodes(){
      temp.style.position='fixed';temp.style.opacity='0';document.body.append(temp);
      temp.select();const ok=document.execCommand('copy');temp.remove();if(!ok)throw Error();
     }
-    copy.textContent='کپی شد ✓';
-    setTimeout(()=>{if(copy.isConnected)copy.textContent='کپی کد'},1200);
+    copy.title='کپی شد';
+    copy.setAttribute('aria-label','کپی شد');
+    setTimeout(()=>{
+     if(copy.isConnected){copy.title='کپی کد';copy.setAttribute('aria-label','کپی کد')}
+    },1200);
    }catch(e){showMessage('کپی خودکار نشد؛ کد را دستی کپی کنید.','error')}
   };
-  const del=document.createElement('button');del.className='delete';del.textContent='حذف';
+
+  const del=document.createElement('button');
+  del.className='delete';del.type='button';del.textContent='×';
+  del.title='حذف کد';del.setAttribute('aria-label','حذف کد');
   del.onclick=()=>{
    if(!confirm('آیا از حذف این کد مطمئن هستید؟'))return;
    const old=[...codes];codes.splice(index,1);
@@ -564,6 +505,7 @@ function renderCodes(){
   actions.append(copy,del);row.append(text,actions);list.append(row);
  });
 }
+
 $('employeeForm').onsubmit=e=>{
  e.preventDefault();
  const code=$('code1').value.trim();
@@ -588,9 +530,7 @@ $('contentBack').onclick=goBack;
 $('profileBack').onclick=goBack;
 
 function showTypePicker(parentId){
- showModal(`
-  <h2>چه چیزی می‌خواهید بسازید؟</h2>
-  <p>نوع مورد را انتخاب کنید.</p>
+ showModal(`<h2>چه چیزی می‌خواهید بسازید؟</h2><p>نوع مورد را انتخاب کنید.</p>
   <button class="type-option" data-type="card">▦ کارت</button>
   <button class="type-option" data-type="button">↗ دکمه</button>
   <button class="type-option" data-type="dropdown">⌄ دکمه‌ی کشویی</button>
@@ -628,8 +568,8 @@ function showEditor(type,item,parentId){
   <label>نام خانوادگی</label><input id="lastName" value="${esc(item?.info?.lastName||'')}" placeholder="نام خانوادگی">
   <label>ایمیل</label><input id="email" type="email" value="${esc(item?.info?.email||'')}" placeholder="ایمیل">
   <label>شماره تلفن</label><input id="phone" value="${esc(item?.info?.phone||'')}" placeholder="شماره تلفن">
-  <label>رمز عبور</label><input id="password" type="password" value="${esc(item?.info?.password||'')}" placeholder="رمز عبور">
-  <label>اطلاعات بیشتر</label><textarea id="extraInfo" placeholder="اطلاعات بیشتر">${esc(item?.info?.extra||'')}</textarea>`:'';
+  <label>اطلاعات بیشتر</label><textarea id="extraInfo" placeholder="اطلاعات بیشتر">${esc(item?.info?.extra||'')}</textarea>
+  <p>رمز عبور قابل نمایش نیست؛ در صورت فراموشی باید بازنشانی شود.</p>`:'';
 
  const typeNames={card:'کارت',button:'دکمه',dropdown:'دکمه‌ی کشویی',page:'صفحه‌ی جدید',writing:'نوشته'};
  showModal(`
@@ -637,26 +577,24 @@ function showEditor(type,item,parentId){
   <label>عنوان اصلی</label><input id="fieldTitle" value="${esc(item?.title||'')}" placeholder="عنوان را وارد کنید">
   <label>توضیحات زیر عنوان</label><textarea id="fieldDescription" placeholder="توضیحات">${esc(item?.description||'')}</textarea>
   ${imageField}${optionsField}${writingField}${actionField}${profileFields}
-  <div class="modal-actions">
-   <button class="primary" id="confirmTile">تأیید</button>
-   <button class="secondary" id="cancelEditor">انصراف</button>
-  </div>`);
+  <div class="modal-actions"><button class="primary" id="confirmTile">تأیید</button><button class="secondary" id="cancelEditor">انصراف</button></div>`);
+
  const action=$('fieldAction');
  action.value=item?.action||'profile';
  $('targetWrap').style.display=action.value==='page'?'block':'none';
  action.onchange=()=>{$('targetWrap').style.display=action.value==='page'?'block':'none'};
  $('cancelEditor').onclick=closeModal;
+
  $('confirmTile').onclick=()=>{
   const title=$('fieldTitle').value.trim();
   if(!title){alert('عنوان اصلی را وارد کنید.');return}
   const image=$('fieldImage')?.value.trim()||item?.image||'';
-  const options=type==='dropdown'?$('fieldOptions').value.split('\n').map(x=>x.trim()).filter(Boolean):[];
+  const options=type==='dropdown'?$ ('fieldOptions').value.split('\n').map(x=>x.trim()).filter(Boolean):[];
   const info=isProfile?{
    firstName:$('firstName').value.trim(),
    lastName:$('lastName').value.trim(),
    email:$('email').value.trim(),
    phone:$('phone').value.trim(),
-   password:$('password').value,
    extra:$('extraInfo').value.trim()
   }:(item?.info||{});
   const newItem={
@@ -675,8 +613,7 @@ function showEditor(type,item,parentId){
 }
 
 function showAudioRecorder(parentId){
- showModal(`
-  <h2>ضبط صوت جدید</h2>
+ showModal(`<h2>ضبط صوت جدید</h2>
   <label>عنوان ضبط</label><input id="audioTitle" placeholder="مثلاً یادداشت صوتی">
   <label>توضیحات (اختیاری)</label><textarea id="audioDescription" placeholder="توضیحات صوت"></textarea>
   <div class="recording-panel">
@@ -688,8 +625,10 @@ function showAudioRecorder(parentId){
    <audio id="previewAudio" controls style="display:none"></audio>
   </div>
   <div class="modal-actions"><button class="primary" id="saveAudio" disabled>ذخیره‌ی صوت</button><button class="secondary" id="cancelAudio">انصراف</button></div>`);
+
  let localRecorder=null,localStream=null,chunks=[],audioBlob=null,previewUrl=null;
  const status=$('recordStatus'),start=$('startRecording'),stop=$('stopRecording'),save=$('saveAudio'),preview=$('previewAudio');
+
  $('cancelAudio').onclick=()=>{
   if(localRecorder&&localRecorder.state==='recording')localRecorder.stop();
   if(localStream)localStream.getTracks().forEach(t=>t.stop());
@@ -707,7 +646,8 @@ function showAudioRecorder(parentId){
    localRecorder.onstop=()=>{
     audioBlob=new Blob(chunks,{type:localRecorder.mimeType||'audio/webm'});
     if(previewUrl)URL.revokeObjectURL(previewUrl);
-    previewUrl=URL.createObjectURL(audioBlob);preview.src=previewUrl;preview.style.display='block';
+    previewUrl=URL.createObjectURL(audioBlob);
+    preview.src=previewUrl;preview.style.display='block';
     save.disabled=false;status.textContent='ضبط تمام شد. می‌توانید گوش کنید و ذخیره کنید.';
     localStream?.getTracks().forEach(t=>t.stop());localStream=null;
    };
@@ -770,7 +710,6 @@ function renderTileList(root,list){
   del.setAttribute('aria-label','حذف '+tile.title);
   del.onclick=e=>{e.stopPropagation();deleteTile(tile.id)};
   tools.append(del);el.append(tools);
-
   if(tile.image){
    const img=document.createElement('img');img.className='tile-image';img.src=tile.image;img.alt='';
    img.onerror=()=>{img.style.display='none'};el.append(img);
@@ -824,8 +763,10 @@ function renderProfilePage(){
  }else{
   const avatar=document.createElement('div');avatar.className='profile-avatar';avatar.textContent='▦';head.append(avatar);
  }
- const intro=document.createElement('div');const h=document.createElement('h2');h.textContent=activeTile.title;intro.append(h);
- const p=document.createElement('p');p.textContent=activeTile.description||'';intro.append(p);head.append(intro);root.append(head);
+ const intro=document.createElement('div');
+ const h=document.createElement('h2');h.textContent=activeTile.title;intro.append(h);
+ const p=document.createElement('p');p.textContent=activeTile.description||'';intro.append(p);
+ head.append(intro);root.append(head);
  const info=activeTile.info||{};
  const entries=[['نام',info.firstName],['نام خانوادگی',info.lastName],['ایمیل',info.email],['شماره تلفن',info.phone],['اطلاعات بیشتر',info.extra]];
  const details=document.createElement('div');details.className='detail-list';
@@ -843,8 +784,7 @@ function renderProfilePage(){
  renderRecordings(root,activeTile.id);
 }
 function renderRecordings(root,parentId){
- const list=mediaOf(parentId);
- if(!list.length)return;
+ const list=mediaOf(parentId);if(!list.length)return;
  const heading=document.createElement('h2');heading.textContent='ضبط‌های صوتی';heading.style.marginTop='25px';root.append(heading);
  list.forEach(rec=>{
   const item=document.createElement('div');item.className='note-item';
@@ -861,13 +801,10 @@ function activateTile(tile){
  if(tile.action==='home'){openPage('home',true,null);return}
  if(tile.action==='people'){openPage('people',true,null);return}
  if(tile.action==='employee'){
-  openPage('people',true,null);
-  document.querySelector('[data-tab="employee"]').click();return;
+  openPage('people',true,null);document.querySelector('[data-tab="employee"]').click();return;
  }
  if(tile.action==='none')return;
- if(tile.action==='page'){
-  openPage('contentPage',true,tile);return;
- }
+ if(tile.action==='page'){openPage('contentPage',true,tile);return}
  if(tile.type==='button'&&tile.target){
   if(tile.target==='user'){openPage('people',true,null);return}
   if(tile.target==='employee'){
