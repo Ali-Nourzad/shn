@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -136,9 +137,8 @@ h1{font-size:clamp(35px,6vw,60px);margin-bottom:15px}
  color:white;margin-top:5px;font-weight:bold;
 }
 .submit-btn:disabled{opacity:.6;cursor:wait}
-.message{min-height:22px;margin-top:12px;text-align:center;font-size:12px;line-height:1.8}
+.message{min-height:22px;margin-top:12px;text-align:center;font-size:12px;line-height:1.8;overflow-wrap:anywhere}
 .error{color:#ff7b8b}.success{color:#5ee0a0}
-.support-description{color:var(--muted);font-size:13px;line-height:2;margin-bottom:18px}
 .support-number{
  padding:15px;margin-bottom:12px;border-radius:12px;
  background:var(--soft);border:1px solid var(--border);
@@ -196,7 +196,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
  </div>
 </main>
 
-<!-- ورود و ثبت‌نام کاربر -->
 <div class="overlay" id="userOverlay">
  <div class="modal">
   <div class="modal-header">
@@ -224,7 +223,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
    </div>
 
    <button type="submit" class="submit-btn">ورود</button>
-   <div id="loginMessage" class="message"></div>
+   <div id="loginMessage" class="message" aria-live="polite"></div>
   </form>
 
   <form class="form" id="signupForm">
@@ -265,12 +264,11 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
    </div>
 
    <button type="submit" class="submit-btn">ساخت حساب</button>
-   <div id="signupMessage" class="message"></div>
+   <div id="signupMessage" class="message" aria-live="polite"></div>
   </form>
  </div>
 </div>
 
-<!-- ورود کارمند -->
 <div class="overlay" id="employeeOverlay">
  <div class="modal">
   <div class="modal-header">
@@ -288,12 +286,11 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
    </div>
 
    <button type="submit" class="submit-btn">ورود</button>
-   <div id="employeeMessage" class="message"></div>
+   <div id="employeeMessage" class="message" aria-live="polite"></div>
   </form>
  </div>
 </div>
 
-<!-- تماس با پشتیبانی -->
 <div class="overlay" id="supportOverlay">
  <div class="modal">
   <div class="modal-header">
@@ -313,7 +310,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
  </div>
 </div>
 
-<!-- پیام به پشتیبانی -->
 <div class="overlay" id="messageOverlay">
  <div class="modal">
   <div class="modal-header">
@@ -338,9 +334,15 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
 <script>
 const SUPABASE_URL="https://zyziyyhzxsnwzrsubulu.supabase.co";
 const SUPABASE_KEY="sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
-const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const $=id=>document.getElementById(id);
+
+if(!window.supabase){
+ alert('کتابخانه اتصال به سرور بارگذاری نشد. اینترنت و CDN را بررسی کنید.');
+ throw new Error('Supabase JS library unavailable');
+}
+
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const menuBtn=$('menuBtn');
 const dropdownMenu=$('dropdownMenu');
@@ -349,7 +351,7 @@ const employeeOverlay=$('employeeOverlay');
 const supportOverlay=$('supportOverlay');
 const messageOverlay=$('messageOverlay');
 
-/* ذخیره مشخصات حساب برای نمایش در پنل کارمند */
+/* ذخیره مشخصات کاربر بدون رمز عبور */
 function saveUserProfile(user,extra={}){
  if(!user)return;
 
@@ -384,7 +386,7 @@ function saveUserProfile(user,extra={}){
   localStorage.setItem(key,JSON.stringify(users));
   localStorage.setItem('shn_current_user',JSON.stringify(profile));
  }catch(error){
-  console.warn('ذخیره مشخصات کاربر انجام نشد.');
+  console.warn('ذخیره مشخصات کاربر انجام نشد:',error);
  }
 }
 
@@ -436,8 +438,14 @@ $('loginForm').addEventListener('submit',async event=>{
    password
   });
 
-  if(error || !data.session){
-   showMessage('loginMessage','ایمیل یا رمز عبور اشتباه است.');
+  if(error){
+   console.error('LOGIN ERROR:',error);
+   showMessage('loginMessage','خطای ورود: '+error.message);
+   return;
+  }
+
+  if(!data.session || !data.user){
+   showMessage('loginMessage','ورود انجام نشد. دوباره تلاش کنید.');
    return;
   }
 
@@ -446,7 +454,8 @@ $('loginForm').addEventListener('submit',async event=>{
   window.location.href='user-dashboard.html';
 
  }catch(error){
-  showMessage('loginMessage','ارتباط برقرار نشد. دوباره تلاش کنید.');
+  console.error('LOGIN EXCEPTION:',error);
+  showMessage('loginMessage','خطای ارتباط: '+(error.message || 'ارتباط برقرار نشد.'));
  }finally{
   button.disabled=false;
  }
@@ -464,6 +473,11 @@ $('signupForm').addEventListener('submit',async event=>{
  const repeatPassword=$('signupPasswordRepeat').value;
  const button=$('signupForm').querySelector('[type="submit"]');
 
+ if(!firstName || !lastName || !phone || !email || !password){
+  showMessage('signupMessage','لطفاً تمام فیلدها را کامل کنید.');
+  return;
+ }
+
  if(password!==repeatPassword){
   showMessage('signupMessage','رمز عبور و تکرار آن یکسان نیست.');
   return;
@@ -479,8 +493,8 @@ $('signupForm').addEventListener('submit',async event=>{
 
  try{
   const {data,error}=await supabaseClient.auth.signUp({
-   email,
-   password,
+   email:email,
+   password:password,
    options:{
     data:{
      first_name:firstName,
@@ -490,33 +504,14 @@ $('signupForm').addEventListener('submit',async event=>{
    }
   });
 
-const { data, error } = await supabaseClient.auth.signUp({
-    email: email.trim(),
-    password: password,
-    options: {
-        data: {
-            first_name: firstName.trim(),
-            last_name: lastName.trim(),
-            phone: phone.trim()
-        }
-    }
-});
-
-if (error) {
-    console.error("SIGNUP ERROR:", error);
-    alert("خطای واقعی ثبت‌نام: " + error.message);
-    return;
-}
-
-if (data.user && !data.session) {
-    alert("حساب ساخته شد؛ برای ورود، ایمیل خود را تأیید کنید.");
-    return;
-}
-
-window.location.href = "user-dashboard.html";
+  if(error){
+   console.error('SIGNUP ERROR:',error);
+   showMessage('signupMessage','خطای واقعی ثبت‌نام: '+error.message);
+   return;
+  }
 
   if(!data.user){
-   showMessage('signupMessage','ساخت حساب انجام نشد.');
+   showMessage('signupMessage','سرور حساب کاربری را ایجاد نکرد. دوباره تلاش کنید.');
    return;
   }
 
@@ -531,20 +526,24 @@ window.location.href = "user-dashboard.html";
   if(!data.session){
    showMessage(
     'signupMessage',
-    'حساب ساخته شد؛ برای ادامه، ایمیل خود را تأیید کنید.',
+    'حساب ساخته شد. ایمیل خود را بررسی و حساب را تأیید کنید؛ سپس از بخش «حساب دارم» وارد شوید.',
     'success'
    );
    return;
   }
 
-  showMessage('signupMessage','حساب با موفقیت ساخته شد.','success');
+  showMessage('signupMessage','حساب با موفقیت ساخته شد. در حال انتقال...','success');
 
   setTimeout(()=>{
    window.location.href='user-dashboard.html';
   },700);
 
  }catch(error){
-  showMessage('signupMessage','ارتباط برقرار نشد. دوباره تلاش کنید.');
+  console.error('SIGNUP EXCEPTION:',error);
+  showMessage(
+   'signupMessage',
+   'خطای ارتباط یا اجرای ثبت‌نام: '+(error.message || 'خطای نامشخص')
+  );
  }finally{
   button.disabled=false;
  }
@@ -592,6 +591,7 @@ $('employeeForm').addEventListener('submit',async event=>{
   const {error:signInError}=await supabaseClient.auth.signInAnonymously();
 
   if(signInError){
+   console.error('ANONYMOUS SIGN IN ERROR:',signInError);
    showMessage('employeeMessage','کد کارمند اشتباه است یا ورود کارمند فعال نیست.');
    return;
   }
@@ -603,6 +603,7 @@ $('employeeForm').addEventListener('submit',async event=>{
 
   if(error || data!==true){
    await supabaseClient.auth.signOut();
+   console.error('EMPLOYEE AUTH ERROR:',error);
    showMessage('employeeMessage','کد کارمند اشتباه است.');
    return;
   }
@@ -611,7 +612,8 @@ $('employeeForm').addEventListener('submit',async event=>{
   window.location.href='employee_dashboard.html';
 
  }catch(error){
-  showMessage('employeeMessage','بررسی کد انجام نشد. دوباره تلاش کنید.');
+  console.error('EMPLOYEE EXCEPTION:',error);
+  showMessage('employeeMessage','بررسی کد انجام نشد: '+(error.message || 'خطای نامشخص'));
  }finally{
   button.disabled=false;
  }
@@ -636,7 +638,7 @@ function closeMessageSupport(){
  messageOverlay.classList.remove('open');
 }
 
-/* نمایش رمز هنگام تایپ */
+/* نمایش رمز */
 function togglePassword(id){
  const input=$(id);
  input.type=input.type==='password'?'text':'password';
