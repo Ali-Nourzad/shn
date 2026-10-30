@@ -490,10 +490,30 @@ $('signupForm').addEventListener('submit',async event=>{
    }
   });
 
-  if(error){
-   showMessage('signupMessage','ساخت حساب انجام نشد. اطلاعات را بررسی کنید.');
-   return;
-  }
+const { data, error } = await supabaseClient.auth.signUp({
+    email: email.trim(),
+    password: password,
+    options: {
+        data: {
+            first_name: firstName.trim(),
+            last_name: lastName.trim(),
+            phone: phone.trim()
+        }
+    }
+});
+
+if (error) {
+    console.error("SIGNUP ERROR:", error);
+    alert("خطای واقعی ثبت‌نام: " + error.message);
+    return;
+}
+
+if (data.user && !data.session) {
+    alert("حساب ساخته شد؛ برای ورود، ایمیل خود را تأیید کنید.");
+    return;
+}
+
+window.location.href = "user-dashboard.html";
 
   if(!data.user){
    showMessage('signupMessage','ساخت حساب انجام نشد.');
