@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -158,6 +157,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
 }
 </style>
 </head>
+
 <body>
 
 <header class="navbar">
@@ -179,12 +179,14 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
   <div class="badge">✦ به دنیای س.ح.ن خوش آمدید</div>
   <h1>س.ح.ن</h1>
   <p class="hero-description">بخش موردنظر خود را انتخاب کنید.</p>
+
   <div class="cards">
    <button class="card" type="button" onclick="openUserAuth()">
     <div class="card-icon">👤</div>
     <h2>کاربر</h2>
     <p>ورود یا ساخت حساب کاربری</p>
    </button>
+
    <button class="card" type="button" onclick="openEmployeeAuth()">
     <div class="card-icon">💼</div>
     <h2>کارمند</h2>
@@ -194,12 +196,14 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
  </div>
 </main>
 
+<!-- ورود و ثبت‌نام کاربر -->
 <div class="overlay" id="userOverlay">
  <div class="modal">
   <div class="modal-header">
    <h2>کاربر</h2>
    <button class="close-btn" type="button" onclick="closeUserAuth()">×</button>
   </div>
+
   <div class="tabs">
    <button class="tab active" id="loginTab" type="button" onclick="switchUserTab('login')">حساب دارم</button>
    <button class="tab" id="signupTab" type="button" onclick="switchUserTab('signup')">حساب ندارم</button>
@@ -210,6 +214,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
     <label for="loginEmail">ایمیل</label>
     <input id="loginEmail" type="email" placeholder="example@gmail.com" autocomplete="email" required>
    </div>
+
    <div class="field">
     <label for="loginPassword">رمز عبور</label>
     <div class="password-wrap">
@@ -217,15 +222,32 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
      <button type="button" class="eye" onclick="togglePassword('loginPassword')">◉</button>
     </div>
    </div>
+
    <button type="submit" class="submit-btn">ورود</button>
    <div id="loginMessage" class="message"></div>
   </form>
 
   <form class="form" id="signupForm">
-   <div class="field"><label for="signupFirstName">نام</label><input id="signupFirstName" type="text" placeholder="نام" autocomplete="given-name" required></div>
-   <div class="field"><label for="signupLastName">نام خانوادگی</label><input id="signupLastName" type="text" placeholder="نام خانوادگی" autocomplete="family-name" required></div>
-   <div class="field"><label for="signupPhone">شماره تلفن</label><input id="signupPhone" type="tel" placeholder="0912..." autocomplete="tel" required></div>
-   <div class="field"><label for="signupEmail">ایمیل</label><input id="signupEmail" type="email" placeholder="example@gmail.com" autocomplete="email" required></div>
+   <div class="field">
+    <label for="signupFirstName">نام</label>
+    <input id="signupFirstName" type="text" placeholder="نام" autocomplete="given-name" required>
+   </div>
+
+   <div class="field">
+    <label for="signupLastName">نام خانوادگی</label>
+    <input id="signupLastName" type="text" placeholder="نام خانوادگی" autocomplete="family-name" required>
+   </div>
+
+   <div class="field">
+    <label for="signupPhone">شماره تلفن</label>
+    <input id="signupPhone" type="tel" placeholder="0912..." autocomplete="tel" required>
+   </div>
+
+   <div class="field">
+    <label for="signupEmail">ایمیل</label>
+    <input id="signupEmail" type="email" placeholder="example@gmail.com" autocomplete="email" required>
+   </div>
+
    <div class="field">
     <label for="signupPassword">رمز عبور</label>
     <div class="password-wrap">
@@ -233,6 +255,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
      <button type="button" class="eye" onclick="togglePassword('signupPassword')">◉</button>
     </div>
    </div>
+
    <div class="field">
     <label for="signupPasswordRepeat">تکرار رمز عبور</label>
     <div class="password-wrap">
@@ -240,18 +263,21 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
      <button type="button" class="eye" onclick="togglePassword('signupPasswordRepeat')">◉</button>
     </div>
    </div>
+
    <button type="submit" class="submit-btn">ساخت حساب</button>
    <div id="signupMessage" class="message"></div>
   </form>
  </div>
 </div>
 
+<!-- ورود کارمند -->
 <div class="overlay" id="employeeOverlay">
  <div class="modal">
   <div class="modal-header">
    <h2>کارمند</h2>
    <button class="close-btn" type="button" onclick="closeEmployeeAuth()">×</button>
   </div>
+
   <form id="employeeForm">
    <div class="field">
     <label for="employeeCode">کد کارمند</label>
@@ -260,22 +286,26 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
      <button type="button" class="eye" onclick="togglePassword('employeeCode')">◉</button>
     </div>
    </div>
+
    <button type="submit" class="submit-btn">ورود</button>
    <div id="employeeMessage" class="message"></div>
   </form>
  </div>
 </div>
 
+<!-- تماس با پشتیبانی -->
 <div class="overlay" id="supportOverlay">
  <div class="modal">
   <div class="modal-header">
    <h2>تماس با پشتیبانی</h2>
-   <button class="close-btn" type="button" onclick="closeSupport()" aria-label="بستن">×</button>
+   <button class="close-btn" type="button" onclick="closeSupport()">×</button>
   </div>
+
   <div class="support-number">
    اگر می‌خواهید با پشتیبانی تماس بگیرید، با این شماره تماس بگیرید:
    <strong>09122162177</strong>
   </div>
+
   <div class="support-number">
    اگر پاسخ نگرفتید، با این شماره تماس بگیرید:
    <strong>09122940829</strong>
@@ -283,16 +313,19 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
  </div>
 </div>
 
+<!-- پیام به پشتیبانی -->
 <div class="overlay" id="messageOverlay">
  <div class="modal">
   <div class="modal-header">
    <h2>پیام به پشتیبانی</h2>
-   <button class="close-btn" type="button" onclick="closeMessageSupport()" aria-label="بستن">×</button>
+   <button class="close-btn" type="button" onclick="closeMessageSupport()">×</button>
   </div>
+
   <div class="support-number">
    اگر می‌خواهید پیام بدهید، به این شماره پیام بدهید:
    <strong>09122162177</strong>
   </div>
+
   <div class="support-number">
    اگر پاسخ نگرفتید، به این شماره پیام بدهید:
    <strong>09122940829</strong>
@@ -308,6 +341,7 @@ const SUPABASE_KEY="sb_publishable_RIGsFvG_eSFBmXYAxe8UHA_JQjhVkpR";
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const $=id=>document.getElementById(id);
+
 const menuBtn=$('menuBtn');
 const dropdownMenu=$('dropdownMenu');
 const userOverlay=$('userOverlay');
@@ -315,6 +349,46 @@ const employeeOverlay=$('employeeOverlay');
 const supportOverlay=$('supportOverlay');
 const messageOverlay=$('messageOverlay');
 
+/* ذخیره مشخصات حساب برای نمایش در پنل کارمند */
+function saveUserProfile(user,extra={}){
+ if(!user)return;
+
+ const metadata=user.user_metadata || {};
+
+ const profile={
+  id:user.id || '',
+  first_name:extra.first_name || metadata.first_name || '',
+  last_name:extra.last_name || metadata.last_name || '',
+  phone:extra.phone || metadata.phone || '',
+  email:user.email || extra.email || '',
+  created_at:user.created_at || new Date().toISOString()
+ };
+
+ try{
+  const key='shn_registered_users';
+  let users=[];
+
+  try{
+   const saved=JSON.parse(localStorage.getItem(key) || '[]');
+   if(Array.isArray(saved))users=saved;
+  }catch(error){}
+
+  const index=users.findIndex(item=>item.id===profile.id);
+
+  if(index>=0){
+   users[index]={...users[index],...profile};
+  }else{
+   users.push(profile);
+  }
+
+  localStorage.setItem(key,JSON.stringify(users));
+  localStorage.setItem('shn_current_user',JSON.stringify(profile));
+ }catch(error){
+  console.warn('ذخیره مشخصات کاربر انجام نشد.');
+ }
+}
+
+/* منوی اصلی */
 menuBtn.addEventListener('click',event=>{
  event.stopPropagation();
  dropdownMenu.classList.toggle('open');
@@ -326,14 +400,17 @@ document.addEventListener('click',event=>{
  }
 });
 
+/* باز و بسته کردن فرم‌ها */
 function openUserAuth(){
  userOverlay.classList.add('open');
  switchUserTab('login');
 }
+
 function closeUserAuth(){
  userOverlay.classList.remove('open');
  clearMessages();
 }
+
 function switchUserTab(type){
  $('loginForm').classList.toggle('active',type==='login');
  $('signupForm').classList.toggle('active',type==='signup');
@@ -342,20 +419,32 @@ function switchUserTab(type){
  clearMessages();
 }
 
+/* ورود کاربر */
 $('loginForm').addEventListener('submit',async event=>{
  event.preventDefault();
+
  const email=$('loginEmail').value.trim();
  const password=$('loginPassword').value;
  const button=$('loginForm').querySelector('[type="submit"]');
+
  button.disabled=true;
  showMessage('loginMessage','در حال ورود...','');
+
  try{
-  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
-  if(error||!data.session){
+  const {data,error}=await supabaseClient.auth.signInWithPassword({
+   email,
+   password
+  });
+
+  if(error || !data.session){
    showMessage('loginMessage','ایمیل یا رمز عبور اشتباه است.');
    return;
   }
+
+  saveUserProfile(data.user);
+
   window.location.href='user-dashboard.html';
+
  }catch(error){
   showMessage('loginMessage','ارتباط برقرار نشد. دوباره تلاش کنید.');
  }finally{
@@ -363,8 +452,10 @@ $('loginForm').addEventListener('submit',async event=>{
  }
 });
 
+/* ثبت‌نام کاربر */
 $('signupForm').addEventListener('submit',async event=>{
  event.preventDefault();
+
  const firstName=$('signupFirstName').value.trim();
  const lastName=$('signupLastName').value.trim();
  const phone=$('signupPhone').value.trim();
@@ -377,6 +468,7 @@ $('signupForm').addEventListener('submit',async event=>{
   showMessage('signupMessage','رمز عبور و تکرار آن یکسان نیست.');
   return;
  }
+
  if(password.length<6){
   showMessage('signupMessage','رمز عبور باید حداقل ۶ کاراکتر باشد.');
   return;
@@ -384,25 +476,53 @@ $('signupForm').addEventListener('submit',async event=>{
 
  button.disabled=true;
  showMessage('signupMessage','در حال ساخت حساب...','');
+
  try{
   const {data,error}=await supabaseClient.auth.signUp({
-   email,password,
-   options:{data:{first_name:firstName,last_name:lastName,phone}}
+   email,
+   password,
+   options:{
+    data:{
+     first_name:firstName,
+     last_name:lastName,
+     phone:phone
+    }
+   }
   });
+
   if(error){
    showMessage('signupMessage','ساخت حساب انجام نشد. اطلاعات را بررسی کنید.');
    return;
   }
+
   if(!data.user){
    showMessage('signupMessage','ساخت حساب انجام نشد.');
    return;
   }
+
+  /* ذخیره اطلاعات ثبت‌نام، بدون ذخیره رمز عبور */
+  saveUserProfile(data.user,{
+   first_name:firstName,
+   last_name:lastName,
+   phone:phone,
+   email:email
+  });
+
   if(!data.session){
-   showMessage('signupMessage','حساب ساخته شد؛ برای ادامه، ایمیل خود را تأیید کنید.','success');
+   showMessage(
+    'signupMessage',
+    'حساب ساخته شد؛ برای ادامه، ایمیل خود را تأیید کنید.',
+    'success'
+   );
    return;
   }
+
   showMessage('signupMessage','حساب با موفقیت ساخته شد.','success');
-  setTimeout(()=>window.location.href='user-dashboard.html',700);
+
+  setTimeout(()=>{
+   window.location.href='user-dashboard.html';
+  },700);
+
  }catch(error){
   showMessage('signupMessage','ارتباط برقرار نشد. دوباره تلاش کنید.');
  }finally{
@@ -410,31 +530,39 @@ $('signupForm').addEventListener('submit',async event=>{
  }
 });
 
+/* ورود کارمند */
 function openEmployeeAuth(){
  employeeOverlay.classList.add('open');
  $('employeeCode').value='';
  $('employeeMessage').textContent='';
 }
+
 function closeEmployeeAuth(){
  employeeOverlay.classList.remove('open');
 }
 
 $('employeeForm').addEventListener('submit',async event=>{
  event.preventDefault();
+
  const code=$('employeeCode').value.trim();
  const button=$('employeeForm').querySelector('[type="submit"]');
+
  button.disabled=true;
  showMessage('employeeMessage','در حال بررسی کد...','');
 
  let localCodes=[];
+
  try{
-  const saved=JSON.parse(localStorage.getItem('employeeCodes')||'[]');
-  if(Array.isArray(saved)) localCodes=saved.filter(item=>typeof item==='string');
+  const saved=JSON.parse(localStorage.getItem('employeeCodes') || '[]');
+
+  if(Array.isArray(saved)){
+   localCodes=saved.filter(item=>typeof item==='string');
+  }
  }catch(error){
   localCodes=[];
  }
 
- if(code==='تستی'||localCodes.includes(code)){
+ if(code==='تستی' || localCodes.includes(code)){
   localStorage.setItem('employeeLoggedIn','true');
   window.location.href='employee_dashboard.html';
   return;
@@ -442,19 +570,26 @@ $('employeeForm').addEventListener('submit',async event=>{
 
  try{
   const {error:signInError}=await supabaseClient.auth.signInAnonymously();
+
   if(signInError){
    showMessage('employeeMessage','کد کارمند اشتباه است یا ورود کارمند فعال نیست.');
    return;
   }
 
-  const {data,error}=await supabaseClient.rpc('authorize_employee',{p_code:code});
-  if(error||data!==true){
+  const {data,error}=await supabaseClient.rpc(
+   'authorize_employee',
+   {p_code:code}
+  );
+
+  if(error || data!==true){
    await supabaseClient.auth.signOut();
    showMessage('employeeMessage','کد کارمند اشتباه است.');
    return;
   }
 
+  localStorage.setItem('employeeLoggedIn','true');
   window.location.href='employee_dashboard.html';
+
  }catch(error){
   showMessage('employeeMessage','بررسی کد انجام نشد. دوباره تلاش کنید.');
  }finally{
@@ -462,10 +597,12 @@ $('employeeForm').addEventListener('submit',async event=>{
  }
 });
 
+/* پشتیبانی */
 function openSupport(){
  dropdownMenu.classList.remove('open');
  supportOverlay.classList.add('open');
 }
+
 function closeSupport(){
  supportOverlay.classList.remove('open');
 }
@@ -474,20 +611,24 @@ function openMessageSupport(){
  dropdownMenu.classList.remove('open');
  messageOverlay.classList.add('open');
 }
+
 function closeMessageSupport(){
  messageOverlay.classList.remove('open');
 }
 
+/* نمایش رمز هنگام تایپ */
 function togglePassword(id){
  const input=$(id);
  input.type=input.type==='password'?'text':'password';
 }
 
+/* پیام‌های فرم */
 function showMessage(id,text,type='error'){
  const element=$(id);
  element.textContent=text;
  element.className='message'+(type?' '+type:'');
 }
+
 function clearMessages(){
  document.querySelectorAll('.message').forEach(element=>{
   element.textContent='';
@@ -495,22 +636,26 @@ function clearMessages(){
  });
 }
 
+/* بستن پنجره‌ها */
 [userOverlay,employeeOverlay,supportOverlay,messageOverlay].forEach(overlay=>{
  overlay.addEventListener('click',event=>{
-  if(event.target!==overlay)return;
-  overlay.classList.remove('open');
+  if(event.target===overlay){
+   overlay.classList.remove('open');
+  }
  });
 });
 
 document.addEventListener('keydown',event=>{
  if(event.key==='Escape'){
   dropdownMenu.classList.remove('open');
+
   [userOverlay,employeeOverlay,supportOverlay,messageOverlay].forEach(overlay=>{
    overlay.classList.remove('open');
   });
  }
 });
 
+/* رنگ‌بندی */
 const themes=[
  {name:'بنفش',h:263,s:85,l:65},
  {name:'صورتی',h:330,s:80,l:62},
@@ -528,22 +673,31 @@ const themes=[
 
 const shadeNames=['ملایم','مات','معمولی','تیره','پررنگ'];
 const adjust=[18,-5,0,-12,-20];
-let selected=0,shadeLevel=2;
+
+let selected=0;
+let shadeLevel=2;
 
 try{
  const savedTheme=localStorage.getItem('userThemeIndex');
  const savedShade=localStorage.getItem('userShadeLevel');
+
  if(savedTheme!==null)selected=Number(savedTheme);
  if(savedShade!==null)shadeLevel=Number(savedShade);
 }catch(error){}
 
-if(!Number.isInteger(selected)||selected<0||selected>=themes.length)selected=0;
-if(!Number.isInteger(shadeLevel)||shadeLevel<0||shadeLevel>=shadeNames.length)shadeLevel=2;
+if(!Number.isInteger(selected)||selected<0||selected>=themes.length){
+ selected=0;
+}
+
+if(!Number.isInteger(shadeLevel)||shadeLevel<0||shadeLevel>=shadeNames.length){
+ shadeLevel=2;
+}
 
 function updateShades(){
  document.querySelectorAll('.shade').forEach((button,index)=>{
   const theme=themes[selected];
   const lightness=Math.max(25,Math.min(82,theme.l+adjust[index]));
+
   button.style.background=`hsl(${theme.h} ${theme.s}% ${lightness}%)`;
   button.title=shadeNames[index];
   button.style.outline=index===shadeLevel?'2px solid white':'none';
@@ -554,16 +708,30 @@ function applyTheme(){
  const theme=themes[selected];
  const lightness=Math.max(25,Math.min(82,theme.l+adjust[shadeLevel]));
 
- document.documentElement.style.setProperty('--accent',
-  `hsl(${theme.h} ${theme.s}% ${lightness}%)`);
- document.documentElement.style.setProperty('--soft',
-  `hsla(${theme.h},${theme.s}%,${lightness}%,.16)`);
- document.documentElement.style.setProperty('--bg',
-  `hsl(${theme.h} 18% 9%)`);
- document.documentElement.style.setProperty('--card',
-  `hsl(${theme.h} 17% 14%)`);
- document.documentElement.style.setProperty('--border',
-  `hsl(${theme.h} 15% 25%)`);
+ document.documentElement.style.setProperty(
+  '--accent',
+  `hsl(${theme.h} ${theme.s}% ${lightness}%)`
+ );
+
+ document.documentElement.style.setProperty(
+  '--soft',
+  `hsla(${theme.h},${theme.s}%,${lightness}%,.16)`
+ );
+
+ document.documentElement.style.setProperty(
+  '--bg',
+  `hsl(${theme.h} 18% 9%)`
+ );
+
+ document.documentElement.style.setProperty(
+  '--card',
+  `hsl(${theme.h} 17% 14%)`
+ );
+
+ document.documentElement.style.setProperty(
+  '--border',
+  `hsl(${theme.h} 15% 25%)`
+ );
 
  try{
   localStorage.setItem('userThemeIndex',String(selected));
@@ -573,41 +741,53 @@ function applyTheme(){
  document.querySelectorAll('.swatch').forEach((button,index)=>{
   button.classList.toggle('selected',index===selected);
  });
+
  updateShades();
 }
 
+/* ساخت گزینه‌های رنگ */
 themes.forEach((theme,index)=>{
  const button=document.createElement('button');
+
  button.type='button';
  button.className='swatch';
  button.title=theme.name;
  button.style.background=`hsl(${theme.h} ${theme.s}% ${theme.l}%)`;
+
  button.addEventListener('click',()=>{
   selected=index;
   applyTheme();
  });
+
  $('palette').append(button);
 });
 
 shadeNames.forEach((name,index)=>{
  const button=document.createElement('button');
+
  button.type='button';
  button.className='shade';
  button.title=name;
+
  button.addEventListener('click',()=>{
   shadeLevel=index;
   applyTheme();
  });
+
  $('shades').append(button);
 });
 
 $('colorBtn').addEventListener('click',()=>{
  const palette=$('palette');
+
  palette.classList.toggle('open');
- $('shades').style.display=palette.classList.contains('open')?'flex':'none';
+
+ $('shades').style.display=
+  palette.classList.contains('open')?'flex':'none';
 });
 
 applyTheme();
 </script>
+
 </body>
 </html>
